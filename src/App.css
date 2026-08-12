@@ -1,0 +1,31 @@
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #eef2f7;
+}
+
+.app {
+  width: 100%;
+  min-height: 100vh;
+
+  background: linear-gradient(
+    to bottom,
+    #203360 23%,
+   #0F172A 60%
+  );
+
+  box-sizing: border-box;
+}
+
+.app main {
+  width: 100%;
+  box-sizing: border-box;
+  color: #ffffff;
+}

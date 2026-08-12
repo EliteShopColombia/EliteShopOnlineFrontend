@@ -1,0 +1,104 @@
+/* =========================================
+   HERO
+   ========================================= */
+
+.hero {
+  width: 100%;
+  padding: 45px 30px 35px;
+  box-sizing: border-box;
+}
+
+.hero__content {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.hero__subtitle {
+  margin-bottom: 8px;
+
+  color: #93c5fd;
+
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.hero h1 {
+  margin: 0;
+
+  color: #f8fafc;
+
+  font-size: 38px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.hero__description {
+  max-width: 600px;
+  margin: 15px auto 22px;
+
+  color: #cbd5e1;
+
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.hero__button {
+  border: none;
+  border-radius: 10px;
+
+  padding: 12px 24px;
+
+  background-color: #2778d4;
+  color: #ffffff;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.hero__button:hover {
+  background-color: #3b8ee8;
+  transform: translateY(-2px);
+}
+
+/* =========================================
+   TABLET
+   ========================================= */
+
+@media (max-width: 850px) {
+  .hero {
+    padding: 35px 20px 30px;
+  }
+
+  .hero h1 {
+    font-size: 32px;
+  }
+}
+
+/* =========================================
+   MÓVIL
+   ========================================= */
+
+@media (max-width: 600px) {
+  .hero {
+    padding: 30px 15px 25px;
+  }
+
+  .hero h1 {
+    font-size: 27px;
+  }
+
+  .hero__description {
+    font-size: 14px;
+  }
+
+  .hero__button {
+    width: 100%;
+    max-width: 250px;
+  }
+}

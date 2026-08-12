@@ -1,0 +1,512 @@
+/* =========================================
+   HEADER
+========================================= */
+
+.header {
+    width: 100%;
+    min-height: 100px;
+
+    background-color: #1E293B;
+    color: #ffffff;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    padding: 6px 0;
+
+    box-sizing: border-box;
+
+    /* SOLO ESQUINAS INFERIORES */
+    border-radius: 0 0 25px 25px;
+}
+
+
+/* =========================================
+   FILA PRINCIPAL
+========================================= */
+
+.header__top {
+    width: 100%;
+    min-height: 60px;
+
+    /* Espacio entre los elementos y los extremos */
+    padding: 4px 32px;
+
+    display: grid;
+
+    /* Columnas laterales iguales para mantener
+       el buscador centrado */
+    grid-template-columns: 280px minmax(400px, 1fr) 280px;
+
+    align-items: center;
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================
+   LOGO + NOMBRE
+========================================= */
+
+.header__brand {
+    display: flex;
+    align-items: center;
+
+    /* Separación entre logo y nombre */
+    gap: 20px;
+
+    width: fit-content;
+
+    color: #ffffff;
+
+    font-size: 33px;
+    font-weight: 700;
+
+    line-height: 1;
+
+    text-decoration: none;
+
+    white-space: nowrap;
+}
+
+.header__logo {
+    width: 52px;
+    height: 52px;
+
+    object-fit: contain;
+
+    display: block;
+}
+
+
+/* =========================================
+   BUSCADOR
+========================================= */
+
+.header__search-container {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header__search-bar {
+    width: 100%;
+
+    /* Un poco más ancho */
+    max-width: 600px;
+
+    height: 40px;
+
+    padding: 0 16px;
+
+    display: flex;
+    align-items: center;
+
+    background-color: #e2e8f0;
+
+    border-radius: 22px;
+
+    box-sizing: border-box;
+}
+
+.header__search-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #64748b;
+
+    font-size: 15px;
+
+    line-height: 1;
+}
+
+.header__search-bar input {
+    width: 100%;
+    height: 100%;
+
+    margin-left: 8px;
+
+    padding: 0;
+
+    border: none;
+    outline: none;
+
+    background: transparent;
+
+    color: #1e293b;
+
+    font-size: 12px;
+}
+
+.header__search-bar input::placeholder {
+    color: #64748b;
+}
+
+
+/* =========================================
+   ACCIONES
+========================================= */
+
+.header__actions {
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: flex-end;
+
+    gap: 10px;
+}
+
+.header__actions button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+/* =========================================
+   LOGIN / REGISTER
+========================================= */
+
+.header__login {
+    width: 110px;
+    height: 36px;
+
+    padding: 0;
+
+    border: 1px solid #5da9ff !important;
+
+    border-radius: 20px;
+
+    background: linear-gradient(
+        180deg,
+        #3f96f5 0%,
+        #2778d4 100%
+    ) !important;
+
+    color: #ffffff;
+
+    font-size: 10px;
+
+    font-weight: 600;
+
+    white-space: nowrap;
+
+    box-shadow:
+        0 3px 6px rgba(0, 0, 0, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.25);
+
+    text-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.header__login:hover {
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 5px 10px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.header__login:active {
+    transform: translateY(1px);
+}
+
+
+/* =========================================
+   AYUDA
+========================================= */
+
+.header__help {
+    width: 34px;
+    height: 34px;
+
+    padding: 0;
+
+    border: 1px solid #4d9cff !important;
+
+    border-radius: 50%;
+
+    background: linear-gradient(
+        145deg,
+        #263d68,
+        #172744
+    ) !important;
+
+    color: #4da3ff;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    box-shadow:
+        0 3px 5px rgba(0, 0, 0, 0.3),
+        inset 0 1px 1px rgba(255, 255, 255, 0.12);
+}
+
+.header__help:hover {
+    transform: translateY(-1px);
+
+    background: linear-gradient(
+        145deg,
+        #2d4b7d,
+        #1c3155
+    ) !important;
+
+    box-shadow:
+        0 5px 8px rgba(0, 0, 0, 0.35),
+        0 0 6px rgba(77, 163, 255, 0.3);
+}
+
+
+/* =========================================
+   CARRITO
+========================================= */
+
+.header__cart {
+    width: 38px;
+    height: 34px;
+
+    padding: 0;
+
+    border: 1px solid #4d9cff !important;
+
+    border-radius: 9px;
+
+    background: linear-gradient(
+        145deg,
+        #263d68,
+        #172744
+    ) !important;
+
+    color: #4da3ff;
+
+    font-size: 19px;
+
+    box-shadow:
+        0 3px 5px rgba(0, 0, 0, 0.3),
+        inset 0 1px 1px rgba(255, 255, 255, 0.12);
+}
+
+.header__cart:hover {
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 5px 8px rgba(0, 0, 0, 0.35),
+        0 0 6px rgba(77, 163, 255, 0.3);
+}
+
+.header__cart:active,
+.header__help:active {
+    transform: translateY(1px);
+}
+
+
+/* =========================================
+   CATEGORÍAS
+========================================= */
+
+.header__categories {
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    /* Espacio entre categorías */
+    gap: 17px;
+
+    /* Menos espacio arriba para acercarlas
+       al buscador */
+    padding: 3px 20px 3px;
+
+    box-sizing: border-box;
+
+    font-size: 12px;
+}
+
+.header__categories a {
+    color: #94a3b8;
+
+    text-decoration: none;
+
+    white-space: nowrap;
+
+    transition:
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.header__categories a:hover {
+    color: #ffffff;
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 1100px) {
+
+    .header__top {
+        grid-template-columns: 220px minmax(300px, 1fr) 220px;
+
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+
+    .header__brand {
+        font-size: 28px;
+    }
+
+    .header__logo {
+        width: 48px;
+        height: 48px;
+    }
+
+    .header__categories {
+        gap: 13px;
+    }
+}
+
+
+/* =========================================
+   TABLET PEQUEÑA
+========================================= */
+
+@media (max-width: 850px) {
+
+    .header__top {
+        grid-template-columns: 190px 1fr 190px;
+
+        padding-left: 18px;
+        padding-right: 18px;
+    }
+
+    .header__brand {
+        font-size: 24px;
+        gap: 11px;
+    }
+
+    .header__logo {
+        width: 44px;
+        height: 44px;
+    }
+
+    .header__search-bar {
+        max-width: 420px;
+    }
+
+    .header__categories {
+        justify-content: flex-start;
+
+        overflow-x: auto;
+
+        scrollbar-width: none;
+    }
+
+    .header__categories::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+
+/* =========================================
+   MÓVIL
+========================================= */
+
+@media (max-width: 600px) {
+
+    .header {
+        padding: 6px 0;
+    }
+
+    .header__top {
+        display: flex;
+
+        flex-wrap: wrap;
+
+        gap: 10px;
+
+        padding: 4px 14px;
+    }
+
+    .header__brand {
+        flex: 1;
+
+        min-width: 0;
+
+        gap: 9px;
+
+        font-size: 21px;
+    }
+
+    .header__logo {
+        width: 42px;
+        height: 42px;
+    }
+
+    .header__actions {
+        width: auto;
+
+        gap: 7px;
+    }
+
+    .header__login {
+        width: 95px;
+        height: 32px;
+    }
+
+    .header__help {
+        width: 30px;
+        height: 30px;
+    }
+
+    .header__cart {
+        width: 34px;
+        height: 30px;
+    }
+
+    .header__search-container {
+        order: 3;
+
+        flex-basis: 100%;
+    }
+
+    .header__search-bar {
+        max-width: none;
+    }
+
+    .header__categories {
+        justify-content: flex-start;
+
+        overflow-x: auto;
+
+        white-space: nowrap;
+
+        padding-left: 14px;
+        padding-right: 14px;
+
+        scrollbar-width: none;
+    }
+
+    .header__categories::-webkit-scrollbar {
+        display: none;
+    }
+}
