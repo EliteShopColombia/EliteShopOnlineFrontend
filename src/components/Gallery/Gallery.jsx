@@ -1,84 +1,91 @@
 import ProductCard from "../ProductCard/ProductCard";
 import "./Gallery.css";
 
-import prenda from "../../assets/images/Prenda.jpg";
-import play5 from "../../assets/images/Play5.jpg";
-import ninos from "../../assets/images/Niños.jpg";
-import karite from "../../assets/images/Karité.jpg";
-import balon from "../../assets/images/Balon.jpg";
-import automotriz from "../../assets/images/Automotriz.jpg";
+const figmaImages = {
+    a: "https://www.figma.com/api/mcp/asset/955dbb7e-4c9a-45c7-a45a-636cfb28de3d.png",
+    b: "https://www.figma.com/api/mcp/asset/7325b519-f041-4596-b0f0-5959ce2b2c2c.png",
+    c: "https://www.figma.com/api/mcp/asset/2b8108a8-3555-4d2d-8b3c-2c773c080e75.png",
+    d: "https://www.figma.com/api/mcp/asset/fdd6e6e1-a06a-44d7-996f-266290390f4c.png",
+};
 
 function Gallery() {
-const products = [
-    {
-        id: 1,
-        name: "Camiseta Casual",
-        price: "120.000",
-        oldPrice: "150.000",
-        rating: 3.8,
-        image: prenda
-    },
-    {
-        id: 2,
-        name: "PlayStation 5",
-        price: "150.000",
-        oldPrice: "200.000",
-        rating: 4.8,
-        image: play5
-    },
-    {
-        id: 3,
-        name: "Juguete para niños",
-        price: "95.000",
-        oldPrice: "120.000",
-        rating: 4.2,
-        image: ninos
-    },
-    {
-        id: 4,
-        name: "Productos karité",
-        price: "180.000",
-        oldPrice: "220.000",
-        rating: 4.7,
-        image: karite
-    },
-    {
-        id: 5,
-        name: "Balón deportivo",
-        price: "180.000",
-        oldPrice: "250.000",
-        rating: 4.6,
-        image: balon
-    },
-    {
-        id: 6,
-        name: "Repuestos automotrices",
-        price: "335.000",
-        oldPrice: "480.000",
-        rating: 4.3,
-        image: automotriz
-    }
-];
+    const products = [
+        {
+            id: 1,
+            name: "Gafas Inteligente con IA 2026, ...",
+            price: "50.000",
+            oldPrice: "70.000",
+            rating: 5,
+            image: figmaImages.a,
+        },
+        {
+            id: 2,
+            name: "Mini Freidora de Huevos 4 en 1, ...",
+            price: "20.000",
+            oldPrice: "50.000",
+            rating: 5,
+            image: figmaImages.b,
+        },
+        {
+            id: 3,
+            name: "Juego para Parejas en Español - ...",
+            price: "20.000",
+            oldPrice: "50.000",
+            rating: 5,
+            image: figmaImages.c,
+        },
+        {
+            id: 4,
+            name: "1 pza. Frasco recargable para p...",
+            price: "20.000",
+            oldPrice: "50.000",
+            rating: 5,
+            image: figmaImages.d,
+        },
+        {
+            id: 5,
+            name: "Gafas Inteligente con IA 2026, ...",
+            price: "50.000",
+            oldPrice: "70.000",
+            rating: 5,
+            image: figmaImages.a,
+        },
+        {
+            id: 6,
+            name: "Mini Freidora de Huevos 4 en 1, ...",
+            price: "20.000",
+            oldPrice: "50.000",
+            rating: 5,
+            image: figmaImages.b,
+        },
+        {
+            id: 7,
+            name: "Juego para Parejas en Español - ...",
+            price: "20.000",
+            oldPrice: "50.000",
+            rating: 5,
+            image: figmaImages.c,
+        },
+        {
+            id: 8,
+            name: "1 pza. Frasco recargable para p...",
+            price: "20.000",
+            oldPrice: "50.000",
+            rating: 5,
+            image: figmaImages.d,
+        },
+    ];
+
     return (
         <section className="gallery">
-
-            <div className="gallery__header">
-
-                <h2>Productos destacados</h2>
-
-            </div>
-
             <div className="gallery__grid">
-
                 {products.map((product) => (
                     <ProductCard
                         key={product.id}
                         product={product}
                     />
                 ))}
-
             </div>
-
         </section>
     );
 }

@@ -1,114 +1,72 @@
-/* =========================================
-   HEADER
-========================================= */
-
+/* HEADER */
 .header {
     width: 100%;
-    min-height: 100px;
-
-    background-color: #1E293B;
+    background-color: #1e293b;
     color: #ffffff;
-
     display: flex;
     flex-direction: column;
     align-items: center;
-
-    padding: 6px 0;
-
+    padding: 0;
     box-sizing: border-box;
-
-    /* SOLO ESQUINAS INFERIORES */
     border-radius: 0 0 25px 25px;
 }
 
-
-/* =========================================
-   FILA PRINCIPAL
-========================================= */
-
+/* FILA PRINCIPAL */
 .header__top {
     width: 100%;
-    min-height: 60px;
-
-    /* Espacio entre los elementos y los extremos */
-    padding: 4px 32px;
-
-    display: grid;
-
-    /* Columnas laterales iguales para mantener
-       el buscador centrado */
-    grid-template-columns: 280px minmax(400px, 1fr) 280px;
-
+    height: 102px;
+    padding: 0 70px;
+    display: flex;
     align-items: center;
-
+    gap: 20px;
     box-sizing: border-box;
 }
 
-
-/* =========================================
-   LOGO + NOMBRE
-========================================= */
-
+/* LOGO + NOMBRE */
 .header__brand {
     display: flex;
     align-items: center;
-
-    /* Separación entre logo y nombre */
-    gap: 20px;
-
-    width: fit-content;
-
+    gap: 14px;
     color: #ffffff;
-
-    font-size: 33px;
+    font-size: 42px;
     font-weight: 700;
-
     line-height: 1;
-
     text-decoration: none;
-
     white-space: nowrap;
+    flex-shrink: 0;
+    letter-spacing: -0.02em;
+}
+
+.header__brand span {
+    display: inline-block;
+    transform: translateY(2px);
 }
 
 .header__logo {
-    width: 52px;
-    height: 52px;
-
+    width: 68px;
+    height: 68px;
     object-fit: contain;
-
     display: block;
+    margin-right: 0;
 }
 
-
-/* =========================================
-   BUSCADOR
-========================================= */
-
+/* BUSCADOR */
 .header__search-container {
-    width: 100%;
-
+    flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .header__search-bar {
-    width: 100%;
-
-    /* Un poco más ancho */
-    max-width: 600px;
-
-    height: 40px;
-
-    padding: 0 16px;
-
+    width: 950px;
+    height: 54px;
+    padding: 0 18px;
     display: flex;
     align-items: center;
-
-    background-color: #e2e8f0;
-
-    border-radius: 22px;
-
+    background-color: #d9d9d9;
+    border: 1px solid #d9d9d9;
+    border-radius: 50px;
     box-sizing: border-box;
 }
 
@@ -116,196 +74,105 @@
     display: flex;
     align-items: center;
     justify-content: center;
-
-    color: #64748b;
-
-    font-size: 15px;
-
-    line-height: 1;
+    width: 22px;
+    height: 22px;
+    color: #8e8e8e;
+    flex-shrink: 0;
 }
 
 .header__search-bar input {
     width: 100%;
     height: 100%;
-
-    margin-left: 8px;
-
+    margin-left: 10px;
     padding: 0;
-
     border: none;
     outline: none;
-
     background: transparent;
-
-    color: #1e293b;
-
-    font-size: 12px;
+    color: #8e8e8e;
+    font-size: 16.5px;
+    font-weight: 400;
 }
 
 .header__search-bar input::placeholder {
-    color: #64748b;
+    color: #8e8e8e;
 }
 
-
-/* =========================================
-   ACCIONES
-========================================= */
-
+/* ACCIONES */
 .header__actions {
-    width: 100%;
-
     display: flex;
-
     align-items: center;
-
     justify-content: flex-end;
-
-    gap: 10px;
+    gap: 12px;
+    flex-shrink: 0;
 }
 
 .header__actions button {
     display: flex;
     align-items: center;
     justify-content: center;
-
     cursor: pointer;
-
-    transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-
-/* =========================================
-   LOGIN / REGISTER
-========================================= */
-
+/* LOGIN / REGISTER */
 .header__login {
-    width: 110px;
-    height: 36px;
-
+    width: 193px;
+    height: 54px;
     padding: 0;
-
-    border: 1px solid #5da9ff !important;
-
-    border-radius: 20px;
-
-    background: linear-gradient(
-        180deg,
-        #3f96f5 0%,
-        #2778d4 100%
-    ) !important;
-
+    border: none !important;
+    border-radius: 50px;
+    background: linear-gradient(180deg, #3b82f6 0%, #2563eb 100%) !important;
     color: #ffffff;
-
-    font-size: 10px;
-
-    font-weight: 600;
-
+    font-size: 18px;
+    font-weight: 700;
     white-space: nowrap;
-
-    box-shadow:
-        0 3px 6px rgba(0, 0, 0, 0.25),
-        inset 0 1px 0 rgba(255, 255, 255, 0.25);
-
-    text-shadow:
-        0 1px 2px rgba(0, 0, 0, 0.2);
+    box-shadow: none;
 }
 
 .header__login:hover {
     transform: translateY(-1px);
-
-    box-shadow:
-        0 5px 10px rgba(0, 0, 0, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
 }
 
 .header__login:active {
     transform: translateY(1px);
 }
 
-
-/* =========================================
-   AYUDA
-========================================= */
-
+/* AYUDA */
 .header__help {
-    width: 34px;
-    height: 34px;
-
+    width: 48px;
+    height: 48px;
     padding: 0;
-
-    border: 1px solid #4d9cff !important;
-
+    border: 1.5px solid #4d9cff !important;
     border-radius: 50%;
-
-    background: linear-gradient(
-        145deg,
-        #263d68,
-        #172744
-    ) !important;
-
+    background: transparent !important;
     color: #4da3ff;
-
-    font-size: 15px;
-
+    font-size: 20px;
     font-weight: 700;
-
-    box-shadow:
-        0 3px 5px rgba(0, 0, 0, 0.3),
-        inset 0 1px 1px rgba(255, 255, 255, 0.12);
+    box-shadow: none;
 }
 
 .header__help:hover {
     transform: translateY(-1px);
-
-    background: linear-gradient(
-        145deg,
-        #2d4b7d,
-        #1c3155
-    ) !important;
-
-    box-shadow:
-        0 5px 8px rgba(0, 0, 0, 0.35),
-        0 0 6px rgba(77, 163, 255, 0.3);
+    background: rgba(77, 163, 255, 0.1) !important;
 }
 
-
-/* =========================================
-   CARRITO
-========================================= */
-
+/* CARRITO */
 .header__cart {
-    width: 38px;
-    height: 34px;
-
+    width: 48px;
+    height: 48px;
     padding: 0;
-
-    border: 1px solid #4d9cff !important;
-
-    border-radius: 9px;
-
-    background: linear-gradient(
-        145deg,
-        #263d68,
-        #172744
-    ) !important;
-
+    border: 1.5px solid #4d9cff !important;
+    border-radius: 12px;
+    background: transparent !important;
     color: #4da3ff;
-
-    font-size: 19px;
-
-    box-shadow:
-        0 3px 5px rgba(0, 0, 0, 0.3),
-        inset 0 1px 1px rgba(255, 255, 255, 0.12);
+    font-size: 24px;
+    box-shadow: none;
 }
 
 .header__cart:hover {
     transform: translateY(-1px);
-
-    box-shadow:
-        0 5px 8px rgba(0, 0, 0, 0.35),
-        0 0 6px rgba(77, 163, 255, 0.3);
+    background: rgba(77, 163, 255, 0.1) !important;
 }
 
 .header__cart:active,
@@ -313,199 +180,162 @@
     transform: translateY(1px);
 }
 
-
-/* =========================================
-   CATEGORÍAS
-========================================= */
-
+/* CATEGORIAS */
 .header__categories {
     width: 100%;
-
+    height: 28px;
     display: flex;
-
-    align-items: center;
-
+    align-items: flex-start;
     justify-content: center;
-
-    /* Espacio entre categorías */
-    gap: 17px;
-
-    /* Menos espacio arriba para acercarlas
-       al buscador */
-    padding: 3px 20px 3px;
-
+    gap: 22px;
+    padding: 0 70px 0;
     box-sizing: border-box;
-
-    font-size: 12px;
+    margin-top: 0;
 }
 
 .header__categories a {
     color: #94a3b8;
-
     text-decoration: none;
-
     white-space: nowrap;
-
-    transition:
-        color 0.2s ease,
-        transform 0.2s ease;
+    transition: color 0.2s ease;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1;
+    display: inline-flex;
+    align-items: flex-start;
+    transform: translateY(-7px);
 }
 
 .header__categories a:hover {
     color: #ffffff;
-
-    transform: translateY(-1px);
 }
 
-
-/* =========================================
-   TABLET
-========================================= */
-
+/* TABLET */
 @media (max-width: 1100px) {
-
     .header__top {
-        grid-template-columns: 220px minmax(300px, 1fr) 220px;
-
-        padding-left: 24px;
-        padding-right: 24px;
+        padding: 20px 40px;
+        height: auto;
     }
-
     .header__brand {
-        font-size: 28px;
+        font-size: 26px;
     }
+    .header__logo {
+        width: 60px;
+        height: 60px;
+    }
+    .header__search-bar {
+        width: 100%;
+        max-width: 600px;
+    }
+    .header__login {
+        width: 160px;
+        height: 46px;
+        font-size: 13px;
+    }
+    .header__help,
+    .header__cart {
+        width: 42px;
+        height: 42px;
+    }
+    .header__categories {
+        gap: 16px;
+        padding-left: 40px;
+        padding-right: 40px;
+    }
+}
 
+/* TABLET PEQUENA */
+@media (max-width: 850px) {
+    .header__top {
+        padding: 16px 24px;
+    }
+    .header__brand {
+        font-size: 22px;
+        gap: 10px;
+    }
     .header__logo {
         width: 48px;
         height: 48px;
     }
-
-    .header__categories {
-        gap: 13px;
-    }
-}
-
-
-/* =========================================
-   TABLET PEQUEÑA
-========================================= */
-
-@media (max-width: 850px) {
-
-    .header__top {
-        grid-template-columns: 190px 1fr 190px;
-
-        padding-left: 18px;
-        padding-right: 18px;
-    }
-
-    .header__brand {
-        font-size: 24px;
-        gap: 11px;
-    }
-
-    .header__logo {
-        width: 44px;
-        height: 44px;
-    }
-
     .header__search-bar {
-        max-width: 420px;
+        max-width: 400px;
+        height: 46px;
     }
-
+    .header__login {
+        width: 140px;
+        height: 42px;
+        font-size: 12px;
+    }
+    .header__help,
+    .header__cart {
+        width: 38px;
+        height: 38px;
+        font-size: 18px;
+    }
     .header__categories {
         justify-content: flex-start;
-
         overflow-x: auto;
-
         scrollbar-width: none;
+        padding-left: 24px;
+        padding-right: 24px;
     }
-
     .header__categories::-webkit-scrollbar {
         display: none;
     }
 }
 
-
-/* =========================================
-   MÓVIL
-========================================= */
-
+/* MOVIL */
 @media (max-width: 600px) {
-
-    .header {
-        padding: 6px 0;
-    }
-
     .header__top {
-        display: flex;
-
         flex-wrap: wrap;
-
-        gap: 10px;
-
-        padding: 4px 14px;
+        gap: 8px;
+        padding: 10px 14px;
+        height: auto;
     }
-
     .header__brand {
-        flex: 1;
-
         min-width: 0;
-
-        gap: 9px;
-
-        font-size: 21px;
+        gap: 8px;
+        font-size: 18px;
     }
-
     .header__logo {
-        width: 42px;
-        height: 42px;
+        width: 38px;
+        height: 38px;
     }
-
     .header__actions {
-        width: auto;
-
-        gap: 7px;
+        gap: 6px;
     }
-
     .header__login {
-        width: 95px;
-        height: 32px;
+        width: 110px;
+        height: 36px;
+        font-size: 11px;
     }
-
     .header__help {
-        width: 30px;
-        height: 30px;
+        width: 32px;
+        height: 32px;
+        font-size: 14px;
     }
-
     .header__cart {
-        width: 34px;
-        height: 30px;
+        width: 32px;
+        height: 32px;
+        font-size: 18px;
     }
-
     .header__search-container {
         order: 3;
-
         flex-basis: 100%;
     }
-
     .header__search-bar {
+        width: 100%;
         max-width: none;
+        height: 42px;
     }
-
     .header__categories {
         justify-content: flex-start;
-
         overflow-x: auto;
-
         white-space: nowrap;
-
         padding-left: 14px;
         padding-right: 14px;
-
         scrollbar-width: none;
     }
-
     .header__categories::-webkit-scrollbar {
         display: none;
     }

@@ -1,4 +1,24 @@
 :root {
+  --page-horizontal-padding: 70px;
+  --header-height: 120px;
+  --header-action-width: 193px;
+  --searchbar-width: 950px;
+  --searchbar-height: 54px;
+  --card-width: 399px;
+  --card-height: 493px;
+  --card-image-size: 399px;
+  --grid-gap: 60px;
+  --radius-card: 5px;
+  --color-primary: #1e293b;
+  --color-primary-strong: #203360;
+  --color-primary-dark: #0f172a;
+  --color-accent: #3b82f6;
+  --color-accent-strong: #2778d4;
+  --color-surface: #d9d9d9;
+  --color-text: #ffffff;
+  --color-text-muted: #8e8e8e;
+  --color-border: #30466f;
+
   font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
 

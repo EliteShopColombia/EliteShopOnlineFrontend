@@ -36,12 +36,12 @@ function ProductCard({ product }) {
                     <div className="product-card__prices">
 
                         <span className="product-card__price">
-                            ${product.price}
+                            ${product.price} COP
                         </span>
 
                         {product.oldPrice && (
                             <span className="product-card__old-price">
-                                ${product.oldPrice}
+                                ${product.oldPrice} COP
                             </span>
                         )}
 
@@ -101,21 +101,7 @@ function ProductCard({ product }) {
 
                     </div>
 
-
-                    <span className="product-card__rating-number">
-                        {product.rating}
-                    </span>
-
                 </div>
-
-
-                {/* VER PRODUCTO */}
-                <button
-                    type="button"
-                    className="product-card__button"
-                >
-                    Ver producto
-                </button>
 
             </div>
 
