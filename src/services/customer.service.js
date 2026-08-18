@@ -1,0 +1,28 @@
+import api from '../config/api';
+import { parsePageResponse } from '../helpers/api.helpers';
+
+export const customerService = {
+  getAll: async (page = 0, size = 25) => {
+    const response = await api.get(`/customers?page=${page}&size=${size}`);
+    return parsePageResponse(response.data);
+  },
+
+  getById: async (id) => {
+    const response = await api.get(`/customers/${id}`);
+    return response.data;
+  },
+
+  create: async (data) => {
+    const response = await api.post('/customers', data);
+    return response.data;
+  },
+
+  update: async (id, data) => {
+    const response = await api.put(`/customers/${id}`, data);
+    return response.data;
+  },
+
+  delete: async (id) => {
+    await api.delete(`/customers/${id}`);
+  },
+};

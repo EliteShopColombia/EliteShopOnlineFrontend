@@ -1,7 +1,7 @@
 import "./Header.css";
 import logo from "../../assets/logo.png";
 
-function Header({ onCartClick }) {
+function Header({ onCartClick, onAuthClick, onLogoutClick, isAuthenticated }) {
     const categories = [
         "Categorías",
         "Medicina",
@@ -59,12 +59,23 @@ function Header({ onCartClick }) {
                 {/* ACCIONES */}
                 <div className="header__actions">
 
-                    <button
-                        type="button"
-                        className="header__login"
-                    >
-                        Login / Register
-                    </button>
+                    {isAuthenticated ? (
+                        <button
+                            type="button"
+                            className="header__login"
+                            onClick={onLogoutClick}
+                        >
+                            Cerrar Sesion
+                        </button>
+                    ) : (
+                        <button
+                            type="button"
+                            className="header__login"
+                            onClick={onAuthClick}
+                        >
+                            Login / Register
+                        </button>
+                    )}
 
                     <button
                         type="button"
