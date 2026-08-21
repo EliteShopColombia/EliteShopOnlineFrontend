@@ -29,3 +29,33 @@ body {
   box-sizing: border-box;
   color: #ffffff;
 }
+
+.app__toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  z-index: 10000;
+
+  padding: 12px 20px;
+
+  background-color: #26354d;
+
+  border: 1px solid #3b4b66;
+
+  border-radius: 8px;
+
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+
+  color: #ffffff;
+
+  font-size: 14px;
+
+  max-width: 90vw;
+
+  text-align: center;
+
+  box-sizing: border-box;
+}

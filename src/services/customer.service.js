@@ -1,10 +1,9 @@
 import api from '../config/api';
-import { parsePageResponse } from '../helpers/api.helpers';
 
 export const customerService = {
-  getAll: async (page = 0, size = 25) => {
-    const response = await api.get(`/customers?page=${page}&size=${size}`);
-    return parsePageResponse(response.data);
+  getAll: async () => {
+    const response = await api.get('/customers');
+    return response.data;
   },
 
   getById: async (id) => {
