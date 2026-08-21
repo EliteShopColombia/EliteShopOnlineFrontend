@@ -1,0 +1,283 @@
+.payment-methods {
+    display: flex;
+    flex-direction: column;
+
+    gap: 14px;
+}
+
+.payment-methods__loading,
+.payment-methods__empty {
+    padding: 16px 0;
+
+    color: #94a3b8;
+
+    font-size: 14px;
+}
+
+.payment-methods__error {
+    margin: 0;
+
+    padding: 10px 12px;
+
+    background-color: rgba(239, 68, 68, 0.15);
+
+    border: 1px solid rgba(239, 68, 68, 0.3);
+
+    border-radius: 6px;
+
+    color: #fca5a5;
+
+    font-size: 13px;
+}
+
+.payment-methods__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.payment-methods__title {
+    margin: 0;
+
+    color: #ffffff;
+
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.payment-methods__add {
+    padding: 8px 14px;
+
+    border: 1px solid #4da3ff;
+
+    border-radius: 6px;
+
+    background: transparent;
+
+    color: #4da3ff;
+
+    font-size: 13px;
+
+    cursor: pointer;
+
+    transition: background-color 0.2s ease;
+}
+
+.payment-methods__add:hover {
+    background: rgba(77, 163, 255, 0.1);
+}
+
+.payment-methods__form {
+    display: flex;
+    flex-direction: column;
+
+    gap: 12px;
+
+    padding: 16px;
+
+    background-color: #26354d;
+
+    border: 1px solid #3b4b66;
+
+    border-radius: 8px;
+}
+
+.payment-methods__row {
+    display: flex;
+
+    gap: 12px;
+}
+
+.payment-methods__row .payment-methods__field {
+    flex: 1;
+}
+
+.payment-methods__field {
+    display: flex;
+    flex-direction: column;
+
+    gap: 4px;
+}
+
+.payment-methods__field label {
+    color: #94a3b8;
+
+    font-size: 12px;
+}
+
+.payment-methods__field input,
+.payment-methods__field select {
+    height: 38px;
+
+    padding: 0 10px;
+
+    border: 1px solid #3b4b66;
+
+    border-radius: 6px;
+
+    background-color: #1f2b3d;
+
+    color: #ffffff;
+
+    font-size: 14px;
+
+    box-sizing: border-box;
+}
+
+.payment-methods__field input:focus,
+.payment-methods__field select:focus {
+    outline: none;
+
+    border-color: #4da3ff;
+}
+
+.payment-methods__default {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    color: #94a3b8;
+
+    font-size: 13px;
+
+    cursor: pointer;
+}
+
+.payment-methods__save {
+    height: 40px;
+
+    border: none;
+
+    border-radius: 6px;
+
+    background-color: #2778d4;
+
+    color: #ffffff;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+.payment-methods__save:hover {
+    background-color: #3b8ee8;
+}
+
+.payment-methods__save:disabled {
+    opacity: 0.5;
+
+    cursor: not-allowed;
+}
+
+.payment-methods__list {
+    display: flex;
+    flex-direction: column;
+
+    gap: 8px;
+}
+
+.payment-methods__card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
+
+    padding: 14px;
+
+    background-color: #26354d;
+
+    border: 1px solid #3b4b66;
+
+    border-radius: 8px;
+}
+
+.payment-methods__card-info {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    flex-wrap: wrap;
+}
+
+.payment-methods__brand {
+    color: #ffffff;
+
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.payment-methods__last4 {
+    color: #ffffff;
+
+    font-size: 14px;
+}
+
+.payment-methods__expiry {
+    color: #94a3b8;
+
+    font-size: 13px;
+}
+
+.payment-methods__badge {
+    padding: 2px 8px;
+
+    border-radius: 999px;
+
+    background-color: #22c55e;
+
+    color: #ffffff;
+
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.payment-methods__actions {
+    display: flex;
+
+    gap: 8px;
+}
+
+.payment-methods__action {
+    padding: 6px 10px;
+
+    border: 1px solid #3b4b66;
+
+    border-radius: 6px;
+
+    background: transparent;
+
+    color: #4da3ff;
+
+    font-size: 12px;
+
+    cursor: pointer;
+}
+
+.payment-methods__action:hover {
+    background: rgba(77, 163, 255, 0.1);
+}
+
+.payment-methods__action--danger {
+    color: #f87171;
+
+    border-color: rgba(239, 68, 68, 0.4);
+}
+
+.payment-methods__action--danger:hover {
+    background: rgba(239, 68, 68, 0.1);
+}
+
+@media (max-width: 600px) {
+    .payment-methods__row {
+        flex-direction: column;
+    }
+
+    .payment-methods__card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

@@ -1,6 +1,14 @@
 import api from '../config/api';
 
 export const paymentService = {
+  retryOrderPayment: async (orderId, paymentMethodId, cvv) => {
+    const response = await api.post(`/payments/orders/${orderId}/retry`, {
+      paymentMethodId,
+      cvv,
+    });
+    return response.data;
+  },
+
   createCheckoutSession: async (data) => {
     const response = await api.post('/payments/checkout-session', data);
     return response.data;
