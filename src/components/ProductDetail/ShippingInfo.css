@@ -1,0 +1,73 @@
+/* SHIPPING INFO */
+.shipping-info {
+    margin-top: 24px;
+}
+
+.shipping-info__delivery {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.shipping-info__icon {
+    flex-shrink: 0;
+}
+
+.shipping-info__delivery-text {
+    color: #ffffff;
+    font-size: 14px;
+}
+
+.shipping-info__details {
+    color: #94a3b8;
+    font-size: 13px;
+    line-height: 1.5;
+    margin: 0 0 20px;
+}
+
+.shipping-info__details strong {
+    color: #ffffff;
+}
+
+/* PLATFORM */
+.shipping-info__platform {
+    background: #1a2744;
+    border: 1px solid #2a3a5c;
+    border-radius: 10px;
+    padding: 16px;
+}
+
+.shipping-info__platform-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.shipping-info__benefits {
+    padding-left: 30px;
+}
+
+.shipping-info__benefit-title {
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.shipping-info__benefit-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #94a3b8;
+    font-size: 12px;
+    margin-bottom: 4px;
+}
+
+.shipping-info__benefit-item:last-child {
+    margin-bottom: 0;
+}
