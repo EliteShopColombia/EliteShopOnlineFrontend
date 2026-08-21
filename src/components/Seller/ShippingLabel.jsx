@@ -66,8 +66,6 @@ function ShippingLabel() {
             <h1 id="shipping-label-title">{shipping.trackingNumber}</h1>
             <div className="shipping-label__details">
                 <div><small>Pedido</small><strong>#{String(order?.id || orderId).slice(0, 8)}</strong></div>
-                <div><small>Transportista</small><strong>{shipping.carrier}</strong></div>
-                <div><small>Fecha de creación</small><strong>{new Date(shipping.generatedAt).toLocaleDateString('es-CO')}</strong></div>
             </div>
             <div className="shipping-label__qr" aria-label="Código QR de demostración">{createDemoQr(shipping.trackingNumber).map((isDark, index) => <span className={isDark ? 'shipping-label__qr-cell shipping-label__qr-cell--dark' : 'shipping-label__qr-cell'} key={index} />)}</div>
             <p className="shipping-label__qr-caption">QR de demostración</p>
