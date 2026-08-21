@@ -6,6 +6,7 @@ import '../Orders/Orders.css';
 
 const statuses = ['', ...Object.keys(STATUS_LABELS)];
 const shippingCarriers = ['Coordinadora', 'Servientrega', 'Inter Rapidísimo', 'TCC', 'Envía', '4-72', 'DHL', 'FedEx', 'Otro'];
+const refundReasons = ['Reembolso aprobado por el vendedor', 'Producto defectuoso confirmado', 'Producto incorrecto confirmado', 'Pedido incompleto confirmado', 'Otro motivo'];
 const formatPrice = (value) => new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(value || 0);
 const getOrderTotal = (order) => order.totalAmount ?? order.totalPrice ?? order.total ?? order.amount ?? 0;
 const createDemoTrackingNumber = () => `SRV-${new Date().toISOString().slice(0, 10).replaceAll('-', '')}-${Math.floor(100000 + Math.random() * 900000)}`;
@@ -22,8 +23,8 @@ function SellerOrders({ sellerId, onBack }) {
     const [busyId, setBusyId] = useState('');
     const [shippingOrder, setShippingOrder] = useState(null);
     const [shippingCarrier, setShippingCarrier] = useState('');
-    const [refundOrder, setRefundOrder] = useState(null);
-    const [refundReason, setRefundReason] = useState('');
+    const [issueOrder, setIssueOrder] = useState(null);
+    const [issueReason, setIssueReason] = useState('');
 
     const loadOrders = async () => {
         if (!effectiveSellerId) return;
@@ -60,12 +61,13 @@ function SellerOrders({ sellerId, onBack }) {
         return () => { active = false; };
     }, [effectiveSellerId, status, page]);
 
-    const action = async (order, type, reason = '') => {
+    const action = async (order, type) => {
         setBusyId(order.id); setError('');
         try {
             if (type === 'prepare') await orderService.prepareOrder(order.id);
             if (type === 'out') await orderService.outForDeliveryOrder(order.id);
-            if (type === 'refund') await orderService.refundOrder(order.id, reason);
+            if (type === 'complete') await orderService.completeOrder(order.id);
+            if (type === 'refund') await orderService.refundOrder(order.id, issueReason);
             if (type === 'ship') {
                 const generatedTrackingNumber = createDemoTrackingNumber();
                 await orderService.updateTracking(order.id, { shippingCarrier, trackingNumber: generatedTrackingNumber });
@@ -79,7 +81,10 @@ function SellerOrders({ sellerId, onBack }) {
                 }));
                 navigate(`/seller/orders/${order.id}/shipping-label`);
             }
-            if (type === 'refund') { setRefundOrder(null); setRefundReason(''); }
+            if (['dispute', 'refund'].includes(type)) {
+                setIssueOrder(null);
+                setIssueReason('');
+            }
             await loadOrders();
         } catch (err) { setError(err.response?.data?.message || 'No se pudo cambiar el estado.'); }
         finally { setBusyId(''); }
@@ -97,7 +102,8 @@ function SellerOrders({ sellerId, onBack }) {
                 {order.status === 'PAID' && <button disabled={busyId === order.id} onClick={() => action(order, 'prepare')}>Preparar</button>}
                 {order.status === 'IN_PREPARATION' && <button disabled={busyId === order.id} onClick={() => { setShippingOrder(order); setShippingCarrier(''); }}>Enviar con guía</button>}
                 {order.status === 'SHIPPED' && <button disabled={busyId === order.id} onClick={() => action(order, 'out')}>Marcar en reparto</button>}
-                {!['CANCELLED', 'REFUNDED', 'COMPLETED'].includes(order.status) && <button disabled={busyId === order.id} onClick={() => { setRefundOrder(order); setRefundReason(''); }}>Reembolsar</button>}
+                {order.status === 'DELIVERED' && <button disabled={busyId === order.id} onClick={() => action(order, 'complete')}>Completar orden</button>}
+                {order.status === 'DISPUTE' && <button disabled={busyId === order.id} onClick={() => { setIssueOrder({ ...order, issueType: 'refund' }); setIssueReason(''); }}>Procesar reembolso</button>}
             </div>
         </article>)}</div>}
         <div className="orders-pagination"><button disabled={page === 0} onClick={() => setPage((value) => value - 1)}>Anterior</button><button disabled={page + 1 >= totalPages} onClick={() => setPage((value) => value + 1)}>Siguiente</button></div>
@@ -118,16 +124,20 @@ function SellerOrders({ sellerId, onBack }) {
                 </div>
             </div>
         </div>}
-        {refundOrder && <div className="cancel-modal" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) setRefundOrder(null); }}>
-            <section className="cancel-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="refund-modal-title">
-                <button type="button" className="cancel-modal__close" aria-label="Cerrar" onClick={() => setRefundOrder(null)}>×</button>
-                <h2 id="refund-modal-title">Solicitar reembolso</h2>
-                <p>Puedes indicarnos un motivo para registrar esta solicitud.</p>
-                <label htmlFor="refund-reason">Motivo <span>(opcional)</span></label>
-                <textarea id="refund-reason" value={refundReason} onChange={(event) => setRefundReason(event.target.value)} placeholder="Escribe el motivo del reembolso" rows="3" maxLength="300" autoFocus />
+        {issueOrder && <div className="cancel-modal" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) setIssueOrder(null); }}>
+            <section className="cancel-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="issue-modal-title">
+                <button type="button" className="cancel-modal__close" aria-label="Cerrar" onClick={() => setIssueOrder(null)}>×</button>
+                <div className="cancel-modal__icon">!</div>
+                <h2 id="issue-modal-title">Procesar reembolso</h2>
+                <p>Selecciona el motivo para registrar la decisión del vendedor.</p>
+                <label htmlFor="issue-reason">Motivo del reembolso</label>
+                <select id="issue-reason" value={issueReason} onChange={(event) => setIssueReason(event.target.value)} autoFocus>
+                    <option value="">Selecciona un motivo</option>
+                    {refundReasons.map((reason) => <option key={reason} value={reason}>{reason}</option>)}
+                </select>
                 <div className="cancel-modal__actions">
-                    <button type="button" className="cancel-modal__keep" onClick={() => setRefundOrder(null)}>Cancelar</button>
-                    <button type="button" className="cancel-modal__confirm" disabled={busyId === refundOrder.id} onClick={() => action(refundOrder, 'refund', refundReason.trim())}>Confirmar reembolso</button>
+                    <button type="button" className="cancel-modal__keep" onClick={() => setIssueOrder(null)}>Cancelar</button>
+                    <button type="button" className="cancel-modal__confirm" disabled={!issueReason || busyId === issueOrder.id} onClick={() => action(issueOrder, issueOrder.issueType)}>Confirmar</button>
                 </div>
             </section>
         </div>}

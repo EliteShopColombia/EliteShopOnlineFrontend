@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useAuth } from '../../context/AuthContext';
 import { productService } from '../../services/product.service';
 import { orderService } from '../../services/order.service';
 import './SellerDashboard.css';
@@ -64,13 +65,32 @@ function normalizeStatusCounts(data) {
     );
 }
 
-function SellerDashboard({ sellerId, onBack, onNavigate }) {
-    const effectiveSellerId = sellerId || localStorage.getItem('sellerId');
+function SellerDashboard({ sellerId: propSellerId, onBack, onNavigate }) {
+    const { auth } = useAuth();
+    const effectiveSellerId = propSellerId || auth?.sellerId || localStorage.getItem('sellerId');
     const [products, setProducts] = useState([]);
     const [orders, setOrders] = useState([]);
     const [summary, setSummary] = useState(null);
     const [statusCounts, setStatusCounts] = useState({});
     const [loading, setLoading] = useState(true);
+    const [deleteProduct, setDeleteProduct] = useState(null);
+    const [deleting, setDeleting] = useState(false);
+    const [productError, setProductError] = useState('');
+
+    const handleDeleteProduct = async () => {
+        if (!deleteProduct) return;
+        setDeleting(true);
+        setProductError('');
+        try {
+            await productService.delete(deleteProduct.id || deleteProduct.productId);
+            setProducts((current) => current.filter((product) => (product.id || product.productId) !== (deleteProduct.id || deleteProduct.productId)));
+            setDeleteProduct(null);
+        } catch (error) {
+            setProductError(error.response?.data?.message || 'No se pudo eliminar el producto.');
+        } finally {
+            setDeleting(false);
+        }
+    };
 
     useEffect(() => {
         let cancelled = false;
@@ -179,6 +199,7 @@ function SellerDashboard({ sellerId, onBack, onNavigate }) {
                                     + Crear producto
                                 </button>
                             </div>
+                            {productError && <p className="seller-dash__error">{productError}</p>}
                             {products.length === 0 ? (
                                 <p className="seller-dash__muted">Aun no tienes productos.</p>
                             ) : (
@@ -202,6 +223,20 @@ function SellerDashboard({ sellerId, onBack, onNavigate }) {
                                                     {product.stock} disponibles
                                                 </span>
                                             </div>
+                                            <button
+                                                type="button"
+                                                className="seller-dash__edit"
+                                                onClick={() => onNavigate?.(`/seller/products/${product.id || product.productId}/edit`)}
+                                            >
+                                                Editar
+                                            </button>
+                                            <button
+                                                type="button"
+                                                className="seller-dash__delete"
+                                                onClick={() => { setDeleteProduct(product); setProductError(''); }}
+                                            >
+                                                Eliminar
+                                            </button>
                                         </div>
                                     ))}
                                 </div>
@@ -238,6 +273,18 @@ function SellerDashboard({ sellerId, onBack, onNavigate }) {
                     </>
                 )}
             </div>
+            {deleteProduct && <div className="seller-dash__modal" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget && !deleting) setDeleteProduct(null); }}>
+                <section className="seller-dash__modal-dialog" role="dialog" aria-modal="true" aria-labelledby="delete-product-title">
+                    <button type="button" className="seller-dash__modal-close" aria-label="Cerrar" disabled={deleting} onClick={() => setDeleteProduct(null)}>×</button>
+                    <div className="seller-dash__modal-icon">!</div>
+                    <h2 id="delete-product-title">¿Eliminar producto?</h2>
+                    <p>Se eliminará <strong>{deleteProduct.name}</strong>. Esta acción no se puede deshacer.</p>
+                    <div className="seller-dash__modal-actions">
+                        <button type="button" className="seller-dash__modal-cancel" disabled={deleting} onClick={() => setDeleteProduct(null)}>Cancelar</button>
+                        <button type="button" className="seller-dash__modal-confirm" disabled={deleting} onClick={handleDeleteProduct}>{deleting ? 'Eliminando...' : 'Sí, eliminar'}</button>
+                    </div>
+                </section>
+            </div>}
         </div>
     );
 }

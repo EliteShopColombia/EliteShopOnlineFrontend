@@ -1,10 +1,13 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { productService } from '../../services/product.service';
 import './SellerDashboard.css';
 
 const MAX_IMAGES = 7;
 
 function SellerProductCreate({ sellerId, onBack }) {
+    const { productId } = useParams();
+    const isEditing = Boolean(productId);
     const effectiveSellerId = sellerId || localStorage.getItem('sellerId');
     const [submitting, setSubmitting] = useState(false);
     const [error, setError] = useState('');
@@ -12,6 +15,17 @@ function SellerProductCreate({ sellerId, onBack }) {
     const [form, setForm] = useState({ name: '', price: '', stock: '' });
     const [images, setImages] = useState([]);
     const [previews, setPreviews] = useState([]);
+
+    useEffect(() => {
+        if (!productId) return;
+        productService.getById(productId).then((product) => {
+            setForm({
+                name: product.name || '',
+                price: product.price ?? '',
+                stock: product.stock ?? '',
+            });
+        }).catch(() => setError('No se pudo cargar el producto.'));
+    }, [productId]);
 
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
@@ -37,15 +51,19 @@ function SellerProductCreate({ sellerId, onBack }) {
                 return;
             }
             const payload = {
-                sellerId: effectiveSellerId,
+                ...(isEditing ? {} : { sellerId: effectiveSellerId }),
                 name: form.name.trim(),
                 price: Number(form.price),
                 stock: Number(form.stock),
             };
-            console.log('Creating product:', payload, 'images:', images.length);
-            await productService.create(payload, images);
-            setSuccess('Producto creado correctamente.');
-            setForm({ name: '', price: '', stock: '' });
+            if (isEditing) {
+                await productService.update(productId, payload, images);
+                setSuccess('Producto actualizado correctamente.');
+            } else {
+                await productService.create(payload, images);
+                setSuccess('Producto creado correctamente.');
+                setForm({ name: '', price: '', stock: '' });
+            }
             setImages([]);
             setPreviews([]);
         } catch (err) {
@@ -76,7 +94,7 @@ function SellerProductCreate({ sellerId, onBack }) {
                     ← Volver al panel
                 </button>
 
-                <h1 className="seller-dash__title">Crear Producto</h1>
+                <h1 className="seller-dash__title">{isEditing ? 'Editar Producto' : 'Crear Producto'}</h1>
 
                 {error && <p className="seller-dash__error">{error}</p>}
                 {success && <p className="seller-dash__success">{success}</p>}
@@ -127,7 +145,7 @@ function SellerProductCreate({ sellerId, onBack }) {
 
                     <div className="seller-dash__field">
                         <label htmlFor="pd-images">
-                            Imagenes ({images.length}/{MAX_IMAGES})
+                            Imagenes nuevas ({images.length}/{MAX_IMAGES})
                         </label>
                         <input
                             id="pd-images"
@@ -160,7 +178,7 @@ function SellerProductCreate({ sellerId, onBack }) {
                     )}
 
                     <button type="submit" className="seller-dash__submit" disabled={submitting}>
-                        {submitting ? 'Creando...' : 'Crear producto'}
+                        {submitting ? 'Guardando...' : isEditing ? 'Guardar cambios' : 'Crear producto'}
                     </button>
                 </form>
             </div>

@@ -50,7 +50,7 @@ function ReviewsSection({ productId }) {
             await reviewService.create(
                 {
                     productId,
-                    customerId: user.id,
+                    customerId: user.userId,
                     qualify: Number(form.qualify),
                     content: form.content,
                 },

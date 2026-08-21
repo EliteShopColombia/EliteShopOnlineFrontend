@@ -343,6 +343,121 @@
     background: rgba(239, 68, 68, 0.1);
 }
 
+.seller-dash__edit {
+    padding: 6px 10px;
+    border: 1px solid #4da3ff;
+    border-radius: 6px;
+    background: transparent;
+    color: #70b7ff;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.seller-dash__edit:hover {
+    background: rgba(77, 163, 255, 0.12);
+}
+
+.seller-dash__modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: grid;
+    place-items: center;
+    padding: 20px;
+    background: rgba(2, 8, 23, .72);
+    backdrop-filter: blur(5px);
+}
+
+.seller-dash__modal-dialog {
+    position: relative;
+    width: min(100%, 430px);
+    padding: 30px;
+    border: 1px solid #405574;
+    border-radius: 16px;
+    background: #1f2b3d;
+    box-shadow: 0 24px 70px rgba(0, 0, 0, .45);
+    color: #f8fafc;
+    box-sizing: border-box;
+}
+
+.seller-dash__modal-close {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    width: 32px;
+    height: 32px;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: #94a3b8;
+    font-size: 26px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.seller-dash__modal-close:hover {
+    background: #2b3b53;
+    color: #ffffff;
+}
+
+.seller-dash__modal-icon {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    margin-bottom: 16px;
+    border-radius: 50%;
+    background: rgba(248, 113, 113, .16);
+    color: #fca5a5;
+    font-size: 24px;
+    font-weight: 800;
+}
+
+.seller-dash__modal-dialog h2 {
+    margin: 0 0 8px;
+    font-size: 21px;
+}
+
+.seller-dash__modal-dialog p {
+    margin: 0 0 22px;
+    color: #b7c5d8;
+    line-height: 1.5;
+}
+
+.seller-dash__modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.seller-dash__modal-actions button {
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.seller-dash__modal-actions button:disabled {
+    opacity: .55;
+    cursor: wait;
+}
+
+.seller-dash__modal-cancel {
+    border: 1px solid #4b6685;
+    background: transparent;
+    color: #dbeafe;
+}
+
+.seller-dash__modal-confirm {
+    border: 1px solid #dc4b5a;
+    background: #c83f4d;
+    color: #ffffff;
+}
+
+.seller-dash__modal-confirm:hover:not(:disabled) {
+    background: #dc4b5a;
+}
+
 /* STATS */
 .seller-dash__stats {
     display: grid;

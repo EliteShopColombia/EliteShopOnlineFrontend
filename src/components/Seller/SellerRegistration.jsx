@@ -6,18 +6,18 @@ import { DEPARTMENTS, BANKS, ACCOUNT_TYPES, DNI_TYPES } from '../../constants/co
 import './SellerRegistration.css';
 
 function SellerRegistration({ onBack, onSellerRegistered }) {
-    const { user, updateToken, updateUser } = useAuth();
+    const { auth, updateToken, updateUser } = useAuth();
     const [form, setForm] = useState({
         typeTrade: 'NATURAL',
-        typeDni: user?.dniType || 'CC',
-        dniNumber: user?.dniNumber || '',
+        typeDni: auth?.dniType || 'CC',
+        dniNumber: auth?.dniNumber || '',
         tradeName: '',
-        fullname: `${user?.firstName || ''} ${user?.lastName || ''}`.trim(),
-        email: user?.email || '',
-        phoneNumber: user?.phoneNumber || '',
-        tradeAddress: user?.address || '',
-        tradeDepartment: user?.department || '',
-        tradeCity: user?.city || '',
+        fullname: `${auth?.firstName || ''} ${auth?.lastName || ''}`.trim(),
+        email: auth?.email || '',
+        phoneNumber: auth?.phoneNumber || '',
+        tradeAddress: auth?.address || '',
+        tradeDepartment: auth?.department || '',
+        tradeCity: auth?.city || '',
         bankName: '',
         typeBankAccount: 'SAVINGS',
         numberAccount: '',
@@ -44,22 +44,12 @@ function SellerRegistration({ onBack, onSellerRegistered }) {
     }, []);
 
     useEffect(() => {
-        if (!user?.id) return;
+        if (!auth?.userId) return;
         let cancelled = false;
 
         async function checkSeller() {
-            const storedSellerId = localStorage.getItem('sellerId');
-
-            if (storedSellerId) {
-                const existing = await sellerService.getById(storedSellerId).catch(() => null);
-                if (!cancelled && existing) {
-                    setSellerId(existing.id);
-                    return;
-                }
-            }
-
-            if (user.sellerId) {
-                const existing = await sellerService.getById(user.sellerId).catch(() => null);
+            if (auth.sellerId) {
+                const existing = await sellerService.getById(auth.sellerId).catch(() => null);
                 if (!cancelled && existing) {
                     setSellerId(existing.id);
                     localStorage.setItem('sellerId', existing.id);
@@ -67,27 +57,12 @@ function SellerRegistration({ onBack, onSellerRegistered }) {
                 }
             }
 
-            const byUser = await sellerService.getById(user.id).catch(() => null);
-            if (!cancelled && byUser) {
-                setSellerId(byUser.id);
-                localStorage.setItem('sellerId', byUser.id);
-                return;
-            }
-
-            const data = await sellerService.getAll().catch(() => []);
-            if (cancelled) return;
-            const list = Array.isArray(data) ? data : (data?.content || []);
-            const fullName = `${user.firstName || ''} ${user.lastName || ''}`.trim();
-            const existing = list.find((s) => s.fullname === fullName);
-            if (existing) {
-                setSellerId(existing.id);
-                localStorage.setItem('sellerId', existing.id);
-            }
+            if (!cancelled) setSellerId(null);
         }
 
         checkSeller();
         return () => { cancelled = true; };
-    }, [user?.id, user?.firstName, user?.lastName, user?.sellerId]);
+    }, [auth?.userId, auth?.firstName, auth?.lastName, auth?.sellerId]);
 
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
@@ -100,10 +75,11 @@ function SellerRegistration({ onBack, onSellerRegistered }) {
         setSuccess('');
         try {
             const result = await sellerService.create(form);
+            let updatedAuth = null;
             if (result.token) {
-                updateToken(result);
+                updatedAuth = updateToken(result);
             }
-            const newSellerId = result.id || result.sellerId || result.user?.id;
+            const newSellerId = updatedAuth?.sellerId || result.sellerId || result.id || result.user?.id;
             setSellerId(newSellerId);
             if (newSellerId) {
                 localStorage.setItem('sellerId', newSellerId);

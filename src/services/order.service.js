@@ -1,6 +1,59 @@
 import api from '../config/api';
 
+const getAuth = () => {
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) return null;
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split('')
+        .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+        .join('')
+    );
+    return JSON.parse(jsonPayload);
+  } catch {
+    return null;
+  }
+};
+
 export const orderService = {
+  getMyOrders: async () => {
+    const auth = getAuth();
+    if (!auth?.sub) throw new Error('Not authenticated');
+    const response = await api.get(`/orders/customer/${auth.sub}`);
+    return response.data;
+  },
+
+  getMySales: async () => {
+    const auth = getAuth();
+    if (!auth?.sellerId) throw new Error('Not a seller');
+    const response = await api.get(`/orders/seller/${auth.sellerId}`);
+    return response.data;
+  },
+
+  getSalesSummary: async () => {
+    const auth = getAuth();
+    if (!auth?.sellerId) throw new Error('Not a seller');
+    const response = await api.get(`/orders/seller/${auth.sellerId}/summary`);
+    return response.data;
+  },
+
+  getSalesStatusCounts: async () => {
+    const auth = getAuth();
+    if (!auth?.sellerId) throw new Error('Not a seller');
+    const response = await api.get(`/orders/seller/${auth.sellerId}/status-counts`);
+    return response.data;
+  },
+
+  searchSales: async (params = {}) => {
+    const auth = getAuth();
+    if (!auth?.sellerId) throw new Error('Not a seller');
+    const response = await api.get(`/orders/seller/${auth.sellerId}/search`, { params });
+    return response.data;
+  },
+
   getAll: async () => {
     const response = await api.get('/orders');
     return response.data;
@@ -97,7 +150,7 @@ export const orderService = {
     return response.data;
   },
   getSummary: async (sellerId) => orderService.getSellerSummary(sellerId),
-  getStatusCounts: async (sellerId) => orderService.getSellerStatusCounts(sellerId),
+  getStatusCounts: async (sellerId) => orderService.getSalesStatusCounts(sellerId),
 
   getTrackingEvents: async (id) => {
     const response = await api.get(`/orders/${id}/tracking/events`);
