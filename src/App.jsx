@@ -4,7 +4,6 @@ import "./App.css";
 
 import { AuthProvider, useAuth } from "./context/AuthContext.jsx";
 import { cartService } from "./services/cart.service.js";
-import { sellerService } from "./services/seller.service.js";
 import Header from "./components/Header/Header.jsx";
 import Gallery from "./components/Gallery/Gallery.jsx";
 import ProductDetail from "./components/ProductDetail/ProductDetail.jsx";
@@ -23,7 +22,7 @@ import { LoginForm } from "./components/auth/LoginForm.jsx";
 import { RegisterForm } from "./components/auth/RegisterForm.jsx";
 
 function AppContent() {
-  const { isAuthenticated, user, logout } = useAuth();
+  const { auth, user, isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -31,7 +30,7 @@ function AppContent() {
   const [authView, setAuthView] = useState(null);
   const [cart, setCart] = useState(null);
   const [cartNotice, setCartNotice] = useState("");
-  const [sellerId, setSellerId] = useState(() => localStorage.getItem('sellerId'));
+  const sellerId = auth?.sellerId || null;
 
   const isSeller = user?.role === 'seller' || user?.role === 'ROLE_SELLER' || user?.role === 'SELLER';
 
@@ -66,44 +65,6 @@ function AppContent() {
     loadCart();
     return () => { cancelled = true; };
   }, [isAuthenticated]);
-
-  useEffect(() => {
-    if (!isAuthenticated || !isSeller || sellerId) return;
-    let cancelled = false;
-
-    async function loadSellerId() {
-      const storedSellerId = localStorage.getItem('sellerId');
-      if (storedSellerId) {
-        const existing = await sellerService.getById(storedSellerId).catch(() => null);
-        if (!cancelled && existing) {
-          setSellerId(existing.id);
-          return;
-        }
-      }
-
-      if (user?.sellerId) {
-        const existing = await sellerService.getById(user.sellerId).catch(() => null);
-        if (!cancelled && existing) {
-          setSellerId(existing.id);
-          localStorage.setItem('sellerId', existing.id);
-          return;
-        }
-      }
-
-      const data = await sellerService.getAll().catch(() => null);
-      if (cancelled) return;
-      const list = Array.isArray(data) ? data : (data?.content || []);
-      const fullName = `${user?.firstName || ''} ${user?.lastName || ''}`.trim();
-      const mine = list.find((s) => s.fullname === fullName);
-      if (mine && !cancelled) {
-        setSellerId(mine.id);
-        localStorage.setItem('sellerId', mine.id);
-      }
-    }
-
-    loadSellerId();
-    return () => { cancelled = true; };
-  }, [isAuthenticated, isSeller, sellerId, user?.firstName, user?.lastName, user?.sellerId]);
 
   const handleCartClick = () => {
     if (!isAuthenticated) {
@@ -156,43 +117,11 @@ function AppContent() {
     navigate("/profile/orders");
   };
 
-  const handleSellerRegistered = (id) => {
-    setSellerId(id);
-    localStorage.setItem('sellerId', id);
+  const handleSellerRegistered = () => {
     navigate("/seller/dashboard");
   };
 
-  const goToSellerDashboard = async (id) => {
-    let dashId = id || sellerId || localStorage.getItem('sellerId');
-
-    if (!dashId && isSeller) {
-      const storedId = localStorage.getItem('sellerId');
-      if (storedId) {
-        const existing = await sellerService.getById(storedId).catch(() => null);
-        if (existing) dashId = existing.id;
-      }
-      if (!dashId && user?.sellerId) {
-        const existing = await sellerService.getById(user.sellerId).catch(() => null);
-        if (existing) dashId = existing.id;
-      }
-      if (!dashId) {
-        const data = await sellerService.getAll().catch(() => null);
-        const list = Array.isArray(data) ? data : (data?.content || []);
-        const fullName = `${user?.firstName || ''} ${user?.lastName || ''}`.trim();
-        const mine = list.find((s) => s.fullname === fullName);
-        if (mine) dashId = mine.id;
-      }
-      if (!dashId && user?.id) {
-        const existing = await sellerService.getById(user.id).catch(() => null);
-        if (existing) dashId = existing.id;
-      }
-    }
-
-    if (dashId) {
-      setSellerId(dashId);
-      localStorage.setItem('sellerId', dashId);
-    }
-
+  const goToSellerDashboard = () => {
     if (isSeller) {
       navigate("/seller/dashboard");
     } else {
@@ -234,6 +163,7 @@ function AppContent() {
           <Route path="/seller/orders" element={<SellerOrders sellerId={sellerId} onBack={() => navigate('/seller/dashboard')} />} />
           <Route path="/seller/orders/:orderId/shipping-label" element={<ShippingLabel />} />
           <Route path="/seller/products/new" element={<SellerProductCreate sellerId={sellerId} onBack={() => navigate("/seller/dashboard")} />} />
+          <Route path="/seller/products/:productId/edit" element={<SellerProductCreate sellerId={sellerId} onBack={() => navigate("/seller/dashboard")} />} />
           <Route
             path="/login"
             element={(

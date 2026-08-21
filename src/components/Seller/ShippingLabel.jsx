@@ -42,11 +42,12 @@ function ShippingLabel() {
     const { orderId } = useParams();
     const navigate = useNavigate();
     const [order, setOrder] = useState(null);
-    const [shipping, setShipping] = useState(null);
+    const [shipping] = useState(() => {
+        const savedShipping = localStorage.getItem(`demo-shipping-${orderId}`);
+        return savedShipping ? JSON.parse(savedShipping) : null;
+    });
 
     useEffect(() => {
-        const savedShipping = localStorage.getItem(`demo-shipping-${orderId}`);
-        if (savedShipping) setShipping(JSON.parse(savedShipping));
         orderService.getById(orderId).then(setOrder).catch(() => setOrder({ id: orderId }));
     }, [orderId]);
 

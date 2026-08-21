@@ -97,7 +97,7 @@ function OrderTracking({ initialOrderId, onBack }) {
         let cancelled = false;
 
         async function loadOrders() {
-            const data = await orderService.getAll().catch(() => []);
+            const data = await orderService.getMyOrders().catch(() => []);
             if (cancelled) return;
             const allOrders = Array.isArray(data) ? data : (data?.content || []);
             const myOrders = allOrders.filter((o) => o.customerId === user?.id);
@@ -222,7 +222,7 @@ function OrderTracking({ initialOrderId, onBack }) {
         setError('');
         setLoading(false);
         setOrdersLoading(true);
-        orderService.getAll().then((data) => {
+        orderService.getMyOrders().then((data) => {
             const allOrders = Array.isArray(data) ? data : (data?.content || []);
             setOrders(allOrders.filter((o) => o.customerId === user?.id));
             setOrdersLoading(false);

@@ -4,65 +4,128 @@ import { authService } from '../services/auth.service';
 
 const AuthContext = createContext(null);
 
-function getStoredUser() {
-  const stored = localStorage.getItem('user');
-  if (!stored) return null;
-
+const parseJwt = (token) => {
   try {
-    return JSON.parse(stored);
-  } catch {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split('')
+        .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+        .join('')
+    );
+    return JSON.parse(jsonPayload);
+  } catch (e) {
+    console.error('[AuthContext] Failed to parse JWT:', e);
+    return null;
+  }
+};
+
+function buildAuthState(token) {
+  const payload = parseJwt(token);
+  if (!payload) return null;
+
+  return {
+    token,
+    userId: payload.sub,
+    sellerId: payload.sellerId ?? null,
+    role: payload.role ?? 'customer',
+    email: payload.email,
+    firstName: payload.firstName,
+    lastName: payload.lastName,
+    phoneNumber: payload.phoneNumber,
+    dniType: payload.dniType,
+    dniNumber: payload.dniNumber,
+    address: payload.address,
+    department: payload.department,
+    city: payload.city,
+  };
+}
+
+function persistAuth(authState) {
+  if (!authState) return;
+  localStorage.setItem('token', authState.token);
+  if (authState.sellerId) localStorage.setItem('sellerId', authState.sellerId);
+  else localStorage.removeItem('sellerId');
+}
+
+function getStoredAuth() {
+  const token = localStorage.getItem('token');
+  if (!token) return null;
+
+  const authState = buildAuthState(token);
+  if (!authState) {
+    localStorage.removeItem('token');
     localStorage.removeItem('user');
     return null;
   }
+  return authState;
 }
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(getStoredUser);
+  const [auth, setAuth] = useState(getStoredAuth);
 
   const login = async (data) => {
     const result = await authService.login(data);
-    if (result.user) {
-      setUser(result.user);
-      localStorage.setItem('user', JSON.stringify(result.user));
+    if (result.token) {
+      const newAuth = buildAuthState(result.token);
+      if (newAuth) {
+        setAuth(newAuth);
+        persistAuth(newAuth);
+      }
     }
     return result;
   };
 
   const register = async (data) => {
     const result = await authService.register(data);
-    if (result.user) {
-      setUser(result.user);
-      localStorage.setItem('user', JSON.stringify(result.user));
+    if (result.token) {
+      const newAuth = buildAuthState(result.token);
+      if (newAuth) {
+        setAuth(newAuth);
+        persistAuth(newAuth);
+      }
     }
     return result;
   };
 
   const updateUser = (newData) => {
-    setUser((prev) => {
+    setAuth((prev) => {
+      if (!prev) return null;
       const updated = { ...prev, ...newData };
-      localStorage.setItem('user', JSON.stringify(updated));
       return updated;
     });
   };
 
   const updateToken = (authResponse) => {
+    let updatedAuth = null;
     if (authResponse.token) {
-      localStorage.setItem('token', authResponse.token);
+      const newAuth = buildAuthState(authResponse.token);
+      if (newAuth) {
+        setAuth(newAuth);
+        persistAuth(newAuth);
+        updatedAuth = newAuth;
+      }
     }
     if (authResponse.user) {
-      setUser(authResponse.user);
-      localStorage.setItem('user', JSON.stringify(authResponse.user));
+      setAuth((prev) => {
+        if (!prev) return buildAuthState(authResponse.token);
+        return { ...prev, ...authResponse.user };
+      });
     }
+    return updatedAuth;
   };
 
   const logout = () => {
     authService.logout();
+    localStorage.removeItem('token');
     localStorage.removeItem('user');
-    setUser(null);
+    localStorage.removeItem('sellerId');
+    setAuth(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, register, logout, updateUser, updateToken, isAuthenticated: !!user }}>
+    <AuthContext.Provider value={{ auth, user: auth, login, register, logout, updateUser, updateToken, isAuthenticated: !!auth }}>
       {children}
     </AuthContext.Provider>
   );

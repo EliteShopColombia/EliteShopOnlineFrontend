@@ -1,4 +1,17 @@
 /* PROFILE PAGE */
+.profile-page {
+    width: 100%;
+    min-height: calc(100vh - 120px);
+    padding: 28px 20px 60px;
+    box-sizing: border-box;
+}
+
+.profile-page > .profile__back {
+    display: flex;
+    width: min(100%, 980px);
+    margin: 0 auto 18px;
+}
+
 .profile {
     width: 100%;
     min-height: calc(100vh - 120px);
@@ -441,6 +454,10 @@
 
 /* RESPONSIVE */
 @media (max-width: 600px) {
+    .profile-page {
+        padding: 20px 14px 40px;
+    }
+
     .profile {
         padding: 20px 14px 40px;
     }
