@@ -12,17 +12,31 @@ export const productService = {
     return response.data;
   },
 
-  create: async (sellerId, data) => {
-    const response = await api.post(`/sellers/${sellerId}/products`, data);
+  create: async (productData, images = []) => {
+    const formData = new FormData();
+    formData.append('product', new Blob([JSON.stringify(productData)], { type: 'application/json' }));
+    images.forEach((file) => formData.append('images', file));
+    const response = await api.post('/products', formData, {
+      headers: { 'Content-Type': undefined },
+    });
     return response.data;
   },
 
-  update: async (id, data) => {
-    const response = await api.put(`/products/${id}`, data);
+  update: async (id, productData, images = []) => {
+    const formData = new FormData();
+    formData.append('product', new Blob([JSON.stringify(productData)], { type: 'application/json' }));
+    images.forEach((file) => formData.append('images', file));
+    const response = await api.put(`/products/${id}`, formData, {
+      headers: { 'Content-Type': undefined },
+    });
     return response.data;
   },
 
   delete: async (id) => {
     await api.delete(`/products/${id}`);
+  },
+
+  getImageUrl: (objectKey) => {
+    return `${api.defaults.baseURL}/products/images?key=${encodeURIComponent(objectKey)}`;
   },
 };

@@ -94,7 +94,7 @@ function adaptProduct(p) {
     };
 }
 
-function Gallery() {
+function Gallery({ onProductClick }) {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -143,6 +143,7 @@ function Gallery() {
                     <ProductCard
                         key={product.id}
                         product={product}
+                        onClick={onProductClick}
                     />
                 ))}
             </div>

@@ -1,6 +1,6 @@
 import "./ProductCard.css";
 
-function ProductCard({ product }) {
+function ProductCard({ product, onClick }) {
     const formatPrice = (price) => {
         return new Intl.NumberFormat('es-CO').format(price);
     };
@@ -8,7 +8,7 @@ function ProductCard({ product }) {
     const filledStars = Math.round(Number(product.rating || 0));
 
     return (
-        <article className="product-card">
+        <article className="product-card" onClick={() => onClick?.(product)} role="button" tabIndex={0} onKeyDown={(e) => e.key === 'Enter' && onClick?.(product)}>
 
             {/* IMAGEN */}
             <div className="product-card__image-container">

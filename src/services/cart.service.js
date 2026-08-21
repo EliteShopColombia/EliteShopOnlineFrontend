@@ -1,31 +1,27 @@
 import api from '../config/api';
 
 export const cartService = {
-  getCart: async (customerId) => {
-    const response = await api.get(`/cart/${customerId}`);
+  getCart: async () => {
+    const response = await api.get('/cart');
     return response.data;
   },
 
-  addItem: async (customerId, data) => {
-    const response = await api.post(`/cart/${customerId}/items`, data);
+  addItem: async (productId, quantity = 1) => {
+    const response = await api.post('/cart/items', { productId, quantity });
     return response.data;
   },
 
-  updateItem: async (customerId, itemId, data) => {
-    const response = await api.put(`/cart/${customerId}/items/${itemId}`, data);
+  updateItem: async (itemId, quantity) => {
+    const response = await api.put(`/cart/items/${itemId}`, { quantity });
     return response.data;
   },
 
-  removeItem: async (customerId, itemId) => {
-    await api.delete(`/cart/${customerId}/items/${itemId}`);
-  },
-
-  clearCart: async (customerId) => {
-    await api.delete(`/cart/${customerId}`);
-  },
-
-  checkout: async (customerId) => {
-    const response = await api.post(`/cart/${customerId}/checkout`);
+  removeItem: async (itemId) => {
+    const response = await api.delete(`/cart/items/${itemId}`);
     return response.data;
+  },
+
+  clearCart: async () => {
+    await api.delete('/cart');
   },
 };
