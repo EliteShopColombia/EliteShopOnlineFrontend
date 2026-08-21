@@ -31,7 +31,7 @@ export const sellerService = {
   },
 
   getBankInfo: async (sellerId) => {
-    const response = await api.get(`/seller-bank-info/${sellerId}`);
+    const response = await api.get(`/seller-info/${sellerId}`);
     return response.data;
   },
 };
