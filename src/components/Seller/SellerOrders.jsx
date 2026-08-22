@@ -98,6 +98,7 @@ function SellerOrders({ sellerId, onBack }) {
         {loading ? <p className="orders-page__muted">Cargando órdenes...</p> : <div className="seller-orders-list">{orders.map((order) => <article className="order-card" key={order.id}>
             <div className="order-card__top"><strong>#{String(order.id).slice(0, 8)}</strong><span className="status-badge">{STATUS_LABELS[order.status] || order.status}</span></div>
             <div className="order-card__meta"><span>{order.createdAt ? new Date(order.createdAt).toLocaleDateString('es-CO') : '-'}</span><strong>{formatPrice(getOrderTotal(order))}</strong></div>
+            {order.status === 'DISPUTE' && order.disputeReason && <div className="order-card__dispute-reason"><small>Reclamación del comprador</small><span>{order.disputeReason}</span></div>}
             <div className="order-card__actions">
                 {order.status === 'PAID' && <button disabled={busyId === order.id} onClick={() => action(order, 'prepare')}>Preparar</button>}
                 {order.status === 'IN_PREPARATION' && <button disabled={busyId === order.id} onClick={() => { setShippingOrder(order); setShippingCarrier(''); }}>Enviar con guía</button>}
@@ -129,6 +130,7 @@ function SellerOrders({ sellerId, onBack }) {
                 <button type="button" className="cancel-modal__close" aria-label="Cerrar" onClick={() => setIssueOrder(null)}>×</button>
                 <div className="cancel-modal__icon">!</div>
                 <h2 id="issue-modal-title">Procesar reembolso</h2>
+                {issueOrder?.disputeReason && <p className="cancel-modal__dispute-reason-label">El cliente reclamó: <strong>{issueOrder.disputeReason}</strong></p>}
                 <p>Selecciona el motivo para registrar la decisión del vendedor.</p>
                 <label htmlFor="issue-reason">Motivo del reembolso</label>
                 <select id="issue-reason" value={issueReason} onChange={(event) => setIssueReason(event.target.value)} autoFocus>
