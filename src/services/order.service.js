@@ -124,8 +124,8 @@ export const orderService = {
     return response.data;
   },
 
-  dispute: async (id, reason) => {
-    const response = await api.patch(`/orders/${id}/dispute`, reason ? { reason } : undefined);
+  dispute: async (id) => {
+    const response = await api.patch(`/orders/${id}/dispute`);
     return response.data;
   },
 
@@ -140,7 +140,7 @@ export const orderService = {
   },
 
   completeOrder: async (id) => orderService.complete(id),
-  disputeOrder: async (id, reason) => orderService.dispute(id, reason),
+  disputeOrder: async (id) => orderService.dispute(id),
   refundOrder: async (id, reason) => orderService.refund(id, reason),
   prepareOrder: async (id) => orderService.prepare(id),
   shipOrder: async (id) => orderService.ship(id),

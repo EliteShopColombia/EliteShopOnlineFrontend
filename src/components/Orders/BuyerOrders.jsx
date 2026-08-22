@@ -13,6 +13,14 @@ const canDispute = (status) => ['IN_PREPARATION', 'SHIPPED', 'OUT_FOR_DELIVERY',
 const disputeReasons = ['El producto llegó defectuoso', 'Recibí un producto diferente al solicitado', 'El pedido llegó incompleto', 'El pedido no llegó', 'El producto no cumple con la descripción', 'Ya no necesito el producto'];
 const formatPrice = (value) => new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(value || 0);
 const getOrderTotal = (order) => order.totalAmount ?? order.totalPrice ?? order.total ?? order.amount ?? 0;
+const getActionError = (error) => {
+    const responseData = error.response?.data;
+    if (typeof responseData === 'string') return responseData;
+    if (responseData?.message) return responseData.message;
+    if (responseData?.error) return responseData.error;
+    if (Array.isArray(responseData?.errors)) return responseData.errors.join(', ');
+    return 'No se pudo actualizar el pedido.';
+};
 
 function BuyerOrders() {
     const { user } = useAuth();
@@ -65,7 +73,7 @@ function BuyerOrders() {
             setDisputeOrder(null);
             setDisputeReason('');
             await loadOrders();
-        } catch (err) { setError(err.response?.data?.message || 'No se pudo actualizar el pedido.'); }
+        } catch (err) { setError(getActionError(err)); }
         finally { setBusyId(''); }
     };
 
