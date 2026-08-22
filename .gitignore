@@ -28,5 +28,5 @@ graphify-out/
 .env.local
 INTEGRATION.md
 pnpm-lock.yaml
-.agents/*
+.agents
 skills-lock.json
