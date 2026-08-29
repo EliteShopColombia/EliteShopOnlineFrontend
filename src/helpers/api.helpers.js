@@ -8,10 +8,13 @@ export const parsePageResponse = (data) => ({
   last: data.last || false,
 });
 
-export const parseApiError = (error) => ({
-  timestamp: error.response?.data?.timestamp,
-  status: error.response?.status,
-  error: error.response?.data?.error,
-  message: error.response?.data?.message,
-  path: error.response?.data?.path,
-});
+export const parseApiError = (error) => {
+  const data = error.response?.data;
+  return {
+    timestamp: data?.timestamp,
+    status: error.response?.status,
+    error: data?.error,
+    code: data?.code,
+    fieldErrors: data?.fieldErrors,
+  };
+};

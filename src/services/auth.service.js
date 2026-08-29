@@ -9,9 +9,6 @@ export const authService = {
       if (token) {
         localStorage.setItem('token', token);
       }
-      if (user) {
-        localStorage.setItem('user', JSON.stringify(user));
-      }
 
       return { token, user, expiresAt, raw: response.data };
     } catch (error) {
@@ -27,9 +24,6 @@ export const authService = {
 
       if (token) {
         localStorage.setItem('token', token);
-      }
-      if (user) {
-        localStorage.setItem('user', JSON.stringify(user));
       }
 
       return { token, user, expiresAt, raw: response.data };
@@ -57,7 +51,6 @@ export const authService = {
 
   logout: () => {
     localStorage.removeItem('token');
-    localStorage.removeItem('user');
   },
 
   getToken: () => localStorage.getItem('token'),
