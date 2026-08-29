@@ -2,8 +2,10 @@ import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { sellerService } from '../../services/seller.service';
 import { sellerVerificationService } from '../../services/seller-verification.service';
-import { DEPARTMENTS, BANKS, ACCOUNT_TYPES, DNI_TYPES } from '../../constants/colombia';
+import { BANKS, ACCOUNT_TYPES, DNI_TYPES } from '../../constants/colombia';
+import { LOCATION_ERROR_CODES } from '../../constants/errorCodes';
 import { parseApiError } from '../../helpers/api.helpers';
+import DepartmentCitySelect from '../shared/DepartmentCitySelect';
 import './SellerRegistration.css';
 
 function SellerRegistration({ onBack, onSellerRegistered }) {
@@ -30,6 +32,7 @@ function SellerRegistration({ onBack, onSellerRegistered }) {
     const [uploading, setUploading] = useState('');
     const [validating, setValidating] = useState(false);
     const [error, setError] = useState('');
+    const [fieldErrors, setFieldErrors] = useState({});
     const [success, setSuccess] = useState('');
     const pollingRef = useRef(null);
 
@@ -69,10 +72,21 @@ function SellerRegistration({ onBack, onSellerRegistered }) {
         setForm({ ...form, [e.target.name]: e.target.value });
     };
 
+    const handleDepartmentChange = (value) => {
+        setForm((prev) => ({ ...prev, tradeDepartment: value, tradeCity: '' }));
+        setFieldErrors((prev) => ({ ...prev, tradeDepartment: '', tradeCity: '' }));
+    };
+
+    const handleCityChange = (value) => {
+        setForm((prev) => ({ ...prev, tradeCity: value }));
+        setFieldErrors((prev) => ({ ...prev, tradeCity: '' }));
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setSubmitting(true);
         setError('');
+        setFieldErrors({});
         setSuccess('');
         try {
             const result = await sellerService.create(form);
@@ -88,11 +102,17 @@ function SellerRegistration({ onBack, onSellerRegistered }) {
             }
             setSuccess('Vendedor registrado. Ahora sube tus documentos de verificacion.');
         } catch (err) {
-            const { error, code, fieldErrors } = parseApiError(err);
-            if (code === 'VALIDATION_FAILED' && fieldErrors) {
-              setError(Object.values(fieldErrors).join(', '));
+            const { error, code, fieldErrors: fe } = parseApiError(err);
+
+            if (code === LOCATION_ERROR_CODES.SELLER_INVALID_TRADE_DEPARTMENT) {
+                setFieldErrors({ tradeDepartment: error || 'Departamento invalido' });
+            } else if (code === LOCATION_ERROR_CODES.SELLER_INVALID_TRADE_CITY) {
+                setFieldErrors({ tradeCity: error || 'Ciudad invalida' });
+            } else if (code === 'VALIDATION_FAILED' && fe) {
+                setFieldErrors(fe);
+                setError(Object.values(fe).join(', '));
             } else {
-              setError(error || 'No se pudo registrar el vendedor');
+                setError(error || 'No se pudo registrar el vendedor');
             }
         } finally {
             setSubmitting(false);
@@ -329,35 +349,18 @@ function SellerRegistration({ onBack, onSellerRegistered }) {
                         />
                     </div>
 
-                    <div className="seller-reg__row">
-                        <div className="seller-reg__field">
-                            <label htmlFor="sr-department">Departamento *</label>
-                            <select
-                                id="sr-department"
-                                name="tradeDepartment"
-                                value={form.tradeDepartment}
-                                onChange={handleChange}
-                                required
-                            >
-                                <option value="">Seleccionar</option>
-                                {DEPARTMENTS.map((d) => (
-                                    <option key={d} value={d}>{d}</option>
-                                ))}
-                            </select>
-                        </div>
-                        <div className="seller-reg__field">
-                            <label htmlFor="sr-city">Ciudad *</label>
-                            <input
-                                id="sr-city"
-                                name="tradeCity"
-                                type="text"
-                                value={form.tradeCity}
-                                onChange={handleChange}
-                                required
-                                minLength={2}
-                            />
-                        </div>
-                    </div>
+                    <DepartmentCitySelect
+                        departmentValue={form.tradeDepartment}
+                        cityValue={form.tradeCity}
+                        onDepartmentChange={handleDepartmentChange}
+                        onCityChange={handleCityChange}
+                        departmentLabel="Departamento del comercio"
+                        cityLabel="Ciudad del comercio"
+                        departmentId="sr"
+                        required
+                        departmentError={fieldErrors.tradeDepartment || ''}
+                        cityError={fieldErrors.tradeCity || ''}
+                    />
 
                     <div className="seller-reg__row">
                         <div className="seller-reg__field">

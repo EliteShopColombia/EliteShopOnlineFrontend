@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { parseApiError } from '../../helpers/api.helpers';
+import { LOCATION_ERROR_CODES } from '../../constants/errorCodes';
+import DepartmentCitySelect from '../shared/DepartmentCitySelect';
 import './auth.css';
 
 export function RegisterForm({ onSwitchToLogin, onSuccess }) {
@@ -18,23 +20,49 @@ export function RegisterForm({ onSwitchToLogin, onSuccess }) {
     city: '',
   });
   const [error, setError] = useState('');
+  const [fieldErrors, setFieldErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    // Filtrar电话: solo digitos, max 10
+    if (name === 'phoneNumber') {
+      const digits = value.replace(/\D/g, '').slice(0, 10);
+      setForm({ ...form, [name]: digits });
+      return;
+    }
+    setForm({ ...form, [name]: value });
+  };
+
+  const handleDepartmentChange = (value) => {
+    setForm((prev) => ({ ...prev, department: value, city: '' }));
+    setFieldErrors((prev) => ({ ...prev, department: '', city: '' }));
+  };
+
+  const handleCityChange = (value) => {
+    setForm((prev) => ({ ...prev, city: value }));
+    setFieldErrors((prev) => ({ ...prev, city: '' }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError('');
+    setFieldErrors({});
     try {
       await register(form);
       onSuccess?.();
     } catch (err) {
-      const { error, code, fieldErrors } = parseApiError(err);
-      if (code === 'VALIDATION_FAILED' && fieldErrors) {
-        const messages = Object.values(fieldErrors).join(', ');
+      const { error, code, fieldErrors: fe } = parseApiError(err);
+
+      if (code === LOCATION_ERROR_CODES.INVALID_LOCATION) {
+        setFieldErrors({
+          department: 'Selecciona un departamento valido',
+          city: 'Selecciona una ciudad valida para el departamento',
+        });
+      } else if (code === 'VALIDATION_FAILED' && fe) {
+        setFieldErrors(fe);
+        const messages = Object.values(fe).join(', ');
         setError(messages);
       } else {
         setError(error || 'Error al registrar');
@@ -161,32 +189,16 @@ export function RegisterForm({ onSwitchToLogin, onSuccess }) {
             />
           </div>
 
-          <div className="auth-modal__row">
-            <div className="auth-modal__field">
-              <label htmlFor="reg-department">Departamento *</label>
-              <input
-                id="reg-department"
-                name="department"
-                type="text"
-                value={form.department}
-                onChange={handleChange}
-                required
-                placeholder="Ej: Antioquia"
-              />
-            </div>
-            <div className="auth-modal__field">
-              <label htmlFor="reg-city">Ciudad *</label>
-              <input
-                id="reg-city"
-                name="city"
-                type="text"
-                value={form.city}
-                onChange={handleChange}
-                required
-                placeholder="Ej: Medellin"
-              />
-            </div>
-          </div>
+          <DepartmentCitySelect
+            departmentValue={form.department}
+            cityValue={form.city}
+            onDepartmentChange={handleDepartmentChange}
+            onCityChange={handleCityChange}
+            departmentId="reg"
+            required
+            departmentError={fieldErrors.department || ''}
+            cityError={fieldErrors.city || ''}
+          />
 
           {error && <p className="auth-modal__error">{error}</p>}
 

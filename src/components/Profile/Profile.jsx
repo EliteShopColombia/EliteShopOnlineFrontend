@@ -2,7 +2,9 @@ import { useEffect, useRef, useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { customerService } from '../../services/customer.service';
 import { sellerService } from '../../services/seller.service';
-import { DEPARTMENTS, DNI_TYPES } from '../../constants/colombia';
+import { DNI_TYPES } from '../../constants/colombia';
+import { LOCATION_ERROR_CODES } from '../../constants/errorCodes';
+import DepartmentCitySelect from '../shared/DepartmentCitySelect';
 import PaymentMethods from '../PaymentMethods/PaymentMethods.jsx';
 import BuyerOrders from '../Orders/BuyerOrders.jsx';
 import SellerOrders from '../Seller/SellerOrders.jsx';
@@ -40,6 +42,7 @@ function Profile({ onBack }) {
         department: '',
         city: '',
     });
+    const [fieldErrors, setFieldErrors] = useState({});
 
     const isSeller = Boolean(auth?.sellerId);
 
@@ -100,17 +103,40 @@ function Profile({ onBack }) {
         setForm({ ...form, [e.target.name]: e.target.value });
     };
 
+    const handleDepartmentChange = (value) => {
+        setForm((prev) => ({ ...prev, department: value, city: '' }));
+        setFieldErrors((prev) => ({ ...prev, department: '', city: '' }));
+    };
+
+    const handleCityChange = (value) => {
+        setForm((prev) => ({ ...prev, city: value }));
+        setFieldErrors((prev) => ({ ...prev, city: '' }));
+    };
+
     const handleSave = async (e) => {
         e.preventDefault();
         setSaving(true);
         setError('');
+        setFieldErrors({});
         try {
             const updated = await customerService.update(auth.userId, form);
             updateUser(updated);
             setEditing(false);
         } catch (err) {
-            const { error } = parseApiError(err);
-            setError(error || 'No se pudo actualizar el perfil');
+            const { error, code, fieldErrors: fe } = parseApiError(err);
+
+            if (code === LOCATION_ERROR_CODES.INVALID_LOCATION) {
+                setFieldErrors({
+                    department: 'Selecciona un departamento valido',
+                    city: 'Selecciona una ciudad valida para el departamento',
+                });
+            } else if (code === 'VALIDATION_FAILED' && fe) {
+                setFieldErrors(fe);
+                const messages = Object.values(fe).join(', ');
+                setError(messages);
+            } else {
+                setError(error || 'No se pudo actualizar el perfil');
+            }
         } finally {
             setSaving(false);
         }
@@ -456,34 +482,16 @@ function Profile({ onBack }) {
                                                         required
                                                     />
                                                 </div>
-                                                <div className="profile__row">
-                                                    <div className="profile__field">
-                                                        <label htmlFor="pf-department">Departamento *</label>
-                                                        <select
-                                                            id="pf-department"
-                                                            name="department"
-                                                            value={form.department}
-                                                            onChange={handleChange}
-                                                            required
-                                                        >
-                                                            <option value="">Seleccionar</option>
-                                                            {DEPARTMENTS.map((d) => (
-                                                                <option key={d} value={d}>{d}</option>
-                                                            ))}
-                                                        </select>
-                                                    </div>
-                                                    <div className="profile__field">
-                                                        <label htmlFor="pf-city">Ciudad *</label>
-                                                        <input
-                                                            id="pf-city"
-                                                            name="city"
-                                                            type="text"
-                                                            value={form.city}
-                                                            onChange={handleChange}
-                                                            required
-                                                        />
-                                                    </div>
-                                                </div>
+                                                <DepartmentCitySelect
+                                                    departmentValue={form.department}
+                                                    cityValue={form.city}
+                                                    onDepartmentChange={handleDepartmentChange}
+                                                    onCityChange={handleCityChange}
+                                                    departmentId="pf"
+                                                    required
+                                                    departmentError={fieldErrors.department || ''}
+                                                    cityError={fieldErrors.city || ''}
+                                                />
 
                                                 <div className="profile__form-actions">
                                                     <button type="submit" className="profile__btn profile__btn--primary" disabled={saving}>

@@ -3,8 +3,10 @@ import { useAuth } from '../../context/AuthContext';
 import { cartService } from '../../services/cart.service';
 import { checkoutService } from '../../services/checkout.service';
 import { paymentMethodService } from '../../services/payment-method.service';
-import { DEPARTMENTS, DNI_TYPES } from '../../constants/colombia';
+import { DNI_TYPES } from '../../constants/colombia';
+import { LOCATION_ERROR_CODES } from '../../constants/errorCodes';
 import { parseApiError } from '../../helpers/api.helpers';
+import DepartmentCitySelect from '../shared/DepartmentCitySelect';
 import './Checkout.css';
 
 const formatPrice = (value) =>
@@ -18,6 +20,7 @@ function Checkout({ onBack, onSuccess }) {
     const [submitting, setSubmitting] = useState(false);
     const [result, setResult] = useState(null);
     const [error, setError] = useState('');
+    const [fieldErrors, setFieldErrors] = useState({});
 
     const [form, setForm] = useState({
         shippingAddress: user?.address || '',
@@ -64,12 +67,27 @@ function Checkout({ onBack, onSuccess }) {
             }
             return next;
         });
+        // Limpiar error de campo al cambiar
+        if (name === 'shippingDepartment' || name === 'shippingCity') {
+            setFieldErrors((prev) => ({ ...prev, [name]: '' }));
+        }
+    };
+
+    const handleDepartmentChange = (value) => {
+        setForm((prev) => ({ ...prev, shippingDepartment: value, shippingCity: '' }));
+        setFieldErrors((prev) => ({ ...prev, shippingDepartment: '', shippingCity: '' }));
+    };
+
+    const handleCityChange = (value) => {
+        setForm((prev) => ({ ...prev, shippingCity: value }));
+        setFieldErrors((prev) => ({ ...prev, shippingCity: '' }));
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setSubmitting(true);
         setError('');
+        setFieldErrors({});
         try {
             const payload = {
                 shippingAddress: form.shippingAddress,
@@ -92,7 +110,7 @@ function Checkout({ onBack, onSuccess }) {
             const data = await checkoutService.checkout(payload);
 
             if (data.status === 'DECLINED') {
-                setError('El pago fue rechazado. Verifica los datos de tu tarjeta o intenta con otro método de pago.');
+                setError('El pago fue rechazado. Verifica los datos de tu tarjeta o intenta con otro metodo de pago.');
                 return;
             }
 
@@ -118,8 +136,18 @@ function Checkout({ onBack, onSuccess }) {
             onSuccess?.(data);
         } catch (err) {
             const { error, code } = parseApiError(err);
-            if (code === 'PAYMENT_DECLINED' || (error && error.includes('pago no fue aprobado'))) {
-                setError('El pago fue rechazado. Verifica los datos de tu tarjeta o intenta con otro método de pago.');
+
+            if (code === LOCATION_ERROR_CODES.INVALID_LOCATION) {
+                setFieldErrors({
+                    shippingDepartment: 'Selecciona un departamento valido',
+                    shippingCity: 'Selecciona una ciudad valida para el departamento',
+                });
+            } else if (code === 'PAYMENT_DECLINED' || (error && error.includes('pago no fue aprobado'))) {
+                setError('El pago fue rechazado. Verifica los datos de tu tarjeta o intenta con otro metodo de pago.');
+            } else if (code === 'EMPTY_CART') {
+                setError('El carrito esta vacio');
+            } else if (code === 'INSUFFICIENT_STOCK') {
+                setError('Stock insuficiente para uno o mas productos');
             } else {
                 setError(error || 'No se pudo procesar el checkout');
             }
@@ -199,35 +227,18 @@ function Checkout({ onBack, onSuccess }) {
                                     placeholder="Ej: Calle 123 #45-67"
                                 />
                             </div>
-                            <div className="checkout__row">
-                                <div className="checkout__field">
-                                    <label htmlFor="checkout-department">Departamento *</label>
-                                    <select
-                                        id="checkout-department"
-                                        name="shippingDepartment"
-                                        value={form.shippingDepartment}
-                                        onChange={handleChange}
-                                        required
-                                    >
-                                        <option value="">Seleccionar</option>
-                                        {DEPARTMENTS.map((d) => (
-                                            <option key={d} value={d}>{d}</option>
-                                        ))}
-                                    </select>
-                                </div>
-                                <div className="checkout__field">
-                                    <label htmlFor="checkout-city">Ciudad *</label>
-                                    <input
-                                        id="checkout-city"
-                                        name="shippingCity"
-                                        type="text"
-                                        value={form.shippingCity}
-                                        onChange={handleChange}
-                                        required
-                                        placeholder="Ej: Medellin"
-                                    />
-                                </div>
-                            </div>
+                            <DepartmentCitySelect
+                                departmentValue={form.shippingDepartment}
+                                cityValue={form.shippingCity}
+                                onDepartmentChange={handleDepartmentChange}
+                                onCityChange={handleCityChange}
+                                departmentLabel="Departamento"
+                                cityLabel="Ciudad"
+                                departmentId="checkout"
+                                required
+                                departmentError={fieldErrors.shippingDepartment || ''}
+                                cityError={fieldErrors.shippingCity || ''}
+                            />
                         </section>
 
                         <section className="checkout__section">
