@@ -1,0 +1,72 @@
+/* DepartmentCitySelect - Selectores dependientes */
+.dc-select {
+  display: flex;
+  gap: 12px;
+}
+
+.dc-select__field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.dc-select__label {
+  color: #94a3b8;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.dc-select__select {
+  width: 100%;
+  height: 42px;
+  padding: 0 14px;
+  border: 1px solid #2a3a5c;
+  border-radius: 8px;
+  background: #0f172a;
+  color: #ffffff;
+  font-size: 14px;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%2394a3b8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+}
+
+.dc-select__select:focus {
+  outline: none;
+  border-color: #2778d4;
+}
+
+.dc-select__select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.dc-select__select--error {
+  border-color: #ef4444;
+}
+
+.dc-select__select option {
+  background: #0f172a;
+  color: #ffffff;
+}
+
+.dc-select__error {
+  color: #f87171;
+  font-size: 12px;
+  margin-top: 2px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .dc-select {
+    flex-direction: column;
+    gap: 16px;
+  }
+}
