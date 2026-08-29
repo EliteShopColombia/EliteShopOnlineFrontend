@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { reviewService } from '../../services/review.service';
 import { useAuth } from '../../context/AuthContext';
+import { parseApiError } from '../../helpers/api.helpers';
 import './ReviewsSection.css';
 
 const MAX_REVIEW_IMAGES = 3;
@@ -67,12 +68,12 @@ function ReviewsSection({ productId }) {
             setLoading(false);
         } catch (err) {
             console.error('Review error:', err.response?.status, err.response?.data);
-            const data = err.response?.data;
+            const { error, code, fieldErrors } = parseApiError(err);
             let msg = 'No se pudo publicar la reseña';
-            if (data) {
-                if (typeof data === 'string') msg = data;
-                else if (data.message) msg = data.message;
-                else if (data.error) msg = data.error;
+            if (code === 'VALIDATION_FAILED' && fieldErrors) {
+              msg = Object.values(fieldErrors).join(', ');
+            } else if (error) {
+              msg = error;
             }
             setError(msg);
         } finally {

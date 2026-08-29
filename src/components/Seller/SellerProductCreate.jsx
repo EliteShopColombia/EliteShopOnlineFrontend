@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { productService } from '../../services/product.service';
+import { parseApiError } from '../../helpers/api.helpers';
 import './SellerDashboard.css';
 
 const MAX_IMAGES = 7;
@@ -68,18 +69,12 @@ function SellerProductCreate({ sellerId, onBack }) {
             setPreviews([]);
         } catch (err) {
             console.error('Product creation error:', err.response?.status, err.response?.data);
-            const data = err.response?.data;
+            const { error, code, fieldErrors } = parseApiError(err);
             let msg = 'No se pudo crear el producto';
-            if (data) {
-                if (typeof data === 'string') {
-                    msg = data;
-                } else if (data.message) {
-                    msg = data.message;
-                } else if (data.error) {
-                    msg = data.error;
-                } else if (data.errors && Array.isArray(data.errors)) {
-                    msg = data.errors.map((e) => e.defaultMessage || e.message || e.field).join(', ');
-                }
+            if (code === 'VALIDATION_FAILED' && fieldErrors) {
+              msg = Object.values(fieldErrors).join(', ');
+            } else if (error) {
+              msg = error;
             }
             setError(msg);
         } finally {

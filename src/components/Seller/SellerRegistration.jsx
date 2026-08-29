@@ -3,6 +3,7 @@ import { useAuth } from '../../context/AuthContext';
 import { sellerService } from '../../services/seller.service';
 import { sellerVerificationService } from '../../services/seller-verification.service';
 import { DEPARTMENTS, BANKS, ACCOUNT_TYPES, DNI_TYPES } from '../../constants/colombia';
+import { parseApiError } from '../../helpers/api.helpers';
 import './SellerRegistration.css';
 
 function SellerRegistration({ onBack, onSellerRegistered }) {
@@ -87,7 +88,12 @@ function SellerRegistration({ onBack, onSellerRegistered }) {
             }
             setSuccess('Vendedor registrado. Ahora sube tus documentos de verificacion.');
         } catch (err) {
-            setError(err.response?.data?.message || 'No se pudo registrar el vendedor');
+            const { error, code, fieldErrors } = parseApiError(err);
+            if (code === 'VALIDATION_FAILED' && fieldErrors) {
+              setError(Object.values(fieldErrors).join(', '));
+            } else {
+              setError(error || 'No se pudo registrar el vendedor');
+            }
         } finally {
             setSubmitting(false);
         }
@@ -111,7 +117,8 @@ function SellerRegistration({ onBack, onSellerRegistered }) {
             await loadVerification(sellerId);
             setSuccess(field === 'document' ? 'Documento subido correctamente.' : 'Selfie subida correctamente.');
         } catch (err) {
-            setError(err.response?.data?.message || 'No se pudo subir el archivo');
+            const { error } = parseApiError(err);
+            setError(error || 'No se pudo subir el archivo');
         } finally {
             setUploading('');
         }
@@ -191,7 +198,8 @@ function SellerRegistration({ onBack, onSellerRegistered }) {
                                     }
                                 }, 4000);
                             } catch (err) {
-                                setError(err.response?.data?.message || 'No se pudo validar la verificacion');
+                                const { error } = parseApiError(err);
+                                setError(error || 'No se pudo validar la verificacion');
                                 setValidating(false);
                             }
                         }}

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
+import { parseApiError } from '../../helpers/api.helpers';
 import './auth.css';
 
 export function LoginForm({ onSwitchToRegister, onSuccess }) {
@@ -17,11 +18,8 @@ export function LoginForm({ onSwitchToRegister, onSuccess }) {
       await login({ email, password });
       onSuccess?.();
     } catch (err) {
-      const msg = err.response?.data?.message
-        || err.response?.data?.error
-        || err.message
-        || 'Error al iniciar sesion';
-      setError(msg);
+      const { error } = parseApiError(err);
+      setError(error || 'Error al iniciar sesion');
     } finally {
       setLoading(false);
     }

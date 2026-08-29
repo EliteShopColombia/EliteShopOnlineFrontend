@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { orderService } from '../../services/order.service';
 import { STATUS_LABELS } from '../Orders/order-status';
+import { parseApiError } from '../../helpers/api.helpers';
 import '../Orders/Orders.css';
 
 const statuses = ['', ...Object.keys(STATUS_LABELS)];
@@ -36,7 +37,7 @@ function SellerOrders({ sellerId, onBack }) {
             const start = page * 10;
             setOrders(filteredOrders.slice(start, start + 10));
             setTotalPages(Math.max(1, Math.ceil(filteredOrders.length / 10)));
-        } catch (err) { setError(err.response?.data?.message || 'No se pudieron cargar las órdenes.'); }
+        } catch (err) { const { error } = parseApiError(err); setError(error || 'No se pudieron cargar las órdenes.'); }
         finally { setLoading(false); }
     };
 
@@ -54,7 +55,10 @@ function SellerOrders({ sellerId, onBack }) {
                 setOrders(filteredOrders.slice(start, start + 10));
                 setTotalPages(Math.max(1, Math.ceil(filteredOrders.length / 10)));
             } catch (err) {
-                if (active) setError(err.response?.data?.message || 'No se pudieron cargar las órdenes.');
+                if (active) {
+                  const { error } = parseApiError(err);
+                  setError(error || 'No se pudieron cargar las órdenes.');
+                }
             } finally { if (active) setLoading(false); }
         }
         fetchOrders();
@@ -86,7 +90,7 @@ function SellerOrders({ sellerId, onBack }) {
                 setIssueReason('');
             }
             await loadOrders();
-        } catch (err) { setError(err.response?.data?.message || 'No se pudo cambiar el estado.'); }
+        } catch (err) { const { error } = parseApiError(err); setError(error || 'No se pudo cambiar el estado.'); }
         finally { setBusyId(''); }
     };
 

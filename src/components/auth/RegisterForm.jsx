@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
+import { parseApiError } from '../../helpers/api.helpers';
 import './auth.css';
 
 export function RegisterForm({ onSwitchToLogin, onSuccess }) {
@@ -31,11 +32,13 @@ export function RegisterForm({ onSwitchToLogin, onSuccess }) {
       await register(form);
       onSuccess?.();
     } catch (err) {
-      const msg = err.response?.data?.message
-        || err.response?.data?.error
-        || err.message
-        || 'Error al registrar';
-      setError(msg);
+      const { error, code, fieldErrors } = parseApiError(err);
+      if (code === 'VALIDATION_FAILED' && fieldErrors) {
+        const messages = Object.values(fieldErrors).join(', ');
+        setError(messages);
+      } else {
+        setError(error || 'Error al registrar');
+      }
     } finally {
       setLoading(false);
     }

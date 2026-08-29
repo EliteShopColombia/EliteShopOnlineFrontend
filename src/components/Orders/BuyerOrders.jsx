@@ -4,6 +4,7 @@ import { useAuth } from '../../context/AuthContext';
 import { orderService } from '../../services/order.service';
 import { paymentService } from '../../services/payment.service';
 import { STATUS_LABELS } from './order-status';
+import { parseApiError } from '../../helpers/api.helpers';
 import './Orders.css';
 
 const canCancel = (status) => ['PENDING_PAYMENT', 'PAID'].includes(status);
@@ -14,12 +15,11 @@ const disputeReasons = ['El producto llegó defectuoso', 'Recibí un producto di
 const formatPrice = (value) => new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(value || 0);
 const getOrderTotal = (order) => order.totalAmount ?? order.totalPrice ?? order.total ?? order.amount ?? 0;
 const getActionError = (error) => {
-    const responseData = error.response?.data;
-    if (typeof responseData === 'string') return responseData;
-    if (responseData?.message) return responseData.message;
-    if (responseData?.error) return responseData.error;
-    if (Array.isArray(responseData?.errors)) return responseData.errors.join(', ');
-    return 'No se pudo actualizar el pedido.';
+    const { error: errMsg, code, fieldErrors } = parseApiError(error);
+    if (code === 'VALIDATION_FAILED' && fieldErrors) {
+      return Object.values(fieldErrors).join(', ');
+    }
+    return errMsg || 'No se pudo actualizar el pedido.';
 };
 
 function BuyerOrders() {
@@ -41,7 +41,8 @@ function BuyerOrders() {
             const data = await orderService.getMyOrders();
             setOrders(Array.isArray(data) ? data : data?.content || []);
         } catch (err) {
-            setError(err.response?.data?.message || 'No se pudieron cargar tus pedidos.');
+            const { error } = parseApiError(err);
+            setError(error || 'No se pudieron cargar tus pedidos.');
         } finally { setLoading(false); }
     };
 
@@ -54,7 +55,10 @@ function BuyerOrders() {
                 const data = await orderService.getMyOrders();
                 if (active) setOrders(Array.isArray(data) ? data : data?.content || []);
             } catch (err) {
-                if (active) setError(err.response?.data?.message || 'No se pudieron cargar tus pedidos.');
+                if (active) {
+                  const { error } = parseApiError(err);
+                  setError(error || 'No se pudieron cargar tus pedidos.');
+                }
             } finally { if (active) setLoading(false); }
         }
         fetchOrders();

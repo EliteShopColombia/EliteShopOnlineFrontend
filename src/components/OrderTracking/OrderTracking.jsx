@@ -7,6 +7,8 @@ import { checkoutService } from '../../services/checkout.service';
 import { paymentService } from '../../services/payment.service';
 import { paymentMethodService } from '../../services/payment-method.service';
 import { openEpaycoCheckout } from '../../utils/epaycoCheckout';
+import { parseApiError } from '../../helpers/api.helpers';
+import { getImageUrl } from '../../helpers/images';
 import './OrderTracking.css';
 
 const STATUS_STEPS = [
@@ -62,13 +64,6 @@ const TERMINAL_STATUSES = new Set(['CANCELLED', 'DISPUTE', 'REFUNDED']);
 
 const formatPrice = (value) =>
     new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(value || 0);
-
-function buildImageUrl(url) {
-    if (!url) return '';
-    if (url.startsWith('http')) return url;
-    const base = import.meta.env.VITE_API_BASE_URL || '';
-    return `${base}/api/v1/products/images?key=${encodeURIComponent(url)}`;
-}
 
 function OrderTracking({ initialOrderId, onBack }) {
     const { orderId: urlOrderId } = useParams();
@@ -138,7 +133,8 @@ function OrderTracking({ initialOrderId, onBack }) {
             if (err.response?.status === 404) {
                 setNotFound(true);
             } else {
-                setError(err.response?.data?.message || 'No se pudo consultar el pedido');
+                const { error } = parseApiError(err);
+                setError(error || 'No se pudo consultar el pedido');
             }
         } finally {
             setLoading(false);
@@ -178,7 +174,8 @@ function OrderTracking({ initialOrderId, onBack }) {
                 if (err.response?.status === 404) {
                     setNotFound(true);
                 } else {
-                    setError(err.response?.data?.message || 'No se pudo consultar el pedido');
+                    const { error } = parseApiError(err);
+                    setError(error || 'No se pudo consultar el pedido');
                 }
             } finally {
                 if (!cancelled) setLoading(false);
@@ -245,7 +242,8 @@ function OrderTracking({ initialOrderId, onBack }) {
             await openEpaycoCheckout(sessionId);
             loadOrder(order.id);
         } catch (err) {
-            setError(err.message || 'No se pudo reintentar el pago. Intenta de nuevo.');
+            const { error } = parseApiError(err);
+            setError(error || 'No se pudo reintentar el pago. Intenta de nuevo.');
         } finally {
             setRetrying(false);
         }
@@ -266,7 +264,8 @@ function OrderTracking({ initialOrderId, onBack }) {
                 setSuccess('Pago aprobado exitosamente.');
             }
         } catch (err) {
-            setError(err.response?.data?.message || 'No se pudo procesar el pago. Intenta de nuevo.');
+            const { error } = parseApiError(err);
+            setError(error || 'No se pudo procesar el pago. Intenta de nuevo.');
         } finally {
             setRetrying(false);
         }
@@ -490,7 +489,7 @@ function OrderTracking({ initialOrderId, onBack }) {
                                                 {items.map((item, i) => {
                                                     const product = item.product || {};
                                                     const image = product.images?.length
-                                                        ? buildImageUrl(product.images[0]?.imageUrl || product.images[0])
+                                                        ? getImageUrl(product.images[0]?.imageUrl || product.images[0])
                                                         : null;
                                                     return (
                                                         <div className="order-tracking__product" key={item.id || i}>

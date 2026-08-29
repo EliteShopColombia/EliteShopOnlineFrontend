@@ -2,14 +2,9 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { productService } from '../../services/product.service';
 import { orderService } from '../../services/order.service';
+import { getImageUrl } from '../../helpers/images';
+import { parseApiError } from '../../helpers/api.helpers';
 import './SellerDashboard.css';
-
-function buildImageUrl(url) {
-    if (!url) return '';
-    if (url.startsWith('http')) return url;
-    const base = import.meta.env.VITE_API_BASE_URL || '';
-    return `${base}/api/v1/products/images?key=${encodeURIComponent(url)}`;
-}
 
 const formatPrice = (value) =>
     new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(value || 0);
@@ -86,7 +81,8 @@ function SellerDashboard({ sellerId: propSellerId, onBack, onNavigate }) {
             setProducts((current) => current.filter((product) => (product.id || product.productId) !== (deleteProduct.id || deleteProduct.productId)));
             setDeleteProduct(null);
         } catch (error) {
-            setProductError(error.response?.data?.message || 'No se pudo eliminar el producto.');
+            const { error: errMsg } = parseApiError(error);
+            setProductError(errMsg || 'No se pudo eliminar el producto.');
         } finally {
             setDeleting(false);
         }
@@ -207,12 +203,12 @@ function SellerDashboard({ sellerId: propSellerId, onBack, onNavigate }) {
                                     {products.map((product) => (
                                         <div className="seller-dash__product" key={product.id || product.productId}>
                                             <div className="seller-dash__product-image">
-                                                {product.images?.length ? (
-                                                    <img
-                                                        src={buildImageUrl(product.images[0]?.imageUrl || product.images[0])}
-                                                        alt={product.name}
-                                                    />
-                                                ) : (
+{product.images?.length ? (
+                                                     <img
+                                                         src={getImageUrl(product.images[0]?.imageUrl || product.images[0])}
+                                                         alt={product.name}
+                                                     />
+                                                 ) : (
                                                     <span>?</span>
                                                 )}
                                             </div>

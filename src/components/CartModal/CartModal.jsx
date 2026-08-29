@@ -1,14 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
 import { cartService } from "../../services/cart.service";
 import { productService } from "../../services/product.service";
+import { parseApiError } from '../../helpers/api.helpers';
+import { getImageUrl } from '../../helpers/images';
 import "./CartModal.css";
-
-function buildImageUrl(url) {
-    if (!url) return '';
-    if (url.startsWith('http')) return url;
-    const base = import.meta.env.VITE_API_BASE_URL || '';
-    return `${base}/api/v1/products/images?key=${encodeURIComponent(url)}`;
-}
 
 const formatPrice = (value) =>
     new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(value || 0);
@@ -77,7 +72,8 @@ function CartModal({ isOpen, onClose, onCheckout, cart, onCartChange }) {
             await cartService.updateItem(item.id, quantity);
             await refresh();
         } catch (err) {
-            setError(err.response?.data?.message || "No se pudo actualizar el item");
+            const { error } = parseApiError(err);
+            setError(error || "No se pudo actualizar el item");
         } finally {
             setUpdating(false);
         }
@@ -90,7 +86,8 @@ function CartModal({ isOpen, onClose, onCheckout, cart, onCartChange }) {
             await cartService.removeItem(item.id);
             await refresh();
         } catch (err) {
-            setError(err.response?.data?.message || "No se pudo eliminar el item");
+            const { error } = parseApiError(err);
+            setError(error || "No se pudo eliminar el item");
         } finally {
             setUpdating(false);
         }
@@ -103,7 +100,8 @@ function CartModal({ isOpen, onClose, onCheckout, cart, onCartChange }) {
             await cartService.clearCart();
             await refresh();
         } catch (err) {
-            setError(err.response?.data?.message || "No se pudo vaciar el carrito");
+            const { error } = parseApiError(err);
+            setError(error || "No se pudo vaciar el carrito");
         } finally {
             setUpdating(false);
         }
@@ -144,7 +142,7 @@ function CartModal({ isOpen, onClose, onCheckout, cart, onCartChange }) {
                     {cart !== null && items.map((item) => {
                         const product = item.product || {};
                         const image = product.images?.length
-                            ? buildImageUrl(product.images[0]?.imageUrl || product.images[0])
+                            ? getImageUrl(product.images[0]?.imageUrl || product.images[0])
                             : "";
                         return (
                             <div className="cart-item" key={item.id}>

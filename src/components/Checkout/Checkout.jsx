@@ -4,6 +4,7 @@ import { cartService } from '../../services/cart.service';
 import { checkoutService } from '../../services/checkout.service';
 import { paymentMethodService } from '../../services/payment-method.service';
 import { DEPARTMENTS, DNI_TYPES } from '../../constants/colombia';
+import { parseApiError } from '../../helpers/api.helpers';
 import './Checkout.css';
 
 const formatPrice = (value) =>
@@ -116,11 +117,11 @@ function Checkout({ onBack, onSuccess }) {
             await cartService.clearCart();
             onSuccess?.(data);
         } catch (err) {
-            const serverMsg = err.response?.data?.message || err.response?.data?.error;
-            if (serverMsg && serverMsg.includes('pago no fue aprobado')) {
+            const { error, code } = parseApiError(err);
+            if (code === 'PAYMENT_DECLINED' || (error && error.includes('pago no fue aprobado'))) {
                 setError('El pago fue rechazado. Verifica los datos de tu tarjeta o intenta con otro método de pago.');
             } else {
-                setError(serverMsg || 'No se pudo procesar el checkout');
+                setError(error || 'No se pudo procesar el checkout');
             }
         } finally {
             setSubmitting(false);

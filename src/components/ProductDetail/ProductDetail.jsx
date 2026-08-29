@@ -4,14 +4,8 @@ import { productService } from '../../services/product.service';
 import { sellerService } from '../../services/seller.service';
 import ReviewsSection from './ReviewsSection.jsx';
 import ShippingInfo from './ShippingInfo.jsx';
+import { getImageUrl } from '../../helpers/images';
 import './ProductDetail.css';
-
-function buildImageUrl(url) {
-    if (!url) return '';
-    if (url.startsWith('http')) return url;
-    const base = import.meta.env.VITE_API_BASE_URL || '';
-    return `${base}/api/v1/products/images?key=${encodeURIComponent(url)}`;
-}
 
 function ProductDetail({ onBack, onAddToCart }) {
     const { id: urlId } = useParams();
@@ -68,7 +62,7 @@ function ProductDetail({ onBack, onAddToCart }) {
         );
     }
 
-    const images = (product.images || []).map(buildImageUrl);
+    const images = (product.images || []).map((img) => getImageUrl(img.imageUrl || img));
     const formatPrice = (price) => new Intl.NumberFormat('es-CO').format(price);
 
     return (
