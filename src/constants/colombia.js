@@ -25,3 +25,31 @@ export const DNI_TYPES = [
   { value: 'PS', label: 'Pasaporte' },
   { value: 'NIT', label: 'NIT' },
 ];
+
+// Fallback: ciudades por departamento para cuando el backend no responde
+// La fuente de verdad es el backend (GET /api/v1/locations/departments)
+export const CITIES_BY_DEPARTMENT = {
+  'Antioquia': ['Medellin', 'Envigado', 'Itagui', 'Bello', 'Apartado'],
+  'Atlantico': ['Barranquilla', 'Soledad', 'Malambo'],
+  'Bogota D.C.': ['Bogota D.C.', 'Bogota'],
+  'Bogotá D.C.': ['Bogotá D.C.', 'Bogotá'],
+  'Santander': ['Bucaramanga', 'Floridablanca', 'Barrancabermeja'],
+  'Valle del Cauca': ['Cali', 'Palmira', 'Buenaventura', 'Tulua'],
+  'Bolivar': ['Cartagena', 'Turbaco'],
+  'Boyaca': ['Tunja', 'Duitama', 'Sogamoso'],
+  'Caldas': ['Manizales', 'Villamaria'],
+  'Cauca': ['Popayan'],
+  'Cesar': ['Valledupar'],
+  'Cordoba': ['Monteria', 'Caucasia'],
+  'Cundinamarca': ['Soacha', 'Girardot', 'Zipaquira', 'Chia'],
+  'Huila': ['Neiva', 'Pitalito'],
+  'La Guajira': ['Riohacha', 'Maicao'],
+  'Magdalena': ['Santa Marta', 'Cienaga'],
+  'Meta': ['Villavicencio', 'Acacias'],
+  'Narino': ['Pasto', 'Tumaco'],
+  'Norte de Santander': ['Cucuta', 'Ocana'],
+  'Quindio': ['Armenia', 'Calarca'],
+  'Risaralda': ['Pereira', 'Dosquebradas', 'Santa Rosa de Cabal'],
+  'Sucre': ['Sincelejo', 'Corozal'],
+  'Tolima': ['Ibague', 'Melgar'],
+};
