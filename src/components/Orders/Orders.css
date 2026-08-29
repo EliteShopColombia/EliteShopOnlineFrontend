@@ -16,7 +16,23 @@
 .order-card__actions { display: flex; flex-wrap: wrap; gap: 8px; }.order-card__actions button { border: 1px solid #4b6685; border-radius: 6px; padding: 8px 11px; background: transparent; color: #dbeafe; cursor: pointer; }.order-card__actions button:first-child { background: #2778d4; border-color: #2778d4; }.order-card__actions button:disabled { opacity: .55; cursor: wait; }
 .tracking-summary, .shipping-info, .timeline { margin-top: 18px; padding: 20px; background: #1f2b3d; border: 1px solid #3b4b66; border-radius: 10px; }.tracking-summary small, .shipping-info small { display: block; color: #94a3b8; margin-bottom: 5px; }.tracking-summary strong { display: block; font-size: 20px; }.shipping-info { justify-content: flex-start; flex-wrap: wrap; }.shipping-info > div { min-width: 170px; }.shipping-info a { color: #70b7ff; }
 .timeline h2 { margin: 0 0 18px; font-size: 18px; }.timeline__event { position: relative; display: flex; gap: 14px; padding: 0 0 22px 4px; }.timeline__event:not(:last-child)::before { content: ''; position: absolute; left: 9px; top: 18px; bottom: 0; width: 1px; background: #4b6685; }.timeline__dot { z-index: 1; flex: 0 0 11px; height: 11px; margin-top: 4px; border-radius: 50%; background: #4da3ff; }.timeline__event p { margin: 5px 0; color: #cbd5e1; }.timeline__event small { color: #94a3b8; }
-@media (max-width: 600px) { .orders-page__header, .order-card__top, .tracking-summary { align-items: flex-start; flex-direction: column; }.shipping-info { align-items: flex-start; flex-direction: column; } }
+@media (max-width: 850px) {
+    .orders-page { padding: 24px 16px 60px; }
+    .orders-filters select { min-width: 180px; }
+}
+@media (max-width: 600px) {
+    .orders-page { padding: 18px 14px 50px; }
+    .orders-page h1 { font-size: 22px; }
+    .orders-page__header, .order-card__top, .tracking-summary { align-items: flex-start; flex-direction: column; }
+    .shipping-info { align-items: flex-start; flex-direction: column; }
+    .orders-filters { flex-direction: column; }
+    .orders-filters label { width: 100%; }
+    .orders-filters select { min-width: 0; width: 100%; }
+    .cancel-modal__dialog, .shipping-modal__dialog { padding: 22px 18px; }
+    .order-card { padding: 14px; }
+    .order-card__actions { width: 100%; }
+    .order-card__actions button { flex: 1; min-width: 0; }
+}
 .cancel-modal { position: fixed; inset: 0; z-index: 1000; display: grid; place-items: center; padding: 20px; background: rgba(2, 8, 23, .72); backdrop-filter: blur(5px); }
 .cancel-modal__dialog { position: relative; width: min(100%, 460px); padding: 30px; border: 1px solid #405574; border-radius: 16px; background: #1f2b3d; box-shadow: 0 24px 70px rgba(0, 0, 0, .45); color: #f8fafc; }
 .cancel-modal__close { position: absolute; top: 12px; right: 14px; width: 32px; height: 32px; border: 0; border-radius: 50%; background: transparent; color: #94a3b8; font-size: 26px; line-height: 1; cursor: pointer; }.cancel-modal__close:hover { background: #2b3b53; color: #fff; }

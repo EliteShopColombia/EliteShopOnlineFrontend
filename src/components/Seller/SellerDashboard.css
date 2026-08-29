@@ -10,9 +10,9 @@
 }
 
 .seller-dash__container {
-    background-color: #1f2b3d;
+    background-color: var(--surface-2);
 
-    border: 1px solid #3b4b66;
+    border: 1px solid var(--border-strong);
 
     border-radius: 10px;
 
@@ -26,7 +26,7 @@
 
     background: transparent;
 
-    color: #4da3ff;
+    color: var(--color-text-link);
 
     font-size: 14px;
 
@@ -77,7 +77,7 @@
 
     border-radius: 6px;
 
-    color: #4ade80;
+    color: var(--color-success);
 
     font-size: 13px;
 }
@@ -96,7 +96,7 @@
 
     padding-bottom: 8px;
 
-    border-bottom: 1px solid #3b4b66;
+    border-bottom: 1px solid var(--border-strong);
 }
 
 .seller-dash__form {
@@ -124,7 +124,7 @@
 }
 
 .seller-dash__field label {
-    color: #94a3b8;
+    color: var(--color-text-secondary);
 
     font-size: 12px;
 }
@@ -134,7 +134,7 @@
 
     padding: 0 10px;
 
-    border: 1px solid #3b4b66;
+    border: 1px solid var(--border-strong);
 
     border-radius: 6px;
 
@@ -150,7 +150,7 @@
 .seller-dash__field input:focus {
     outline: none;
 
-    border-color: #4da3ff;
+    border-color: var(--color-text-link);
 }
 
 .seller-dash__field input[type="file"] {
@@ -158,7 +158,7 @@
 
     height: auto;
 
-    color: #94a3b8;
+    color: var(--color-text-secondary);
 
     font-size: 13px;
 }
@@ -179,7 +179,7 @@
 
     border-radius: 6px;
 
-    border: 1px solid #3b4b66;
+    border: 1px solid var(--border-strong);
 }
 
 .seller-dash__preview-wrapper {
@@ -217,7 +217,7 @@
 
     border-radius: 8px;
 
-    background-color: #2778d4;
+    background-color: var(--color-accent-strong);
 
     color: #ffffff;
 
@@ -230,7 +230,7 @@
 }
 
 .seller-dash__submit:hover {
-    background-color: #3b8ee8;
+    background-color: var(--color-accent-hover);
 }
 
 .seller-dash__submit:disabled {
@@ -242,7 +242,7 @@
 .seller-dash__muted {
     margin: 0;
 
-    color: #94a3b8;
+    color: var(--color-text-secondary);
 
     font-size: 14px;
 }
@@ -262,9 +262,9 @@
 
     padding: 10px;
 
-    background-color: #26354d;
+    background-color: var(--surface-3);
 
-    border: 1px solid #3b4b66;
+    border: 1px solid var(--border-strong);
 
     border-radius: 8px;
 }
@@ -285,7 +285,7 @@
     align-items: center;
     justify-content: center;
 
-    color: #94a3b8;
+    color: var(--color-text-secondary);
 }
 
 .seller-dash__product-image img {
@@ -312,13 +312,13 @@
 }
 
 .seller-dash__product-price {
-    color: #4da3ff;
+    color: var(--color-text-link);
 
     font-size: 13px;
 }
 
 .seller-dash__product-stock {
-    color: #94a3b8;
+    color: var(--color-text-secondary);
 
     font-size: 12px;
 }
@@ -332,7 +332,7 @@
 
     background: transparent;
 
-    color: #f87171;
+    color: var(--color-danger);
 
     font-size: 12px;
 
@@ -389,14 +389,14 @@
     border: 0;
     border-radius: 50%;
     background: transparent;
-    color: #94a3b8;
+    color: var(--color-text-secondary);
     font-size: 26px;
     line-height: 1;
     cursor: pointer;
 }
 
 .seller-dash__modal-close:hover {
-    background: #2b3b53;
+    background: var(--surface-4);
     color: #ffffff;
 }
 
@@ -443,7 +443,7 @@
 }
 
 .seller-dash__modal-cancel {
-    border: 1px solid #4b6685;
+    border: 1px solid var(--border-light);
     background: transparent;
     color: #dbeafe;
 }
@@ -467,8 +467,8 @@
 }
 
 .seller-dash__stat {
-    background-color: #26354d;
-    border: 1px solid #3b4b66;
+    background-color: var(--surface-3);
+    border: 1px solid var(--border-strong);
     border-radius: 8px;
     padding: 16px;
     display: flex;
@@ -477,7 +477,7 @@
 }
 
 .seller-dash__stat-label {
-    color: #94a3b8;
+    color: var(--color-text-secondary);
     font-size: 12px;
     font-weight: 600;
     text-transform: uppercase;
@@ -490,11 +490,11 @@
 }
 
 .seller-dash__stat-value--warn {
-    color: #fbbf24;
+    color: var(--color-warning);
 }
 
 .seller-dash__stat-value--green {
-    color: #4ade80;
+    color: var(--color-success);
 }
 
 /* SECTION HEADER */
@@ -508,7 +508,7 @@
     background: transparent;
     border: 1px solid #4da3ff;
     border-radius: 6px;
-    color: #4da3ff;
+    color: var(--color-text-link);
     font-size: 13px;
     font-weight: 600;
     padding: 6px 14px;
@@ -527,8 +527,8 @@
     justify-content: space-between;
     gap: 12px;
     padding: 12px;
-    background-color: #26354d;
-    border: 1px solid #3b4b66;
+    background-color: var(--surface-3);
+    border: 1px solid var(--border-strong);
     border-radius: 8px;
 }
 
@@ -546,7 +546,7 @@
 }
 
 .seller-dash__order-date {
-    color: #94a3b8;
+    color: var(--color-text-secondary);
     font-size: 12px;
 }
 
@@ -572,7 +572,7 @@
 
 .seller-dash__status--pending {
     background: rgba(245, 158, 11, 0.15);
-    color: #fbbf24;
+    color: var(--color-warning);
 }
 
 .seller-dash__status--confirmed {
@@ -587,21 +587,79 @@
 
 .seller-dash__status--delivered {
     background: rgba(34, 197, 94, 0.15);
-    color: #4ade80;
+    color: var(--color-success);
 }
 
 .seller-dash__status--cancelled {
     background: rgba(239, 68, 68, 0.15);
-    color: #f87171;
+    color: var(--color-danger);
 }
 
 /* RESPONSIVE */
+@media (max-width: 850px) {
+    .seller-dash {
+        padding: 20px 16px 50px;
+    }
+
+    .seller-dash__container {
+        padding: 20px;
+    }
+
+    .seller-dash__stats {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
 @media (max-width: 600px) {
+    .seller-dash {
+        padding: 16px 14px 40px;
+    }
+
+    .seller-dash__container {
+        padding: 16px;
+    }
+
+    .seller-dash__title {
+        font-size: 20px;
+    }
+
     .seller-dash__row {
         flex-direction: column;
     }
 
     .seller-dash__stats {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr;
+    }
+
+    .seller-dash__stat-value {
+        font-size: 18px;
+    }
+
+    .seller-dash__product {
+        flex-wrap: wrap;
+    }
+
+    .seller-dash__product-info {
+        min-width: 0;
+    }
+
+    .seller-dash__product-name {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .seller-dash__order {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .seller-dash__order-meta {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .seller-dash__modal-dialog {
+        padding: 22px 18px;
     }
 }

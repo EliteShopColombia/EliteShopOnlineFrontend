@@ -17,22 +17,22 @@
 .shipping-label-page__secondary {
     border: 0;
     background: transparent;
-    color: #70b7ff;
+    color: var(--color-text-link-light);
     cursor: pointer;
     font-size: 14px;
 }
 
 .shipping-label-page__demo {
-    color: #fbbf24;
+    color: var(--color-warning);
     font-size: 13px;
     font-weight: 700;
 }
 
 .shipping-label {
     padding: 32px;
-    border: 1px solid #405574;
+    border: 1px solid var(--border-modal);
     border-radius: 12px;
-    background: #1f2b3d;
+    background: var(--surface-2);
     box-shadow: 0 24px 70px rgba(0, 0, 0, .25);
 }
 
@@ -43,19 +43,19 @@
 }
 
 .shipping-label__brand span {
-    color: #70b7ff;
+    color: var(--color-text-link-light);
     padding: 0 6px;
 }
 
 .shipping-label__rule {
     height: 1px;
     margin: 24px 0;
-    background: #405574;
+    background: var(--border-modal);
 }
 
 .shipping-label__eyebrow {
     margin: 0 0 8px;
-    color: #94a3b8;
+    color: var(--color-text-secondary);
     font-size: 13px;
     text-transform: uppercase;
     letter-spacing: .08em;
@@ -79,7 +79,7 @@
 .shipping-label__details small {
     display: block;
     margin-bottom: 5px;
-    color: #94a3b8;
+    color: var(--color-text-secondary);
 }
 
 .shipping-label__details strong {
@@ -108,14 +108,14 @@
 
 .shipping-label__qr-caption {
     margin: 8px 0 0;
-    color: #94a3b8;
+    color: var(--color-text-secondary);
     font-size: 11px;
     text-align: center;
 }
 
 .shipping-label__note {
     margin: 22px 0 0;
-    color: #94a3b8;
+    color: var(--color-text-secondary);
     font-size: 13px;
     line-height: 1.5;
 }
@@ -129,23 +129,41 @@
 
 .shipping-label-page__print {
     padding: 11px 16px;
-    border: 1px solid #2778d4;
+    border: 1px solid var(--color-accent-strong);
     border-radius: 8px;
-    background: #2778d4;
+    background: var(--color-accent-strong);
     color: #ffffff;
     cursor: pointer;
     font-weight: 700;
 }
 
 .shipping-label-page__print:hover {
-    background: #3b8ee8;
+    background: var(--color-accent-hover);
+}
+
+@media (max-width: 850px) {
+    .shipping-label-page {
+        padding: 24px 16px 60px;
+    }
+
+    .shipping-label__details {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 @media (max-width: 600px) {
+    .shipping-label-page {
+        padding: 18px 14px 50px;
+    }
+
     .shipping-label-page__topbar,
     .shipping-label-page__actions {
         align-items: flex-start;
         flex-direction: column;
+    }
+
+    .shipping-label {
+        padding: 22px 18px;
     }
 
     .shipping-label__details {

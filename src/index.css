@@ -1,24 +1,65 @@
 :root {
+  /* Breakpoints */
+  --bp-sm: 600px;
+  --bp-md: 850px;
+  --bp-lg: 1100px;
+
+  /* Page spacing */
+  --page-padding-desktop: 70px;
+  --page-padding-tablet: 24px;
+  --page-padding-mobile: 14px;
   --page-horizontal-padding: 70px;
+
+  /* Header */
   --header-height: 120px;
   --header-action-width: 193px;
   --searchbar-width: 950px;
   --searchbar-height: 54px;
+
+  /* Cards */
   --card-width: 399px;
   --card-height: 493px;
   --card-image-size: 399px;
   --grid-gap: 60px;
   --radius-card: 5px;
+
+  /* Surface colors */
+  --surface-1: #1a2744;
+  --surface-2: #1f2b3d;
+  --surface-3: #26354d;
+  --surface-4: #2b3b53;
+
+  /* Border colors */
+  --border-default: #2a3a5c;
+  --border-strong: #3b4b66;
+  --border-light: #4b6685;
+  --border-modal: #405574;
+
+  /* Accent / Primary */
   --color-primary: #1e293b;
   --color-primary-strong: #203360;
   --color-primary-dark: #0f172a;
   --color-accent: #3b82f6;
   --color-accent-strong: #2778d4;
+  --color-accent-hover: #3b8ee8;
   --color-surface: #d9d9d9;
+
+  /* Text colors */
   --color-text: #ffffff;
   --color-text-muted: #8e8e8e;
+  --color-text-secondary: #94a3b8;
+  --color-text-tertiary: #64748b;
+  --color-text-link: #4da3ff;
+  --color-text-link-light: #70b7ff;
   --color-border: #30466f;
 
+  /* Status colors */
+  --color-success: #4ade80;
+  --color-warning: #fbbf24;
+  --color-danger: #ef4444;
+  --color-info: #60a5fa;
+
+  /* Font */
   font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
 
