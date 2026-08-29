@@ -7,6 +7,8 @@ import PaymentMethods from '../PaymentMethods/PaymentMethods.jsx';
 import BuyerOrders from '../Orders/BuyerOrders.jsx';
 import SellerOrders from '../Seller/SellerOrders.jsx';
 import SellerDashboard from '../Seller/SellerDashboard.jsx';
+import { parseApiError } from '../../helpers/api.helpers';
+import { useAvatar } from '../../hooks/useAvatar';
 import './Profile.css';
 
 function displayName(firstName, lastName) {
@@ -25,6 +27,9 @@ function Profile({ onBack }) {
     const [error, setError] = useState('');
     const [sellerData, setSellerData] = useState(null);
     const [activeTab, setActiveTab] = useState('profile');
+    const [hasAvatar, setHasAvatar] = useState(false);
+    const [uploading, setUploading] = useState(false);
+    const [avatarError, setAvatarError] = useState('');
     const [form, setForm] = useState({
         firstName: '',
         lastName: '',
@@ -37,6 +42,12 @@ function Profile({ onBack }) {
     });
 
     const isSeller = Boolean(auth?.sellerId);
+
+    const { avatarBlobUrl, refresh: refreshAvatar } = useAvatar(
+        isSeller ? auth.sellerId : auth.userId,
+        isSeller,
+        hasAvatar
+    );
 
     useEffect(() => {
         mountedRef.current = true;
@@ -53,6 +64,7 @@ function Profile({ onBack }) {
                 if (seller && mountedRef.current) {
                     localStorage.setItem('sellerId', seller.id);
                     setSellerData(seller);
+                    setHasAvatar(Boolean(seller.profileImage));
                     sellerService.getContact(seller.id).then((contact) => {
                         if (mountedRef.current) setSellerData((prev) => ({ ...prev, contact }));
                     }).catch(() => {});
@@ -69,6 +81,7 @@ function Profile({ onBack }) {
         customerService.getById(auth.userId).then((data) => {
             if (mountedRef.current) {
                 updateUser(data);
+                setHasAvatar(Boolean(data.profileImage));
                 setForm({
                     firstName: data.firstName || '',
                     lastName: data.lastName || '',
@@ -96,7 +109,8 @@ function Profile({ onBack }) {
             updateUser(updated);
             setEditing(false);
         } catch (err) {
-            setError(err.response?.data?.message || 'No se pudo actualizar el perfil');
+            const { error } = parseApiError(err);
+            setError(error || 'No se pudo actualizar el perfil');
         } finally {
             setSaving(false);
         }
@@ -105,6 +119,58 @@ function Profile({ onBack }) {
     const handleLogout = () => {
         logout();
         onBack?.();
+    };
+
+    const handleAvatarUpload = async (e) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        const validTypes = ['image/jpeg', 'image/png'];
+        if (!validTypes.includes(file.type)) {
+            setAvatarError('Solo se permiten archivos JPG o PNG');
+            return;
+        }
+        if (file.size > 5 * 1024 * 1024) {
+            setAvatarError('El archivo no debe superar 5 MB');
+            return;
+        }
+
+        setUploading(true);
+        setAvatarError('');
+        try {
+            const id = isSeller ? auth.sellerId : auth.userId;
+            if (hasAvatar) {
+                const service = isSeller ? sellerService : customerService;
+                await service.updateAvatar(id, file);
+            } else {
+                const service = isSeller ? sellerService : customerService;
+                await service.uploadAvatar(id, file);
+            }
+            setHasAvatar(true);
+                refreshAvatar();
+        } catch (err) {
+            const { error } = parseApiError(err);
+            setAvatarError(error || 'No se pudo subir el avatar');
+        } finally {
+            setUploading(false);
+            e.target.value = '';
+        }
+    };
+
+    const handleDeleteAvatar = async () => {
+        setUploading(true);
+        setAvatarError('');
+        try {
+            const id = isSeller ? auth.sellerId : auth.userId;
+            const service = isSeller ? sellerService : customerService;
+            await service.deleteAvatar(id);
+            setHasAvatar(false);
+        } catch (err) {
+            const { error } = parseApiError(err);
+            setAvatarError(error || 'No se pudo eliminar el avatar');
+        } finally {
+            setUploading(false);
+        }
     };
 
     const renderTabContent = () => {
@@ -123,8 +189,42 @@ function Profile({ onBack }) {
                             <div className="profile">
                                 <div className="profile__container">
                                     <div className="profile__header">
-                                        <div className="profile__avatar profile__avatar--seller">
-                                            {auth?.firstName?.[0]}
+                                        <div className="profile__avatar-wrapper">
+                                            <div className="profile__avatar profile__avatar--seller">
+                                                {hasAvatar ? (
+                                                    <img src={avatarBlobUrl} alt="Avatar" />
+                                                ) : (
+                                                    auth?.firstName?.[0]
+                                                )}
+                                                <label className="profile__avatar-edit">
+                                                    <input
+                                                        type="file"
+                                                        accept="image/jpeg,image/png"
+                                                        onChange={handleAvatarUpload}
+                                                        disabled={uploading}
+                                                        className="profile__avatar-input"
+                                                    />
+                                                    {uploading ? '...' : (
+                                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+                                                            <circle cx="12" cy="13" r="4" />
+                                                        </svg>
+                                                    )}
+                                                </label>
+                                            </div>
+                                            {hasAvatar && !uploading && (
+                                                <button
+                                                    type="button"
+                                                    className="profile__avatar-delete"
+                                                    onClick={handleDeleteAvatar}
+                                                    aria-label="Eliminar avatar"
+                                                >
+                                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                                                        <line x1="18" y1="6" x2="6" y2="18" />
+                                                        <line x1="6" y1="6" x2="18" y2="18" />
+                                                    </svg>
+                                                </button>
+                                            )}
                                         </div>
                                         <h1 className="profile__name">
                                             {displayName(auth?.firstName, auth?.lastName)}
@@ -133,6 +233,7 @@ function Profile({ onBack }) {
                                         <span className="profile__badge">Vendedor</span>
                                     </div>
 
+                                    {avatarError && <p className="profile__error">{avatarError}</p>}
                                     {error && <p className="profile__error">{error}</p>}
 
                                     {sellerData && (
@@ -231,8 +332,42 @@ function Profile({ onBack }) {
                                 <div className="profile__container">
 
                                     <div className="profile__header">
-                                        <div className="profile__avatar">
-                                            {auth?.firstName?.[0]}{auth?.lastName?.[0]}
+                                        <div className="profile__avatar-wrapper">
+                                            <div className="profile__avatar">
+                                                {hasAvatar ? (
+                                                    <img src={avatarBlobUrl} alt="Avatar" />
+                                                ) : (
+                                                    <>{auth?.firstName?.[0]}{auth?.lastName?.[0]}</>
+                                                )}
+                                                <label className="profile__avatar-edit">
+                                                    <input
+                                                        type="file"
+                                                        accept="image/jpeg,image/png"
+                                                        onChange={handleAvatarUpload}
+                                                        disabled={uploading}
+                                                        className="profile__avatar-input"
+                                                    />
+                                                    {uploading ? '...' : (
+                                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+                                                            <circle cx="12" cy="13" r="4" />
+                                                        </svg>
+                                                    )}
+                                                </label>
+                                            </div>
+                                            {hasAvatar && !uploading && (
+                                                <button
+                                                    type="button"
+                                                    className="profile__avatar-delete"
+                                                    onClick={handleDeleteAvatar}
+                                                    aria-label="Eliminar avatar"
+                                                >
+                                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                                                        <line x1="18" y1="6" x2="6" y2="18" />
+                                                        <line x1="6" y1="6" x2="18" y2="18" />
+                                                    </svg>
+                                                </button>
+                                            )}
                                         </div>
                                         <h1 className="profile__name">
                                             {auth?.firstName} {auth?.lastName}
@@ -240,6 +375,7 @@ function Profile({ onBack }) {
                                         <p className="profile__email">{auth?.email}</p>
                                     </div>
 
+                                    {avatarError && <p className="profile__error">{avatarError}</p>}
                                     {error && <p className="profile__error">{error}</p>}
 
                                     <div className="profile__section">

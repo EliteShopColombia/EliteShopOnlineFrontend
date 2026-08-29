@@ -24,4 +24,26 @@ export const customerService = {
   delete: async (id) => {
     await api.delete(`/customers/${id}`);
   },
+
+  uploadAvatar: async (id, file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    const response = await api.post(`/customers/${id}/avatar`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    return response.data;
+  },
+
+  updateAvatar: async (id, file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    const response = await api.put(`/customers/${id}/avatar`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    return response.data;
+  },
+
+  deleteAvatar: async (id) => {
+    await api.delete(`/customers/${id}/avatar`);
+  },
 };

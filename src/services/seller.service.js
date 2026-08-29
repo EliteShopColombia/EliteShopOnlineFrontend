@@ -34,4 +34,26 @@ export const sellerService = {
     const response = await api.get(`/seller-info/${sellerId}`);
     return response.data;
   },
+
+  uploadAvatar: async (id, file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    const response = await api.post(`/sellers/${id}/avatar`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    return response.data;
+  },
+
+  updateAvatar: async (id, file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    const response = await api.put(`/sellers/${id}/avatar`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    return response.data;
+  },
+
+  deleteAvatar: async (id) => {
+    await api.delete(`/sellers/${id}/avatar`);
+  },
 };
