@@ -130,6 +130,14 @@
     box-shadow: none;
 }
 
+.header__login-icon {
+    display: none;
+}
+
+.header__login-text {
+    display: inline;
+}
+
 .header__login:hover {
     transform: translateY(-1px);
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
@@ -222,7 +230,6 @@
     padding: 0 40px 0;
     box-sizing: border-box;
     margin-top: 0;
-    transform: translateX(-22px);
 }
 
 .header__categories a {
@@ -369,6 +376,66 @@
     }
     .header__categories::-webkit-scrollbar {
         display: none;
+    }
+}
+
+/* MOVIL PEQUENA */
+@media (max-width: 420px) {
+    .header__top {
+        gap: 6px;
+        padding: 8px 12px;
+    }
+    .header__brand {
+        font-size: 0;
+        gap: 0;
+    }
+    .header__brand span {
+        display: none;
+    }
+    .header__logo {
+        width: 32px;
+        height: 32px;
+    }
+    .header__actions {
+        gap: 4px;
+    }
+    .header__login {
+        width: 40px;
+        height: 36px;
+        padding: 0;
+        border-radius: 50%;
+        font-size: 0;
+    }
+    .header__login-icon {
+        display: flex;
+    }
+    .header__login-text {
+        display: none;
+    }
+    .header__help {
+        width: 30px;
+        height: 30px;
+        font-size: 13px;
+    }
+    .header__cart {
+        width: 30px;
+        height: 30px;
+        font-size: 16px;
+    }
+    .header__search-bar {
+        height: 40px;
+        padding: 0 14px;
+    }
+    .header__search-bar input {
+        font-size: 14px;
+    }
+    .header__categories {
+        gap: 16px;
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+    .header__categories a {
+        font-size: 14px;
     }
 }
 
