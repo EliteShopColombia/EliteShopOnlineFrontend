@@ -96,7 +96,9 @@ function Profile({ onBack }) {
                     city: data.city || '',
                 });
             }
-        }).catch(() => {});
+        }).catch((err) => {
+            console.error('[Profile] Error loading customer data:', err);
+        });
     }, [auth?.userId, auth?.email, auth?.sellerId, auth?.firstName, auth?.lastName, updateUser, isSeller]);
 
     const handleChange = (e) => {
