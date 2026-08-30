@@ -138,10 +138,11 @@ function AppContent() {
   };
 
   const isAuthPage = location.pathname === "/login" || location.pathname === "/register";
+  const isAdminPage = location.pathname.startsWith("/admin");
 
   return (
     <div className="app">
-      {!isAuthPage && (
+      {!isAuthPage && !isAdminPage && (
         <Header
           onCartClick={handleCartClick}
           onAuthClick={() => setAuthView("login")}

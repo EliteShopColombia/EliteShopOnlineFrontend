@@ -119,55 +119,59 @@ function Header({ onCartClick, onAuthClick, onLogoutClick, isAuthenticated, onPr
                                         </svg>
                                         Mi Perfil
                                     </button>
-                                    <button
-                                        type="button"
-                                        className="header__dropdown-item"
-                                        onClick={() => {
-                                            setDropdownOpen(false);
-                                            onOrdersClick?.();
-                                        }}
-                                    >
-                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                                            <polyline points="14 2 14 8 20 8" />
-                                            <line x1="16" y1="13" x2="8" y2="13" />
-                                            <line x1="16" y1="17" x2="8" y2="17" />
-                                            <polyline points="10 9 9 9 8 9" />
-                                        </svg>
-                                        Mis Pedidos
-                                    </button>
-                                    {isSeller ? (
-                                        <button
-                                            type="button"
-                                            className="header__dropdown-item"
-                                            onClick={() => {
-                                                setDropdownOpen(false);
-                                                onSellerDashboard?.();
-                                            }}
-                                        >
-                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                                <path d="M12 2L2 7l10 5 10-5-10-5z" />
-                                                <path d="M2 17l10 5 10-5" />
-                                                <path d="M2 12l10 5 10-5" />
-                                            </svg>
-                                            Mi Panel de Ventas
-                                        </button>
-                                    ) : (
-                                        <button
-                                            type="button"
-                                            className="header__dropdown-item"
-                                            onClick={() => {
-                                                setDropdownOpen(false);
-                                                onSellerClick?.();
-                                            }}
-                                        >
-                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                                <path d="M12 2L2 7l10 5 10-5-10-5z" />
-                                                <path d="M2 17l10 5 10-5" />
-                                                <path d="M2 12l10 5 10-5" />
-                                            </svg>
-                                            Ser vendedor
-                                        </button>
+                                    {!isAdmin && (
+                                        <>
+                                            <button
+                                                type="button"
+                                                className="header__dropdown-item"
+                                                onClick={() => {
+                                                    setDropdownOpen(false);
+                                                    onOrdersClick?.();
+                                                }}
+                                            >
+                                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                                    <polyline points="14 2 14 8 20 8" />
+                                                    <line x1="16" y1="13" x2="8" y2="13" />
+                                                    <line x1="16" y1="17" x2="8" y2="17" />
+                                                    <polyline points="10 9 9 9 8 9" />
+                                                </svg>
+                                                Mis Pedidos
+                                            </button>
+                                            {isSeller ? (
+                                                <button
+                                                    type="button"
+                                                    className="header__dropdown-item"
+                                                    onClick={() => {
+                                                        setDropdownOpen(false);
+                                                        onSellerDashboard?.();
+                                                    }}
+                                                >
+                                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                        <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                                                        <path d="M2 17l10 5 10-5" />
+                                                        <path d="M2 12l10 5 10-5" />
+                                                    </svg>
+                                                    Mi Panel de Ventas
+                                                </button>
+                                            ) : (
+                                                <button
+                                                    type="button"
+                                                    className="header__dropdown-item"
+                                                    onClick={() => {
+                                                        setDropdownOpen(false);
+                                                        onSellerClick?.();
+                                                    }}
+                                                >
+                                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                        <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                                                        <path d="M2 17l10 5 10-5" />
+                                                        <path d="M2 12l10 5 10-5" />
+                                                    </svg>
+                                                    Ser vendedor
+                                                </button>
+                                            )}
+                                        </>
                                     )}
                                     {isAdmin && (
                                         <button
@@ -311,33 +315,37 @@ function Header({ onCartClick, onAuthClick, onLogoutClick, isAuthenticated, onPr
                                     </svg>
                                     Mi Perfil
                                 </button>
-                                <button type="button" className="header__menu-item" onClick={() => { setMenuOpen(false); onOrdersClick?.(); }}>
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                                        <polyline points="14 2 14 8 20 8" />
-                                        <line x1="16" y1="13" x2="8" y2="13" />
-                                        <line x1="16" y1="17" x2="8" y2="17" />
-                                    </svg>
-                                    Mis Pedidos
-                                </button>
-                                {isSeller ? (
-                                    <button type="button" className="header__menu-item" onClick={() => { setMenuOpen(false); onSellerDashboard?.(); }}>
-                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                            <path d="M12 2L2 7l10 5 10-5-10-5z" />
-                                            <path d="M2 17l10 5 10-5" />
-                                            <path d="M2 12l10 5 10-5" />
-                                        </svg>
-                                        Mi Panel de Ventas
-                                    </button>
-                                ) : (
-                                    <button type="button" className="header__menu-item" onClick={() => { setMenuOpen(false); onSellerClick?.(); }}>
-                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                            <path d="M12 2L2 7l10 5 10-5-10-5z" />
-                                            <path d="M2 17l10 5 10-5" />
-                                            <path d="M2 12l10 5 10-5" />
-                                        </svg>
-                                        Ser vendedor
-                                    </button>
+                                {!isAdmin && (
+                                    <>
+                                        <button type="button" className="header__menu-item" onClick={() => { setMenuOpen(false); onOrdersClick?.(); }}>
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                                <polyline points="14 2 14 8 20 8" />
+                                                <line x1="16" y1="13" x2="8" y2="13" />
+                                                <line x1="16" y1="17" x2="8" y2="17" />
+                                            </svg>
+                                            Mis Pedidos
+                                        </button>
+                                        {isSeller ? (
+                                            <button type="button" className="header__menu-item" onClick={() => { setMenuOpen(false); onSellerDashboard?.(); }}>
+                                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                    <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                                                    <path d="M2 17l10 5 10-5" />
+                                                    <path d="M2 12l10 5 10-5" />
+                                                </svg>
+                                                Mi Panel de Ventas
+                                            </button>
+                                        ) : (
+                                            <button type="button" className="header__menu-item" onClick={() => { setMenuOpen(false); onSellerClick?.(); }}>
+                                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                    <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                                                    <path d="M2 17l10 5 10-5" />
+                                                    <path d="M2 12l10 5 10-5" />
+                                                </svg>
+                                                Ser vendedor
+                                            </button>
+                                        )}
+                                    </>
                                 )}
                                 {isAdmin && (
                                     <button
