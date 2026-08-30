@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { orderService } from '../../services/order.service';
+import { parseApiError } from '../../helpers/api.helpers';
 import { STATUS_LABELS } from './order-status';
 import './Orders.css';
 
@@ -68,7 +69,10 @@ function BuyerOrderTracking() {
                 const trackingEvents = Array.isArray(tracking) ? tracking : tracking?.content || [];
                 setEvents(trackingEvents.length ? sortTrackingEvents(trackingEvents) : buildFallbackEvents(data));
             } catch (err) {
-                if (active) setError(err.response?.data?.message || 'No se pudo cargar el pedido.');
+                if (active) {
+                    const { error } = parseApiError(err);
+                    setError(error || 'No se pudo cargar el pedido.');
+                }
             }
         }
 

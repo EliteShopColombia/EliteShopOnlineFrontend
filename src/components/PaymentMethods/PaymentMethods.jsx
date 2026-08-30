@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { paymentMethodService } from '../../services/payment-method.service';
+import { parseApiError } from '../../helpers/api.helpers';
 import { DNI_TYPES } from '../../constants/colombia';
 import './PaymentMethods.css';
 
@@ -67,7 +68,8 @@ function PaymentMethods() {
                 setDefault: false,
             });
         } catch (err) {
-            setError(err.response?.data?.message || 'No se pudo guardar la tarjeta');
+            const { error: apiError } = parseApiError(err);
+            setError(apiError || 'No se pudo guardar la tarjeta');
         } finally {
             setSaving(false);
         }
@@ -79,7 +81,8 @@ function PaymentMethods() {
             await paymentMethodService.delete(id);
             setMethods((prev) => prev.filter((m) => m.id !== id));
         } catch (err) {
-            setError(err.response?.data?.message || 'No se pudo eliminar la tarjeta');
+            const { error: apiError } = parseApiError(err);
+            setError(apiError || 'No se pudo eliminar la tarjeta');
         }
     };
 
@@ -89,7 +92,8 @@ function PaymentMethods() {
             await paymentMethodService.setDefault(id);
             setMethods((prev) => prev.map((m) => ({ ...m, default: m.id === id })));
         } catch (err) {
-            setError(err.response?.data?.message || 'No se pudo establecer como predeterminada');
+            const { error: apiError } = parseApiError(err);
+            setError(apiError || 'No se pudo establecer como predeterminada');
         }
     };
 

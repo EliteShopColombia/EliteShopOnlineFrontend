@@ -4,6 +4,7 @@ import "./App.css";
 
 import { AuthProvider, useAuth } from "./context/AuthContext.jsx";
 import { cartService } from "./services/cart.service.js";
+import { parseApiError } from "./helpers/api.helpers.js";
 import Header from "./components/Header/Header.jsx";
 import Gallery from "./components/Gallery/Gallery.jsx";
 import ProductDetail from "./components/ProductDetail/ProductDetail.jsx";
@@ -85,7 +86,8 @@ function AppContent() {
       setCartNotice(`${product.name} agregado al carrito`);
       setTimeout(() => setCartNotice(""), 2500);
     } catch (err) {
-      setCartNotice(err.response?.data?.message || "No se pudo agregar al carrito");
+      const { error } = parseApiError(err);
+      setCartNotice(error || "No se pudo agregar al carrito");
       setTimeout(() => setCartNotice(""), 2500);
     }
   };
