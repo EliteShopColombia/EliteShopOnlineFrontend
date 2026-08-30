@@ -130,7 +130,7 @@ function AdminSellers() {
                       {seller.fullname}
                     </td>
                     <td>{seller.tradeName}</td>
-                    <td>-</td>
+                    <td>{seller.contact?.phoneNumber || "-"}</td>
                     <td>
                       <span className={`admin-badge ${seller.isVerified ? "admin-badge--success" : "admin-badge--warning"}`}>
                         {seller.isVerified ? "Verificado" : "Pendiente"}

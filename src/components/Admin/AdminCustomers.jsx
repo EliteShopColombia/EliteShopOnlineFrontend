@@ -116,8 +116,8 @@ function AdminCustomers() {
                     </td>
                     <td>{customer.email}</td>
                     <td>{customer.phoneNumber || "-"}</td>
-                    <td>{customer.dniNumber ? `${customer.dniType || ""} ${customer.dniNumber}` : "-"}</td>
-                    <td>{customer.city || "-"}</td>
+                    <td>{customer.info?.dniNumber ? `${customer.info.dniType || ""} ${customer.info.dniNumber}` : "-"}</td>
+                    <td>{customer.info?.city || "-"}</td>
                     <td>{formatDate(customer.createdAt)}</td>
                   </tr>
                 ))}

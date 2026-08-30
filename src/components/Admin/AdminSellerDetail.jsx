@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { adminService } from "../../services/admin.service.js";
-import { sellerService } from "../../services/seller.service.js";
 import { parseApiError } from "../../helpers/api.helpers.js";
 import "./admin.css";
 
@@ -9,8 +8,6 @@ function AdminSellerDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [seller, setSeller] = useState(null);
-  const [contact, setContact] = useState(null);
-  const [bankInfo, setBankInfo] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [confirmModal, setConfirmModal] = useState(false);
@@ -25,14 +22,6 @@ function AdminSellerDetail() {
       try {
         const sellerData = await adminService.getSellerById(id);
         if (!cancelled) setSeller(sellerData);
-
-        const [contactData, bankData] = await Promise.allSettled([
-          sellerService.getContact(id),
-          sellerService.getBankInfo(id),
-        ]);
-
-        if (!cancelled && contactData.status === "fulfilled") setContact(contactData.value);
-        if (!cancelled && bankData.status === "fulfilled") setBankInfo(bankData.value);
       } catch (err) {
         if (!cancelled) {
           const { error: msg } = parseApiError(err);
@@ -175,23 +164,23 @@ function AdminSellerDetail() {
             </div>
             <div className="admin-detail-field">
               <span className="admin-detail-field__label">Email</span>
-              <span className="admin-detail-field__value">{contact?.email || "-"}</span>
+              <span className="admin-detail-field__value">{seller.contact?.email || "-"}</span>
             </div>
             <div className="admin-detail-field">
               <span className="admin-detail-field__label">Telefono</span>
-              <span className="admin-detail-field__value">{contact?.phoneNumber || "-"}</span>
+              <span className="admin-detail-field__value">{seller.contact?.phoneNumber || "-"}</span>
             </div>
             <div className="admin-detail-field">
               <span className="admin-detail-field__label">Direccion</span>
-              <span className="admin-detail-field__value">{contact?.tradeAddress || "-"}</span>
+              <span className="admin-detail-field__value">{seller.contact?.tradeAddress || "-"}</span>
             </div>
             <div className="admin-detail-field">
               <span className="admin-detail-field__label">Departamento</span>
-              <span className="admin-detail-field__value">{contact?.tradeDepartment || "-"}</span>
+              <span className="admin-detail-field__value">{seller.contact?.tradeDepartment || "-"}</span>
             </div>
             <div className="admin-detail-field">
               <span className="admin-detail-field__label">Ciudad</span>
-              <span className="admin-detail-field__value">{contact?.tradeCity || "-"}</span>
+              <span className="admin-detail-field__value">{seller.contact?.tradeCity || "-"}</span>
             </div>
           </div>
         </div>
@@ -202,15 +191,15 @@ function AdminSellerDetail() {
           <div className="admin-detail-grid">
             <div className="admin-detail-field">
               <span className="admin-detail-field__label">Banco</span>
-              <span className="admin-detail-field__value">{bankInfo?.bankName || "-"}</span>
+              <span className="admin-detail-field__value">{seller.bankInfo?.bankName || "-"}</span>
             </div>
             <div className="admin-detail-field">
               <span className="admin-detail-field__label">Tipo de cuenta</span>
-              <span className="admin-detail-field__value">{bankInfo?.typeBankAccount || "-"}</span>
+              <span className="admin-detail-field__value">{seller.bankInfo?.typeAccount || "-"}</span>
             </div>
             <div className="admin-detail-field">
               <span className="admin-detail-field__label">Numero de cuenta</span>
-              <span className="admin-detail-field__value">{bankInfo?.numberAccount || "-"}</span>
+              <span className="admin-detail-field__value">{seller.bankInfo?.numberAccount || "-"}</span>
             </div>
           </div>
         </div>
