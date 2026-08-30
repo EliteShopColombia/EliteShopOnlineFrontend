@@ -4,6 +4,7 @@ import logo from "../../assets/logo.png";
 
 function Header({ onCartClick, onAuthClick, onLogoutClick, isAuthenticated, onProfileClick, user, cartCount = 0, onOrdersClick, onSellerClick, onSellerDashboard }) {
     const isSeller = user?.role === 'seller' || user?.role === 'ROLE_SELLER' || user?.role === 'SELLER';
+    const isAdmin = user?.role === 'admin' || user?.role === 'ROLE_ADMIN';
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
     const dropdownRef = useRef(null);
@@ -168,6 +169,18 @@ function Header({ onCartClick, onAuthClick, onLogoutClick, isAuthenticated, onPr
                                             Ser vendedor
                                         </button>
                                     )}
+                                    {isAdmin && (
+                                        <a
+                                            href="/admin"
+                                            className="header__dropdown-item"
+                                            onClick={() => setDropdownOpen(false)}
+                                        >
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                                            </svg>
+                                            Panel Admin
+                                        </a>
+                                    )}
                                     <button
                                         type="button"
                                         className="header__dropdown-item header__dropdown-item--danger"
@@ -322,6 +335,18 @@ function Header({ onCartClick, onAuthClick, onLogoutClick, isAuthenticated, onPr
                                         </svg>
                                         Ser vendedor
                                     </button>
+                                )}
+                                {isAdmin && (
+                                    <a
+                                        href="/admin"
+                                        className="header__menu-item"
+                                        onClick={() => setMenuOpen(false)}
+                                    >
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                                        </svg>
+                                        Panel Admin
+                                    </a>
                                 )}
                             </>
                         ) : (

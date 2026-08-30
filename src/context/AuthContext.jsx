@@ -25,11 +25,16 @@ function buildAuthState(token) {
   const payload = parseJwt(token);
   if (!payload) return null;
 
+  const role = payload.role ?? 'customer';
+
   return {
     token,
     userId: payload.sub,
     sellerId: payload.sellerId ?? null,
-    role: payload.role ?? 'customer',
+    role,
+    isAdmin: role === 'admin',
+    isSeller: role === 'seller',
+    isCustomer: role === 'customer',
     email: payload.email,
     firstName: payload.firstName,
     lastName: payload.lastName,

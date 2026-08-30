@@ -19,6 +19,12 @@ import BuyerOrders from "./components/Orders/BuyerOrders.jsx";
 import BuyerOrderTracking from "./components/Orders/BuyerOrderTracking.jsx";
 import SellerOrders from "./components/Seller/SellerOrders.jsx";
 import ShippingLabel from "./components/Seller/ShippingLabel.jsx";
+import AdminLayout from "./components/Admin/AdminLayout.jsx";
+import AdminDashboard from "./components/Admin/AdminDashboard.jsx";
+import AdminCustomers from "./components/Admin/AdminCustomers.jsx";
+import AdminSellers from "./components/Admin/AdminSellers.jsx";
+import AdminSellerDetail from "./components/Admin/AdminSellerDetail.jsx";
+import AdminOrders from "./components/Admin/AdminOrders.jsx";
 import { LoginForm } from "./components/auth/LoginForm.jsx";
 import { RegisterForm } from "./components/auth/RegisterForm.jsx";
 
@@ -166,6 +172,13 @@ function AppContent() {
           <Route path="/seller/orders/:orderId/shipping-label" element={<ShippingLabel />} />
           <Route path="/seller/products/new" element={<SellerProductCreate sellerId={sellerId} onBack={() => navigate("/seller/dashboard")} />} />
           <Route path="/seller/products/:productId/edit" element={<SellerProductCreate sellerId={sellerId} onBack={() => navigate("/seller/dashboard")} />} />
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<AdminDashboard />} />
+            <Route path="customers" element={<AdminCustomers />} />
+            <Route path="sellers" element={<AdminSellers />} />
+            <Route path="sellers/:id" element={<AdminSellerDetail />} />
+            <Route path="orders" element={<AdminOrders />} />
+          </Route>
           <Route
             path="/login"
             element={(

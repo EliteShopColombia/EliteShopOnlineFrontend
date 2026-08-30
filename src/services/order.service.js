@@ -54,8 +54,8 @@ export const orderService = {
     return response.data;
   },
 
-  getAll: async () => {
-    const response = await api.get('/orders');
+  getAll: async (page = 0, size = 10) => {
+    const response = await api.get('/orders', { params: { page, size } });
     return response.data;
   },
 
