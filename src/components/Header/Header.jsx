@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import "./Header.css";
 import logo from "../../assets/logo.png";
 
-function Header({ onCartClick, onAuthClick, onLogoutClick, isAuthenticated, onProfileClick, user, cartCount = 0, onOrdersClick, onSellerClick, onSellerDashboard }) {
+function Header({ onCartClick, onAuthClick, onLogoutClick, isAuthenticated, onProfileClick, user, cartCount = 0, onOrdersClick, onSellerClick, onSellerDashboard, onAdminClick }) {
     const isSeller = user?.role === 'seller' || user?.role === 'ROLE_SELLER' || user?.role === 'SELLER';
     const isAdmin = user?.role === 'admin' || user?.role === 'ROLE_ADMIN';
     const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -170,16 +170,19 @@ function Header({ onCartClick, onAuthClick, onLogoutClick, isAuthenticated, onPr
                                         </button>
                                     )}
                                     {isAdmin && (
-                                        <a
-                                            href="/admin"
+                                        <button
+                                            type="button"
                                             className="header__dropdown-item"
-                                            onClick={() => setDropdownOpen(false)}
+                                            onClick={() => {
+                                                setDropdownOpen(false);
+                                                onAdminClick?.();
+                                            }}
                                         >
                                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                                             </svg>
                                             Panel Admin
-                                        </a>
+                                        </button>
                                     )}
                                     <button
                                         type="button"
@@ -337,16 +340,19 @@ function Header({ onCartClick, onAuthClick, onLogoutClick, isAuthenticated, onPr
                                     </button>
                                 )}
                                 {isAdmin && (
-                                    <a
-                                        href="/admin"
+                                    <button
+                                        type="button"
                                         className="header__menu-item"
-                                        onClick={() => setMenuOpen(false)}
+                                        onClick={() => {
+                                            setMenuOpen(false);
+                                            onAdminClick?.();
+                                        }}
                                     >
                                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                                         </svg>
                                         Panel Admin
-                                    </a>
+                                    </button>
                                 )}
                             </>
                         ) : (

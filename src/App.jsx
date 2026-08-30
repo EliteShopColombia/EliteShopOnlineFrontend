@@ -149,6 +149,7 @@ function AppContent() {
           onProfileClick={goToProfile}
           onSellerClick={() => navigate("/seller")}
           onSellerDashboard={() => goToSellerDashboard()}
+          onAdminClick={() => navigate("/admin")}
           isAuthenticated={isAuthenticated}
           user={user}
           cartCount={cart?.itemCount || 0}
