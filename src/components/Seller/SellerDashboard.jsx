@@ -98,7 +98,7 @@ function SellerDashboard({ sellerId: propSellerId, onBack, onNavigate }) {
             }
 
             const [productsRes, ordersRes] = await Promise.allSettled([
-                productService.getAll(0, 100),
+                productService.getAll({ page: 0, size: 100 }),
                 orderService.getBySeller(effectiveSellerId),
             ]);
 

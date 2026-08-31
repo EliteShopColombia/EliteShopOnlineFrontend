@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import "./App.css";
 
@@ -27,6 +27,7 @@ import AdminSellerDetail from "./components/Admin/AdminSellerDetail.jsx";
 import AdminOrders from "./components/Admin/AdminOrders.jsx";
 import { LoginForm } from "./components/auth/LoginForm.jsx";
 import { RegisterForm } from "./components/auth/RegisterForm.jsx";
+import FAQ from "./components/FAQ/FAQ.jsx";
 
 function AppContent() {
   const { auth, user, isAuthenticated, logout } = useAuth();
@@ -40,6 +41,37 @@ function AppContent() {
   const sellerId = auth?.sellerId || null;
 
   const isSeller = user?.role === 'seller' || user?.role === 'ROLE_SELLER' || user?.role === 'SELLER';
+
+  // --- Estado de filtros de productos ---
+  const [searchQuery, setSearchQuery] = useState('');
+  const [activeCategory, setActiveCategory] = useState('');
+  const debounceTimerRef = useRef(null);
+
+  const handleSearch = useCallback((query) => {
+    // Limpiar debounce anterior
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current);
+    }
+    debounceTimerRef.current = setTimeout(() => {
+      setSearchQuery(query);
+    }, 300);
+  }, []);
+
+  const handleCategoryChange = useCallback((category) => {
+    setActiveCategory(category);
+    // Si cambia categoría, resetear búsqueda para mostrar resultados más amplios
+    // (opcional: comentar esta línea si quieres mantener la búsqueda al cambiar categoría)
+    // setSearchQuery('');
+  }, []);
+
+  // Limpiar debounce al desmontar
+  useEffect(() => {
+    return () => {
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
+      }
+    };
+  }, []);
 
   const refreshCart = useCallback(async () => {
     if (!isAuthenticated) {
@@ -151,16 +183,27 @@ function AppContent() {
           onSellerClick={() => navigate("/seller")}
           onSellerDashboard={() => goToSellerDashboard()}
           onAdminClick={() => navigate("/admin")}
+          onHelpClick={() => navigate("/faq")}
           isAuthenticated={isAuthenticated}
           user={user}
           cartCount={cart?.itemCount || 0}
           onOrdersClick={goToOrders}
+          searchQuery={searchQuery}
+          activeCategory={activeCategory}
+          onSearch={handleSearch}
+          onCategoryChange={handleCategoryChange}
         />
       )}
 
       <main>
         <Routes>
-          <Route path="/" element={<Gallery onProductClick={(p) => navigate(`/product/${p.id}`)} />} />
+          <Route path="/" element={
+            <Gallery
+              onProductClick={(p) => navigate(`/product/${p.id}`)}
+              searchQuery={searchQuery}
+              activeCategory={activeCategory}
+            />
+          } />
           <Route path="/product/:id" element={<ProductDetail onBack={() => navigate("/")} onAddToCart={handleAddToCart} />} />
           <Route path="/profile" element={<Profile onBack={() => navigate("/")} />} />
           <Route path="/profile/orders" element={<BuyerOrders />} />
@@ -199,7 +242,14 @@ function AppContent() {
               />
             )}
           />
-          <Route path="*" element={<Gallery onProductClick={(p) => navigate(`/product/${p.id}`)} />} />
+          <Route path="/faq" element={<FAQ onBack={() => navigate("/")} />} />
+          <Route path="*" element={
+            <Gallery
+              onProductClick={(p) => navigate(`/product/${p.id}`)}
+              searchQuery={searchQuery}
+              activeCategory={activeCategory}
+            />
+          } />
         </Routes>
       </main>
 

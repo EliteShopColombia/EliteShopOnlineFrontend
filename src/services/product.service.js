@@ -2,7 +2,7 @@ import api from '../config/api';
 import { parsePageResponse } from '../helpers/api.helpers';
 
 export const productService = {
-  getAll: async (page = 0, size = 25) => {
+  getAll: async ({ page = 0, size = 25 } = {}) => {
     const response = await api.get(`/products?page=${page}&size=${size}`);
     return parsePageResponse(response.data);
   },

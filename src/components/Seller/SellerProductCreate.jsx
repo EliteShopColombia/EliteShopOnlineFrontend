@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { productService } from '../../services/product.service';
 import { parseApiError } from '../../helpers/api.helpers';
+import { PRODUCT_CATEGORIES } from '../../constants/categories';
 import './SellerDashboard.css';
 
 const MAX_IMAGES = 7;
@@ -13,7 +14,7 @@ function SellerProductCreate({ sellerId, onBack }) {
     const [submitting, setSubmitting] = useState(false);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
-    const [form, setForm] = useState({ name: '', price: '', stock: '' });
+    const [form, setForm] = useState({ name: '', price: '', stock: '', category: '' });
     const [images, setImages] = useState([]);
     const [previews, setPreviews] = useState([]);
 
@@ -24,6 +25,7 @@ function SellerProductCreate({ sellerId, onBack }) {
                 name: product.name || '',
                 price: product.price ?? '',
                 stock: product.stock ?? '',
+                category: product.category || '',
             });
         }).catch(() => setError('No se pudo cargar el producto.'));
     }, [productId]);
@@ -56,6 +58,7 @@ function SellerProductCreate({ sellerId, onBack }) {
                 name: form.name.trim(),
                 price: Number(form.price),
                 stock: Number(form.stock),
+                category: form.category || null,
             };
             if (isEditing) {
                 await productService.update(productId, payload, images);
@@ -63,7 +66,7 @@ function SellerProductCreate({ sellerId, onBack }) {
             } else {
                 await productService.create(payload, images);
                 setSuccess('Producto creado correctamente.');
-                setForm({ name: '', price: '', stock: '' });
+                setForm({ name: '', price: '', stock: '', category: '' });
             }
             setImages([]);
             setPreviews([]);
@@ -107,6 +110,22 @@ function SellerProductCreate({ sellerId, onBack }) {
                             minLength={2}
                             maxLength={255}
                         />
+                    </div>
+
+                    <div className="seller-dash__field">
+                        <label htmlFor="pd-category">Categoría *</label>
+                        <select
+                            id="pd-category"
+                            name="category"
+                            value={form.category}
+                            onChange={handleChange}
+                            required
+                        >
+                            <option value="">Selecciona una categoría</option>
+                            {PRODUCT_CATEGORIES.map(({ value, label }) => (
+                                <option key={value} value={value}>{label}</option>
+                            ))}
+                        </select>
                     </div>
 
                     <div className="seller-dash__row">

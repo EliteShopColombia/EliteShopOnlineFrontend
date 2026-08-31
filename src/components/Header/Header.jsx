@@ -1,27 +1,27 @@
 import { useState, useRef, useEffect } from "react";
 import "./Header.css";
 import logo from "../../assets/logo.png";
+import { PRODUCT_CATEGORIES } from "../../constants/categories";
 
-function Header({ onCartClick, onAuthClick, onLogoutClick, isAuthenticated, onProfileClick, user, cartCount = 0, onOrdersClick, onSellerClick, onSellerDashboard, onAdminClick }) {
+function Header({ onCartClick, onAuthClick, onLogoutClick, isAuthenticated, onProfileClick, user, cartCount = 0, onOrdersClick, onSellerClick, onSellerDashboard, onAdminClick, onHelpClick, searchQuery, activeCategory, onSearch, onCategoryChange }) {
     const isSeller = user?.role === 'seller' || user?.role === 'ROLE_SELLER' || user?.role === 'SELLER';
     const isAdmin = user?.role === 'admin' || user?.role === 'ROLE_ADMIN';
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
+    const [localSearch, setLocalSearch] = useState(searchQuery || '');
     const dropdownRef = useRef(null);
     const menuRef = useRef(null);
+    const searchInputRef = useRef(null);
+    const mobileSearchRef = useRef(null);
 
-    const categories = [
-        "Categorías",
-        "Medicina",
-        "Deportes",
-        "Belleza",
-        "Ropa",
-        "Tecnología",
-        "Manualidades",
-        "Juguetes",
-        "Automotriz",
-        "Otro",
-    ];
+    // Debounce: disparar búsqueda 400ms después de que el usuario deja de escribir
+    useEffect(() => {
+        if (!onSearch) return;
+        const timer = setTimeout(() => {
+            onSearch(localSearch);
+        }, 400);
+        return () => clearTimeout(timer);
+    }, [localSearch, onSearch]);
 
     useEffect(() => {
         function handleClickOutside(e) {
@@ -45,6 +45,34 @@ function Header({ onCartClick, onAuthClick, onLogoutClick, isAuthenticated, onPr
         return () => { document.body.style.overflow = ""; };
     }, [menuOpen]);
 
+    const handleSearchSubmit = (e) => {
+        e.preventDefault();
+        onSearch?.(localSearch);
+    };
+
+    const handleCategoryClick = (categoryValue) => {
+        const newCategory = activeCategory === categoryValue ? '' : categoryValue;
+        onCategoryChange?.(newCategory);
+    };
+
+    const handleClearSearch = () => {
+        setLocalSearch('');
+        onSearch?.('');
+        searchInputRef.current?.focus();
+    };
+
+    const handleMobileClearSearch = () => {
+        setLocalSearch('');
+        onSearch?.('');
+        mobileSearchRef.current?.focus();
+    };
+
+    const handleMobileCategoryClick = (categoryValue) => {
+        const newCategory = activeCategory === categoryValue ? '' : categoryValue;
+        onCategoryChange?.(newCategory);
+        setMenuOpen(false);
+    };
+
     return (
         <header className="header">
 
@@ -54,6 +82,13 @@ function Header({ onCartClick, onAuthClick, onLogoutClick, isAuthenticated, onPr
                 <a
                     href="/"
                     className="header__brand"
+                    onClick={(e) => {
+                        e.preventDefault();
+                        setLocalSearch('');
+                        onSearch?.('');
+                        onCategoryChange?.('');
+                        window.location.href = '/';
+                    }}
                 >
                     <img
                         src={logo}
@@ -68,7 +103,7 @@ function Header({ onCartClick, onAuthClick, onLogoutClick, isAuthenticated, onPr
                 {/* BUSCADOR */}
                 <div className="header__search-container">
 
-                    <div className="header__search-bar">
+                    <form className="header__search-bar" onSubmit={handleSearchSubmit} role="search">
 
                         <svg className="header__search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <circle cx="11" cy="11" r="8" />
@@ -76,12 +111,29 @@ function Header({ onCartClick, onAuthClick, onLogoutClick, isAuthenticated, onPr
                         </svg>
 
                         <input
+                            ref={searchInputRef}
                             type="text"
-                            placeholder="Ropa para hombre"
+                            placeholder="Buscar productos..."
                             aria-label="Buscar productos"
+                            value={localSearch}
+                            onChange={(e) => setLocalSearch(e.target.value)}
                         />
 
-                    </div>
+                        {localSearch && (
+                            <button
+                                type="button"
+                                className="header__search-clear"
+                                onClick={handleClearSearch}
+                                aria-label="Limpiar búsqueda"
+                            >
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <line x1="18" y1="6" x2="6" y2="18" />
+                                    <line x1="6" y1="6" x2="18" y2="18" />
+                                </svg>
+                            </button>
+                        )}
+
+                    </form>
 
                 </div>
 
@@ -224,6 +276,7 @@ function Header({ onCartClick, onAuthClick, onLogoutClick, isAuthenticated, onPr
                         type="button"
                         className="header__help"
                         aria-label="Ayuda"
+                        onClick={onHelpClick}
                     >
                         ?
                     </button>
@@ -258,15 +311,25 @@ function Header({ onCartClick, onAuthClick, onLogoutClick, isAuthenticated, onPr
 
 
             {/* CATEGORÍAS */}
-            <nav className="header__categories">
+            <nav className="header__categories" aria-label="Categorías de productos">
 
-                {categories.map((category) => (
-                    <a
-                        href="#"
-                        key={category}
+                <button
+                    type="button"
+                    className={`header__category-btn${!activeCategory ? ' header__category-btn--active' : ''}`}
+                    onClick={() => onCategoryChange?.('')}
+                >
+                    Categorías
+                </button>
+
+                {PRODUCT_CATEGORIES.map(({ value, label }) => (
+                    <button
+                        type="button"
+                        key={value}
+                        className={`header__category-btn${activeCategory === value ? ' header__category-btn--active' : ''}`}
+                        onClick={() => handleCategoryClick(value)}
                     >
-                        {category}
-                    </a>
+                        {label}
+                    </button>
                 ))}
 
             </nav>
@@ -287,20 +350,49 @@ function Header({ onCartClick, onAuthClick, onLogoutClick, isAuthenticated, onPr
                         </div>
 
                         {/* BUSCADOR DENTRO DEL MENU */}
-                        <div className="header__menu-search">
+                        <form className="header__menu-search" onSubmit={(e) => { e.preventDefault(); onSearch?.(localSearch); setMenuOpen(false); }}>
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <circle cx="11" cy="11" r="8" />
                                 <line x1="21" y1="21" x2="16.65" y2="16.65" />
                             </svg>
-                            <input type="text" placeholder="Buscar productos" aria-label="Buscar productos" />
-                        </div>
+                            <input
+                                ref={mobileSearchRef}
+                                type="text"
+                                placeholder="Buscar productos"
+                                aria-label="Buscar productos"
+                                value={localSearch}
+                                onChange={(e) => setLocalSearch(e.target.value)}
+                            />
+                            {localSearch && (
+                                <button type="button" className="header__menu-search-clear" onClick={handleMobileClearSearch} aria-label="Limpiar búsqueda">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                        <line x1="18" y1="6" x2="6" y2="18" />
+                                        <line x1="6" y1="6" x2="18" y2="18" />
+                                    </svg>
+                                </button>
+                            )}
+                        </form>
 
                         <div className="header__menu-divider" />
 
                         {/* CATEGORIAS DENTRO DEL MENU */}
                         <div className="header__menu-categories">
-                            {categories.map((category) => (
-                                <a href="#" key={category} onClick={() => setMenuOpen(false)}>{category}</a>
+                            <button
+                                type="button"
+                                className={`header__menu-category-btn${!activeCategory ? ' header__menu-category-btn--active' : ''}`}
+                                onClick={() => { onCategoryChange?.(''); setMenuOpen(false); }}
+                            >
+                                Todos
+                            </button>
+                            {PRODUCT_CATEGORIES.map(({ value, label }) => (
+                                <button
+                                    type="button"
+                                    key={value}
+                                    className={`header__menu-category-btn${activeCategory === value ? ' header__menu-category-btn--active' : ''}`}
+                                    onClick={() => handleMobileCategoryClick(value)}
+                                >
+                                    {label}
+                                </button>
                             ))}
                         </div>
 
@@ -382,7 +474,7 @@ function Header({ onCartClick, onAuthClick, onLogoutClick, isAuthenticated, onPr
                             Mi Carrito
                             {cartCount > 0 && <span className="header__menu-badge">{cartCount}</span>}
                         </button>
-                        <button type="button" className="header__menu-item">
+                        <button type="button" className="header__menu-item" onClick={() => { setMenuOpen(false); onHelpClick?.(); }}>
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <circle cx="12" cy="12" r="10" />
                                 <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />

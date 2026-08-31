@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import ProductCard from "../ProductCard/ProductCard";
 import { productService } from "../../services/product.service";
 import { reviewService } from "../../services/review.service";
@@ -92,24 +92,43 @@ function adaptProduct(p) {
         oldPrice: p.oldPrice ?? null,
         rating: p.rating ?? 0,
         image: imageUrl,
+        category: p.category || '',
     };
 }
 
-function Gallery({ onProductClick }) {
-    const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(true);
+/** Normaliza texto para comparación: minúsculas, sin tildes, sin espacios extra. */
+function normalizeText(text) {
+    return (text || '')
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .trim();
+}
 
+const PAGE_SIZE = 20;
+
+function Gallery({ onProductClick, searchQuery, activeCategory }) {
+    const [allProducts, setAllProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [ratingsMap, setRatingsMap] = useState({});
+    const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+
+    // 1) Cargar todos los productos del backend una sola vez
     useEffect(() => {
         let cancelled = false;
 
-        async function fetchProducts() {
+        async function fetchAll() {
+            setLoading(true);
             try {
-                const result = await productService.getAll(0, 50);
-                if (!cancelled && result.content?.length) {
-                    const adapted = result.content.map(adaptProduct);
-                    setProducts(adapted);
+                // Traemos un lote grande para tener todos los productos disponibles
+                const result = await productService.getAll({ page: 0, size: 200 });
+                if (cancelled) return;
 
-                    // Fetch ratings from reviews for each product
+                if (result.content?.length) {
+                    const adapted = result.content.map(adaptProduct);
+                    setAllProducts(adapted);
+
+                    // Fetch ratings
                     const ratingsResults = await Promise.allSettled(
                         adapted.map(async (product) => {
                             const data = await reviewService.getByProduct(product.id);
@@ -127,37 +146,94 @@ function Gallery({ onProductClick }) {
 
                     if (cancelled) return;
 
-                    const ratingsMap = {};
-                    ratingsResults.forEach((result) => {
-                        if (result.status === "fulfilled") {
-                            ratingsMap[result.value.id] = result.value.rating;
+                    const map = {};
+                    ratingsResults.forEach((r) => {
+                        if (r.status === "fulfilled") {
+                            map[r.value.id] = r.value.rating;
                         }
                     });
-
-                    setProducts((prev) =>
-                        prev.map((p) => ({
-                            ...p,
-                            rating: ratingsMap[p.id] ?? p.rating,
-                        }))
-                    );
-                } else if (!cancelled) {
-                    setProducts(fallbackProducts);
+                    setRatingsMap(map);
+                } else {
+                    setAllProducts(fallbackProducts);
                 }
             } catch {
                 if (!cancelled) {
-                    setProducts(fallbackProducts);
+                    setAllProducts(fallbackProducts);
                 }
             } finally {
-                if (!cancelled) {
-                    setLoading(false);
-                }
+                if (!cancelled) setLoading(false);
             }
         }
 
-        fetchProducts();
+        fetchAll();
         return () => { cancelled = true; };
     }, []);
 
+    // 2) Filtrado client-side: searchQuery + activeCategory
+    const filteredProducts = useMemo(() => {
+        let result = allProducts;
+
+        // Filtrar por categoría
+        if (activeCategory) {
+            result = result.filter(
+                (p) => normalizeText(p.category) === normalizeText(activeCategory)
+            );
+        }
+
+        // Filtrar por búsqueda (coincidencia parcial en nombre)
+        if (searchQuery && searchQuery.trim()) {
+            const query = normalizeText(searchQuery);
+            result = result.filter((p) => normalizeText(p.name).includes(query));
+        }
+
+        return result;
+    }, [allProducts, searchQuery, activeCategory]);
+
+    // 3) Productos visibles (paginación client-side)
+    // visibleCount se resetea naturalmente porque filteredProducts.slice(0, N)
+    // retorna todos los resultados si N > longitud del array.
+    const visibleProducts = useMemo(
+        () => filteredProducts.slice(0, visibleCount),
+        [filteredProducts, visibleCount]
+    );
+
+    const hasMore = visibleCount < filteredProducts.length;
+
+    // Aplicar ratings a los productos visibles
+    const ratedProducts = useMemo(
+        () => visibleProducts.map((p) => ({
+            ...p,
+            rating: ratingsMap[p.id] ?? p.rating,
+        })),
+        [visibleProducts, ratingsMap]
+    );
+
+    const handleLoadMore = () => {
+        setVisibleCount((prev) => prev + PAGE_SIZE);
+    };
+
+    // Estado vacío (sin resultados)
+    if (!loading && allProducts.length > 0 && filteredProducts.length === 0) {
+        return (
+            <section className="gallery">
+                <div className="gallery__empty">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                        <circle cx="11" cy="11" r="8" />
+                        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                    </svg>
+                    <p className="gallery__empty-title">No se encontraron productos</p>
+                    <p className="gallery__empty-text">
+                        {searchQuery
+                            ? `No hay resultados para "${searchQuery}"`
+                            : `No hay productos en esta categoría`
+                        }
+                    </p>
+                </div>
+            </section>
+        );
+    }
+
+    // Skeleton de carga inicial
     if (loading) {
         return (
             <section className="gallery">
@@ -172,8 +248,17 @@ function Gallery({ onProductClick }) {
 
     return (
         <section className="gallery">
+            {(searchQuery || activeCategory) && (
+                <div className="gallery__filters-bar">
+                    <span className="gallery__results-count">
+                        {filteredProducts.length} resultado{filteredProducts.length !== 1 ? 's' : ''}
+                        {searchQuery && <> para "<strong>{searchQuery}</strong>"</>}
+                        {activeCategory && <> en <strong>{activeCategory}</strong></>}
+                    </span>
+                </div>
+            )}
             <div className="gallery__grid">
-                {products.map((product) => (
+                {ratedProducts.map((product) => (
                     <ProductCard
                         key={product.id}
                         product={product}
@@ -181,6 +266,17 @@ function Gallery({ onProductClick }) {
                     />
                 ))}
             </div>
+            {hasMore && (
+                <div className="gallery__load-more">
+                    <button
+                        type="button"
+                        className="gallery__load-more-btn"
+                        onClick={handleLoadMore}
+                    >
+                        Cargar más productos ({filteredProducts.length - visibleCount} restantes)
+                    </button>
+                </div>
+            )}
         </section>
     );
 }

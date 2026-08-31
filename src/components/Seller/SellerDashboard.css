@@ -153,6 +153,32 @@
     border-color: var(--color-text-link);
 }
 
+.seller-dash__field select {
+    height: 40px;
+
+    padding: 0 10px;
+
+    border: 1px solid var(--border-strong);
+
+    border-radius: 6px;
+
+    background-color: #1f2b3d;
+
+    color: #ffffff;
+
+    font-size: 14px;
+
+    box-sizing: border-box;
+
+    cursor: pointer;
+}
+
+.seller-dash__field select:focus {
+    outline: none;
+
+    border-color: var(--color-text-link);
+}
+
 .seller-dash__field input[type="file"] {
     padding: 8px 10px;
 
