@@ -147,24 +147,24 @@ function AdminOrders() {
               <tbody>
                 {filtered.map((order) => (
                   <tr key={order.id}>
-                    <td style={{ fontFamily: "monospace", fontSize: 13 }}>
+                    <td data-label="ID" style={{ fontFamily: "monospace", fontSize: 13 }}>
                       {shortId(order.id)}
                     </td>
-                    <td style={{ fontFamily: "monospace", fontSize: 13 }}>
+                    <td data-label="Cliente" style={{ fontFamily: "monospace", fontSize: 13 }}>
                       {shortId(order.customerId)}
                     </td>
-                    <td style={{ color: "var(--color-text)", fontWeight: 600 }}>
+                    <td data-label="Total" style={{ color: "var(--color-text)", fontWeight: 600 }}>
                       {formatCurrency(order.totalAmount)}
                     </td>
-                    <td>
+                    <td data-label="Estado">
                       <span className={`admin-badge admin-badge--${STATUS_BADGE_MAP[order.status] || "neutral"}`}>
                         {STATUS_LABELS[order.status] || order.status}
                       </span>
                     </td>
-                    <td style={{ maxWidth: 200, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                    <td data-label="Direccion" style={{ maxWidth: 200, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                       {order.shippingAddress || "-"}
                     </td>
-                    <td>{formatDate(order.createdAt)}</td>
+                    <td data-label="Fecha">{formatDate(order.createdAt)}</td>
                   </tr>
                 ))}
               </tbody>

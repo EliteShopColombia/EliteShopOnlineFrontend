@@ -114,23 +114,23 @@ function AdminSellers() {
               <tbody>
                 {filtered.map((seller) => (
                   <tr key={seller.id}>
-                    <td style={{ color: "var(--color-text)", fontWeight: 500 }}>
+                    <td data-label="Nombre" style={{ color: "var(--color-text)", fontWeight: 500 }}>
                       {seller.fullname}
                     </td>
-                    <td>{seller.tradeName}</td>
-                    <td>{seller.contact?.phoneNumber || "-"}</td>
-                    <td>
+                    <td data-label="Comercio">{seller.tradeName}</td>
+                    <td data-label="Telefono">{seller.contact?.phoneNumber || "-"}</td>
+                    <td data-label="Verificado">
                       <span className={`admin-badge ${seller.isVerified ? "admin-badge--success" : "admin-badge--warning"}`}>
                         {seller.isVerified ? "Verificado" : "Pendiente"}
                       </span>
                     </td>
-                    <td>
+                    <td data-label="Activo">
                       <span className={`admin-badge ${seller.isActive ? "admin-badge--success" : "admin-badge--danger"}`}>
                         {seller.isActive ? "Activo" : "Inactivo"}
                       </span>
                     </td>
-                    <td>{formatDate(seller.createdAt)}</td>
-                    <td>
+                    <td data-label="Registro">{formatDate(seller.createdAt)}</td>
+                    <td data-label="Acciones">
                       <button
                         type="button"
                         className="admin-btn admin-btn--secondary"

@@ -566,4 +566,251 @@
   .admin-main__content {
     padding: 16px;
   }
+
+  /* Page header */
+  .admin-page-header {
+    margin-bottom: 16px;
+  }
+
+  .admin-page-header__title {
+    font-size: 18px;
+  }
+
+  .admin-page-header__subtitle {
+    font-size: 13px;
+  }
+
+  /* Table header: stack vertically */
+  .admin-table-header {
+    padding: 12px 14px;
+    gap: 10px;
+  }
+
+  .admin-table-header__title {
+    font-size: 14px;
+  }
+
+  .admin-table-search {
+    min-width: unset;
+    width: 100%;
+    padding: 5px 10px;
+  }
+
+  .admin-table-search__input {
+    font-size: 13px;
+  }
+
+  /* ---- Responsive table → card layout ---- */
+  .admin-table--scrollable {
+    overflow-x: visible;
+  }
+
+  .admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    display: block;
+  }
+
+  .admin-table thead {
+    display: none;
+  }
+
+  .admin-table tbody {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 12px;
+  }
+
+  .admin-table tr {
+    display: flex;
+    flex-direction: column;
+    background: var(--surface-3);
+    border: 1px solid var(--border-default);
+    border-radius: 8px;
+    padding: 14px;
+    gap: 0;
+  }
+
+  .admin-table tr:hover td {
+    background: transparent;
+  }
+
+  .admin-table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    font-size: 13px;
+    border-bottom: 1px solid var(--border-default);
+    gap: 8px;
+  }
+
+  .admin-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  .admin-table td:last-child {
+    border-bottom: none;
+  }
+
+  .admin-table td::before {
+    content: attr(data-label);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    flex-shrink: 0;
+    min-width: 80px;
+  }
+
+  .admin-table td[data-label="Direccion"] {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: unset;
+    max-width: unset;
+  }
+
+  /* Detail cards */
+  .admin-detail-card {
+    padding: 16px;
+  }
+
+  .admin-detail-card__title {
+    font-size: 14px;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+  }
+
+  .admin-detail-field__label {
+    font-size: 11px;
+  }
+
+  .admin-detail-field__value {
+    font-size: 13px;
+  }
+
+  /* Buttons full width in modals */
+  .admin-modal {
+    padding: 20px;
+    margin: 12px;
+  }
+
+  .admin-modal__title {
+    font-size: 15px;
+  }
+
+  .admin-modal__text {
+    font-size: 13px;
+  }
+
+  .admin-modal__actions {
+    flex-direction: column-reverse;
+    gap: 8px;
+  }
+
+  .admin-modal__actions .admin-btn {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
+
+  /* Buttons */
+  .admin-btn {
+    padding: 8px 14px;
+    font-size: 13px;
+  }
+
+  /* Error / Loading / Empty */
+  .admin-error {
+    padding: 24px 16px;
+  }
+
+  .admin-loading {
+    padding: 40px 16px;
+  }
+
+  .admin-empty {
+    padding: 40px 16px;
+  }
+
+  /* Stat card compact */
+  .admin-stat-card {
+    padding: 14px;
+  }
+
+  .admin-stat-card__icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 6px;
+  }
+
+  .admin-stat-card__label {
+    font-size: 12px;
+  }
+
+  .admin-stat-card__value {
+    font-size: 20px;
+  }
+}
+
+/* ---- Extra small screens (480px) ---- */
+@media (max-width: 480px) {
+  .admin-main__content {
+    padding: 12px;
+  }
+
+  .admin-page-header__title {
+    font-size: 16px;
+  }
+
+  .admin-table-header {
+    padding: 10px 12px;
+  }
+
+  .admin-table tbody {
+    padding: 10px;
+    gap: 8px;
+  }
+
+  .admin-table tr {
+    padding: 12px;
+  }
+
+  .admin-table td {
+    padding: 6px 0;
+    font-size: 12px;
+  }
+
+  .admin-table td::before {
+    font-size: 10px;
+    min-width: 70px;
+  }
+
+  .admin-detail-card {
+    padding: 14px;
+  }
+
+  .admin-detail-grid {
+    gap: 12px;
+  }
+
+  .admin-pagination {
+    padding: 10px 12px;
+  }
+
+  .admin-pagination__btn {
+    padding: 5px 8px;
+    font-size: 12px;
+  }
+
+  .admin-stat-card__value {
+    font-size: 18px;
+  }
+
+  .admin-btn {
+    padding: 7px 12px;
+    font-size: 12px;
+  }
 }

@@ -111,14 +111,14 @@ function AdminCustomers() {
               <tbody>
                 {filtered.map((customer) => (
                   <tr key={customer.id}>
-                    <td style={{ color: "var(--color-text)", fontWeight: 500 }}>
+                    <td data-label="Nombre" style={{ color: "var(--color-text)", fontWeight: 500 }}>
                       {customer.firstName} {customer.lastName}
                     </td>
-                    <td>{customer.email}</td>
-                    <td>{customer.phoneNumber || "-"}</td>
-                    <td>{customer.info?.dniNumber ? `${customer.info.dniType || ""} ${customer.info.dniNumber}` : "-"}</td>
-                    <td>{customer.info?.city || "-"}</td>
-                    <td>{formatDate(customer.createdAt)}</td>
+                    <td data-label="Email">{customer.email}</td>
+                    <td data-label="Telefono">{customer.phoneNumber || "-"}</td>
+                    <td data-label="DNI">{customer.info?.dniNumber ? `${customer.info.dniType || ""} ${customer.info.dniNumber}` : "-"}</td>
+                    <td data-label="Ciudad">{customer.info?.city || "-"}</td>
+                    <td data-label="Registro">{formatDate(customer.createdAt)}</td>
                   </tr>
                 ))}
               </tbody>
