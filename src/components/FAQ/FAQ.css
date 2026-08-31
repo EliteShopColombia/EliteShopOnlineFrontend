@@ -1,0 +1,442 @@
+/* ================================================================
+   FAQ PAGE - Mobile First (base: <= 420px)
+   ================================================================ */
+
+/* ------------------------------------------------
+   PAGE SHELL
+   ------------------------------------------------ */
+.faq-page {
+    width: 100%;
+    min-height: calc(100vh - 120px);
+    padding: 16px 12px 48px;
+    box-sizing: border-box;
+}
+
+/* ------------------------------------------------
+   BACK BUTTON
+   ------------------------------------------------ */
+.faq__back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: none;
+    color: var(--color-text-secondary);
+    font-size: 13px;
+    cursor: pointer;
+    padding: 0;
+    margin-bottom: 16px;
+    transition: color 0.2s ease;
+}
+
+.faq__back:hover {
+    color: #ffffff;
+}
+
+/* ------------------------------------------------
+   CONTAINER
+   ------------------------------------------------ */
+.faq__container {
+    max-width: 720px;
+    margin: 0 auto;
+}
+
+/* ------------------------------------------------
+   HEADER
+   ------------------------------------------------ */
+.faq__header {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.faq__icon-wrapper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--color-accent-strong), #3f96f5);
+    margin-bottom: 14px;
+}
+
+.faq__icon {
+    color: #ffffff;
+}
+
+.faq__title {
+    margin: 0 0 6px;
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.faq__subtitle {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+/* ------------------------------------------------
+   TABS
+   ------------------------------------------------ */
+.faq__tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 20px;
+    background: var(--surface-1);
+    border: 1px solid var(--border-default);
+    border-radius: 10px;
+    padding: 4px;
+}
+
+.faq__tab {
+    flex: 1;
+    padding: 10px 8px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--color-text-secondary);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    white-space: nowrap;
+}
+
+.faq__tab:hover {
+    color: #ffffff;
+}
+
+.faq__tab--active {
+    background: var(--color-accent-strong);
+    color: #ffffff;
+}
+
+.faq__tab:focus-visible {
+    outline: 2px solid var(--color-text-link);
+    outline-offset: 2px;
+}
+
+/* ------------------------------------------------
+   ACCORDION PANEL
+   ------------------------------------------------ */
+.faq__panel {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 28px;
+}
+
+/* ------------------------------------------------
+   ACCORDION ITEM
+   ------------------------------------------------ */
+.faq__item {
+    background: var(--surface-1);
+    border: 1px solid var(--border-default);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: border-color 0.2s ease;
+}
+
+.faq__item:hover {
+    border-color: var(--border-strong);
+}
+
+.faq__item--open {
+    border-color: var(--color-accent-strong);
+}
+
+/* ------------------------------------------------
+   QUESTION BUTTON
+   ------------------------------------------------ */
+.faq__question {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 14px;
+    background: none;
+    border: none;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.faq__question:hover {
+    background: rgba(59, 130, 246, 0.06);
+}
+
+.faq__question:focus-visible {
+    outline: 2px solid var(--color-text-link);
+    outline-offset: -2px;
+    border-radius: 10px;
+}
+
+.faq__question-text {
+    flex: 1;
+}
+
+.faq__chevron {
+    flex-shrink: 0;
+    color: var(--color-text-secondary);
+    transition: transform 0.25s ease;
+}
+
+.faq__item--open .faq__chevron {
+    transform: rotate(180deg);
+    color: var(--color-accent);
+}
+
+/* ------------------------------------------------
+   ANSWER PANEL
+   ------------------------------------------------ */
+.faq__answer {
+    overflow: hidden;
+}
+
+.faq__answer[hidden] {
+    display: none;
+}
+
+.faq__answer-inner {
+    padding: 0 14px 14px;
+}
+
+.faq__answer-inner p {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+/* ------------------------------------------------
+   CONTACT FOOTER
+   ------------------------------------------------ */
+.faq__contact {
+    background: var(--surface-1);
+    border: 1px solid var(--border-default);
+    border-radius: 12px;
+    padding: 20px 16px;
+    text-align: center;
+}
+
+.faq__contact-text {
+    margin: 0 0 14px;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.faq__contact-channels {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.faq__channel {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: var(--color-text-secondary);
+    font-size: 13px;
+}
+
+.faq__channel svg {
+    color: var(--color-accent);
+    flex-shrink: 0;
+}
+
+/* ================================================================
+   RESPONSIVE - Tablet (>= 421px)
+   ================================================================ */
+@media (min-width: 421px) {
+    .faq-page {
+        padding: 20px 16px 50px;
+    }
+
+    .faq__title {
+        font-size: 22px;
+    }
+
+    .faq__subtitle {
+        font-size: 14px;
+    }
+
+    .faq__question {
+        padding: 16px;
+        font-size: 14px;
+    }
+
+    .faq__answer-inner {
+        padding: 0 16px 16px;
+    }
+
+    .faq__answer-inner p {
+        font-size: 14px;
+    }
+
+    .faq__tab {
+        font-size: 13px;
+        padding: 11px 12px;
+    }
+}
+
+/* ================================================================
+   RESPONSIVE - Small tablet (>= 601px)
+   ================================================================ */
+@media (min-width: 601px) {
+    .faq-page {
+        padding: 28px 24px 50px;
+    }
+
+    .faq__header {
+        margin-bottom: 28px;
+    }
+
+    .faq__icon-wrapper {
+        width: 64px;
+        height: 64px;
+        margin-bottom: 16px;
+    }
+
+    .faq__title {
+        font-size: 26px;
+    }
+
+    .faq__tabs {
+        margin-bottom: 24px;
+    }
+
+    .faq__tab {
+        font-size: 14px;
+        padding: 12px 16px;
+    }
+
+    .faq__item {
+        border-radius: 12px;
+    }
+
+    .faq__contact {
+        padding: 24px;
+    }
+
+    .faq__contact-channels {
+        flex-direction: row;
+        justify-content: center;
+        gap: 24px;
+        flex-wrap: wrap;
+    }
+}
+
+/* ================================================================
+   RESPONSIVE - Desktop (>= 851px)
+   ================================================================ */
+@media (min-width: 851px) {
+    .faq-page {
+        padding: 36px 40px 60px;
+    }
+
+    .faq__container {
+        max-width: 780px;
+    }
+
+    .faq__header {
+        margin-bottom: 32px;
+    }
+
+    .faq__icon-wrapper {
+        width: 72px;
+        height: 72px;
+        margin-bottom: 18px;
+    }
+
+    .faq__icon {
+        width: 36px;
+        height: 36px;
+    }
+
+    .faq__title {
+        font-size: 28px;
+    }
+
+    .faq__subtitle {
+        font-size: 15px;
+    }
+
+    .faq__question {
+        padding: 18px 20px;
+        font-size: 15px;
+    }
+
+    .faq__answer-inner {
+        padding: 0 20px 18px;
+    }
+
+    .faq__answer-inner p {
+        font-size: 14px;
+        line-height: 1.7;
+    }
+}
+
+/* ================================================================
+   RESPONSIVE - Large desktop (>= 1101px)
+   ================================================================ */
+@media (min-width: 1101px) {
+    .faq-page {
+        padding: 40px 70px 60px;
+    }
+
+    .faq__container {
+        max-width: 840px;
+    }
+
+    .faq__title {
+        font-size: 30px;
+    }
+
+    .faq__tab {
+        font-size: 15px;
+        padding: 13px 20px;
+    }
+
+    .faq__question {
+        padding: 20px 24px;
+        font-size: 16px;
+    }
+
+    .faq__answer-inner {
+        padding: 0 24px 20px;
+    }
+
+    .faq__answer-inner p {
+        font-size: 15px;
+    }
+
+    .faq__contact {
+        padding: 28px 32px;
+    }
+}
+
+/* ================================================================
+   ACCESSIBILITY - Reduced motion
+   ================================================================ */
+@media (prefers-reduced-motion: reduce) {
+    .faq__chevron {
+        transition: none;
+    }
+
+    .faq__tab,
+    .faq__question,
+    .faq__item,
+    .faq__back {
+        transition: none;
+    }
+}
