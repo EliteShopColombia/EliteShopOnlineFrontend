@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import ProductCard from "../ProductCard/ProductCard";
 import { productService } from "../../services/product.service";
+import { reviewService } from "../../services/review.service";
 import "./Gallery.css";
 
 const fallbackProducts = [
@@ -105,7 +106,40 @@ function Gallery({ onProductClick }) {
             try {
                 const result = await productService.getAll(0, 50);
                 if (!cancelled && result.content?.length) {
-                    setProducts(result.content.map(adaptProduct));
+                    const adapted = result.content.map(adaptProduct);
+                    setProducts(adapted);
+
+                    // Fetch ratings from reviews for each product
+                    const ratingsResults = await Promise.allSettled(
+                        adapted.map(async (product) => {
+                            const data = await reviewService.getByProduct(product.id);
+                            const list = Array.isArray(data) ? data : data?.content || [];
+                            if (list.length > 0) {
+                                const sum = list.reduce(
+                                    (acc, r) => acc + (r.qualify || r.productQualify || 0),
+                                    0
+                                );
+                                return { id: product.id, rating: parseFloat((sum / list.length).toFixed(1)) };
+                            }
+                            return { id: product.id, rating: 0 };
+                        })
+                    );
+
+                    if (cancelled) return;
+
+                    const ratingsMap = {};
+                    ratingsResults.forEach((result) => {
+                        if (result.status === "fulfilled") {
+                            ratingsMap[result.value.id] = result.value.rating;
+                        }
+                    });
+
+                    setProducts((prev) =>
+                        prev.map((p) => ({
+                            ...p,
+                            rating: ratingsMap[p.id] ?? p.rating,
+                        }))
+                    );
                 } else if (!cancelled) {
                     setProducts(fallbackProducts);
                 }
