@@ -11,7 +11,7 @@ function AdminSellers() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [search, setSearch] = useState("");
-  const [confirmModal, setConfirmModal] = useState(null);
+
 
   useEffect(() => {
     let cancelled = false;
@@ -35,18 +35,6 @@ function AdminSellers() {
     loadSellers();
     return () => { cancelled = true; };
   }, [page]);
-
-  const handleToggleStatus = async (seller) => {
-    try {
-      await adminService.updateSellerStatus(seller.id, !seller.isActive);
-      setConfirmModal(null);
-      setPage((p) => p);
-    } catch (err) {
-      const { error: msg } = parseApiError(err);
-      setError(msg || "Error al actualizar estado");
-      setConfirmModal(null);
-    }
-  };
 
   const filtered = data.content.filter((s) => {
     if (!search) return true;
@@ -137,15 +125,9 @@ function AdminSellers() {
                       </span>
                     </td>
                     <td>
-                      <label className="admin-toggle" title={seller.isActive ? "Desactivar" : "Activar"}>
-                        <input
-                          type="checkbox"
-                          checked={seller.isActive}
-                          onChange={() => setConfirmModal(seller)}
-                        />
-                        <span className="admin-toggle__track" />
-                        <span className="admin-toggle__thumb" />
-                      </label>
+                      <span className={`admin-badge ${seller.isActive ? "admin-badge--success" : "admin-badge--danger"}`}>
+                        {seller.isActive ? "Activo" : "Inactivo"}
+                      </span>
                     </td>
                     <td>{formatDate(seller.createdAt)}</td>
                     <td>
@@ -206,38 +188,6 @@ function AdminSellers() {
           </div>
         )}
       </div>
-
-      {/* Modal de confirmacion */}
-      {confirmModal && (
-        <div className="admin-modal-overlay" onClick={() => setConfirmModal(null)}>
-          <div className="admin-modal" onClick={(e) => e.stopPropagation()}>
-            <h3 className="admin-modal__title">
-              {confirmModal.isActive ? "Desactivar vendedor" : "Activar vendedor"}
-            </h3>
-            <p className="admin-modal__text">
-              {confirmModal.isActive
-                ? `Deseas desactivar a "${confirmModal.tradeName}"? No podra vender mientras este desactivado.`
-                : `Deseas activar a "${confirmModal.tradeName}"? Podra volver a vender.`}
-            </p>
-            <div className="admin-modal__actions">
-              <button
-                type="button"
-                className="admin-btn admin-btn--secondary"
-                onClick={() => setConfirmModal(null)}
-              >
-                Cancelar
-              </button>
-              <button
-                type="button"
-                className={`admin-btn ${confirmModal.isActive ? "admin-btn--danger" : "admin-btn--success"}`}
-                onClick={() => handleToggleStatus(confirmModal)}
-              >
-                {confirmModal.isActive ? "Desactivar" : "Activar"}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
