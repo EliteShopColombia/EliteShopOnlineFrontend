@@ -3,6 +3,8 @@ import { useAuth } from '../../context/AuthContext';
 import { parseApiError } from '../../helpers/api.helpers';
 import { LOCATION_ERROR_CODES } from '../../constants/errorCodes';
 import DepartmentCitySelect from '../shared/DepartmentCitySelect';
+import LegalModal from './LegalModal';
+import { TERMS_AND_CONDITIONS, PRIVACY_POLICY } from './legalContent';
 import './auth.css';
 
 export function RegisterForm({ onSwitchToLogin, onSuccess }) {
@@ -22,6 +24,8 @@ export function RegisterForm({ onSwitchToLogin, onSuccess }) {
   const [error, setError] = useState('');
   const [fieldErrors, setFieldErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [legalModal, setLegalModal] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -49,6 +53,13 @@ export function RegisterForm({ onSwitchToLogin, onSuccess }) {
     setLoading(true);
     setError('');
     setFieldErrors({});
+
+    if (!acceptedTerms) {
+      setError('Debes aceptar los Terminos y Condiciones y la Politica de Privacidad para continuar');
+      setLoading(false);
+      return;
+    }
+
     try {
       await register(form);
       onSuccess?.();
@@ -200,6 +211,45 @@ export function RegisterForm({ onSwitchToLogin, onSuccess }) {
             cityError={fieldErrors.city || ''}
           />
 
+          <div className="auth-modal__consent">
+            <label className="auth-modal__consent-label">
+              <input
+                type="checkbox"
+                className="auth-modal__consent-checkbox"
+                checked={acceptedTerms}
+                onChange={(e) => {
+                  setAcceptedTerms(e.target.checked);
+                  if (error) setError('');
+                }}
+                required
+              />
+              <span className="auth-modal__consent-text">
+                Acepto los{' '}
+                <button
+                  type="button"
+                  className="auth-modal__legal-link"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setLegalModal('terms');
+                  }}
+                >
+                  Terminos y Condiciones
+                </button>
+                {' '}y la{' '}
+                <button
+                  type="button"
+                  className="auth-modal__legal-link"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setLegalModal('privacy');
+                  }}
+                >
+                  Politica de Privacidad
+                </button>
+              </span>
+            </label>
+          </div>
+
           {error && <p className="auth-modal__error">{error}</p>}
 
           <button type="submit" className="auth-modal__submit" disabled={loading}>
@@ -214,6 +264,21 @@ export function RegisterForm({ onSwitchToLogin, onSuccess }) {
           </button>
         </p>
       </div>
+
+      {legalModal === 'terms' && (
+        <LegalModal
+          title="Terminos y Condiciones"
+          content={TERMS_AND_CONDITIONS}
+          onClose={() => setLegalModal(null)}
+        />
+      )}
+      {legalModal === 'privacy' && (
+        <LegalModal
+          title="Politica de Privacidad"
+          content={PRIVACY_POLICY}
+          onClose={() => setLegalModal(null)}
+        />
+      )}
     </div>
   );
 }
