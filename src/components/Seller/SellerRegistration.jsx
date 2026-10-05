@@ -1,7 +1,6 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { sellerService } from '../../services/seller.service';
-import { sellerVerificationService } from '../../services/seller-verification.service';
 import { BANKS, ACCOUNT_TYPES, DNI_TYPES } from '../../constants/colombia';
 import { LOCATION_ERROR_CODES } from '../../constants/errorCodes';
 import { parseApiError } from '../../helpers/api.helpers';
@@ -26,27 +25,11 @@ function SellerRegistration({ onBack, onSellerRegistered }) {
         numberAccount: '',
     });
 
-    const [sellerId, setSellerId] = useState(null);
-    const [verification, setVerification] = useState(null);
     const [submitting, setSubmitting] = useState(false);
-    const [uploading, setUploading] = useState('');
-    const [validating, setValidating] = useState(false);
     const [error, setError] = useState('');
     const [fieldErrors, setFieldErrors] = useState({});
-    const [success, setSuccess] = useState('');
-    const pollingRef = useRef(null);
 
-    const stopPolling = () => {
-        if (pollingRef.current) {
-            clearInterval(pollingRef.current);
-            pollingRef.current = null;
-        }
-    };
-
-    useEffect(() => {
-        return () => stopPolling();
-    }, []);
-
+    // Si el usuario ya es vendedor, la verificación vive en /seller/verification
     useEffect(() => {
         if (!auth?.userId) return;
         let cancelled = false;
@@ -55,18 +38,16 @@ function SellerRegistration({ onBack, onSellerRegistered }) {
             if (auth.sellerId) {
                 const existing = await sellerService.getById(auth.sellerId).catch(() => null);
                 if (!cancelled && existing) {
-                    setSellerId(existing.id);
                     localStorage.setItem('sellerId', existing.id);
+                    onSellerRegistered?.(existing.id);
                     return;
                 }
             }
-
-            if (!cancelled) setSellerId(null);
         }
 
         checkSeller();
         return () => { cancelled = true; };
-    }, [auth?.userId, auth?.firstName, auth?.lastName, auth?.sellerId]);
+    }, [auth?.userId, auth?.firstName, auth?.lastName, auth?.sellerId, onSellerRegistered]);
 
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
@@ -87,7 +68,6 @@ function SellerRegistration({ onBack, onSellerRegistered }) {
         setSubmitting(true);
         setError('');
         setFieldErrors({});
-        setSuccess('');
         try {
             const result = await sellerService.create(form);
             let updatedAuth = null;
@@ -95,12 +75,14 @@ function SellerRegistration({ onBack, onSellerRegistered }) {
                 updatedAuth = updateToken(result);
             }
             const newSellerId = updatedAuth?.sellerId || result.sellerId || result.id || result.user?.id;
-            setSellerId(newSellerId);
             if (newSellerId) {
                 localStorage.setItem('sellerId', newSellerId);
                 updateUser({ sellerId: newSellerId });
             }
-            setSuccess('Vendedor registrado. Ahora sube tus documentos de verificacion.');
+            // Redirige al flujo de verificación de identidad
+            if (newSellerId) {
+                onSellerRegistered?.(newSellerId);
+            }
         } catch (err) {
             const { error, code, fieldErrors: fe } = parseApiError(err);
 
@@ -118,126 +100,6 @@ function SellerRegistration({ onBack, onSellerRegistered }) {
             setSubmitting(false);
         }
     };
-
-    const loadVerification = async (id) => {
-        const data = await sellerVerificationService.getStatus(id).catch(() => null);
-        if (data) setVerification(data);
-    };
-
-    const handleUpload = async (field, file) => {
-        if (!sellerId) return;
-        setUploading(field);
-        setError('');
-        try {
-            if (field === 'document') {
-                await sellerVerificationService.uploadDocument(sellerId, file);
-            } else {
-                await sellerVerificationService.uploadSelfie(sellerId, file);
-            }
-            await loadVerification(sellerId);
-            setSuccess(field === 'document' ? 'Documento subido correctamente.' : 'Selfie subida correctamente.');
-        } catch (err) {
-            const { error } = parseApiError(err);
-            setError(error || 'No se pudo subir el archivo');
-        } finally {
-            setUploading('');
-        }
-    };
-
-    if (sellerId) {
-        return (
-            <div className="seller-reg">
-                <div className="seller-reg__container">
-                    <button type="button" className="seller-reg__back" onClick={onBack}>
-                        ← Volver
-                    </button>
-
-                    <h1 className="seller-reg__title">Verificacion de Vendedor</h1>
-
-                    {error && <p className="seller-reg__error">{error}</p>}
-                    {success && <p className="seller-reg__success">{success}</p>}
-
-                    <div className="seller-reg__status">
-                        <span>Estado de verificacion:</span>
-                        <strong>{verification?.status || 'NO INICIADA'}</strong>
-                    </div>
-
-                    <div className="seller-reg__uploads">
-                        <div className="seller-reg__upload">
-                            <h3>Documento de identidad</h3>
-                            <p>JPG o PNG, maximo 5 MB</p>
-                            <input
-                                type="file"
-                                accept="image/jpeg,image/png"
-                                onChange={(e) => e.target.files?.[0] && handleUpload('document', e.target.files[0])}
-                                disabled={!!uploading}
-                            />
-                            {uploading === 'document' && <span className="seller-reg__uploading">Subiendo...</span>}
-                        </div>
-
-                        <div className="seller-reg__upload">
-                            <h3>Selfie</h3>
-                            <p>JPG o PNG, maximo 5 MB</p>
-                            <input
-                                type="file"
-                                accept="image/jpeg,image/png"
-                                onChange={(e) => e.target.files?.[0] && handleUpload('selfie', e.target.files[0])}
-                                disabled={!!uploading}
-                            />
-                            {uploading === 'selfie' && <span className="seller-reg__uploading">Subiendo...</span>}
-                        </div>
-                    </div>
-
-                    <button
-                        type="button"
-                        className="seller-reg__validate"
-                        disabled={validating || !!uploading}
-                        onClick={async () => {
-                            setError('');
-                            setSuccess('');
-                            setValidating(true);
-                            try {
-                                await sellerVerificationService.validate(sellerId);
-                                setSuccess('Validacion en proceso. Consultando estado...');
-                                pollingRef.current = setInterval(async () => {
-                                    try {
-                                        const data = await sellerVerificationService.getStatus(sellerId);
-                                        setVerification(data);
-                                        const s = data?.status;
-                                        if (s === 'APPROVED' || s === 'REJECTED' || s === 'VERIFIED' || s === 'FAILED') {
-                                            stopPolling();
-                                            setValidating(false);
-                                            setSuccess(s === 'APPROVED' || s === 'VERIFIED'
-                                                ? 'Verificacion aprobada.'
-                                                : 'Verificacion rechazada.');
-                                        }
-                                    } catch {
-                                        stopPolling();
-                                        setValidating(false);
-                                        setError('Error al consultar estado de verificacion.');
-                                    }
-                                }, 4000);
-                            } catch (err) {
-                                const { error } = parseApiError(err);
-                                setError(error || 'No se pudo validar la verificacion');
-                                setValidating(false);
-                            }
-                        }}
-                    >
-                        {validating ? 'Validando...' : 'Enviar para validacion'}
-                    </button>
-
-                    <button
-                        type="button"
-                        className="seller-reg__submit"
-                        onClick={() => onSellerRegistered?.(sellerId)}
-                    >
-                        Ir a mi panel de ventas
-                    </button>
-                </div>
-            </div>
-        );
-    }
 
     return (
         <div className="seller-reg">

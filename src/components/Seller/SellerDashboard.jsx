@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { productService } from '../../services/product.service';
 import { orderService } from '../../services/order.service';
+import { sellerVerificationService, normalizeVerificationStatus } from '../../services/seller-verification.service';
 import { getImageUrl } from '../../helpers/images';
 import { parseApiError } from '../../helpers/api.helpers';
 import './SellerDashboard.css';
@@ -21,6 +22,22 @@ const STATUS_LABELS = {
     CANCELLED: 'Cancelado',
     DISPUTE: 'En disputa',
     REFUNDED: 'Reembolsado',
+};
+
+const VERIFICATION_LABELS = {
+    DOCUMENT_UPLOADED: 'Cédula subida. Falta tu selfie.',
+    SELFIE_UPLOADED: 'Cédula y selfie listas. Falta verificar.',
+    PROCESSING: 'Verificando tu identidad...',
+    APPROVED: 'Identidad verificada. Ya puedes vender.',
+    REJECTED: 'Verificación fallida. Debes reintentar.',
+};
+
+const VERIFICATION_TONES = {
+    APPROVED: 'success',
+    REJECTED: 'error',
+    DOCUMENT_UPLOADED: 'warn',
+    SELFIE_UPLOADED: 'warn',
+    PROCESSING: 'warn',
 };
 
 function readCount(value) {
@@ -71,6 +88,8 @@ function SellerDashboard({ sellerId: propSellerId, onBack, onNavigate }) {
     const [deleteProduct, setDeleteProduct] = useState(null);
     const [deleting, setDeleting] = useState(false);
     const [productError, setProductError] = useState('');
+    const [verificationStatus, setVerificationStatus] = useState('');
+    const [verificationLoading, setVerificationLoading] = useState(() => !effectiveSellerId);
 
     const handleDeleteProduct = async () => {
         if (!deleteProduct) return;
@@ -129,6 +148,25 @@ function SellerDashboard({ sellerId: propSellerId, onBack, onNavigate }) {
         return () => { cancelled = true; };
     }, [effectiveSellerId]);
 
+    useEffect(() => {
+        if (!effectiveSellerId) {
+            return; // verificationLoading ya nace en false sin sellerId
+        }
+        let cancelled = false;
+        sellerVerificationService
+            .getStatus(effectiveSellerId)
+            .then((data) => {
+                if (!cancelled) setVerificationStatus(normalizeVerificationStatus(data?.status) || '');
+            })
+            .catch(() => {
+                if (!cancelled) setVerificationStatus('');
+            })
+            .finally(() => {
+                if (!cancelled) setVerificationLoading(false);
+            });
+        return () => { cancelled = true; };
+    }, [effectiveSellerId]);
+
     const calculatedRevenue = orders
         .filter((o) => !['CANCELLED', 'REFUNDED'].includes(o.status))
         .reduce((sum, o) => sum + getOrderTotal(o), 0);
@@ -150,6 +188,24 @@ function SellerDashboard({ sellerId: propSellerId, onBack, onNavigate }) {
                     <p className="seller-dash__muted">Cargando datos...</p>
                 ) : (
                     <>
+                        <section className={`seller-dash__verif seller-dash__verif--${VERIFICATION_TONES[verificationStatus] || 'info'}`}>
+                            <div className="seller-dash__verif-info">
+                                <strong className="seller-dash__verif-title">Verificación de identidad</strong>
+                                <span className="seller-dash__verif-text">
+                                    {verificationLoading
+                                        ? 'Consultando estado...'
+                                        : (VERIFICATION_LABELS[verificationStatus] || 'Sin verificación. Debes verificar tu identidad para vender.')}
+                                </span>
+                            </div>
+                            <button
+                                type="button"
+                                className="seller-dash__link-btn"
+                                onClick={() => onNavigate?.('/seller/verification')}
+                            >
+                                {verificationStatus === 'APPROVED' ? 'Ver estado' : 'Verificar identidad'}
+                            </button>
+                        </section>
+
                         <section className="seller-dash__stats">
                             <div className="seller-dash__stat">
                                 <span className="seller-dash__stat-label">Productos</span>

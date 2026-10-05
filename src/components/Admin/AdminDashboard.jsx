@@ -7,11 +7,14 @@ function AdminDashboard() {
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [reloadKey, setReloadKey] = useState(0);
 
   useEffect(() => {
     let cancelled = false;
 
     async function loadDashboard() {
+      setError(null);
+      setLoading(true);
       try {
         const data = await adminService.getDashboard();
         if (!cancelled) setStats(data);
@@ -27,7 +30,7 @@ function AdminDashboard() {
 
     loadDashboard();
     return () => { cancelled = true; };
-  }, []);
+  }, [reloadKey]);
 
   if (loading) {
     return (
@@ -42,7 +45,7 @@ function AdminDashboard() {
     return (
       <div className="admin-error">
         <p className="admin-error__text">{error}</p>
-        <button type="button" className="admin-error__retry" onClick={() => window.location.reload()}>
+        <button type="button" className="admin-error__retry" onClick={() => setReloadKey((k) => k + 1)}>
           Reintentar
         </button>
       </div>

@@ -1,14 +1,20 @@
 import "./ProductCard.css";
 
-function ProductCard({ product, onClick }) {
+function ProductCard({ product, onClick, onAddToCart }) {
     const formatPrice = (price) => {
         return new Intl.NumberFormat('es-CO').format(price);
     };
 
     const filledStars = Math.round(Number(product.rating || 0));
 
+    const handleCartClick = (event) => {
+        // Evita que el clic burbujee y abra el detalle del producto.
+        event.stopPropagation();
+        onAddToCart?.(product, 1);
+    };
+
     return (
-        <article className="product-card" onClick={() => onClick?.(product)} role="button" tabIndex={0} onKeyDown={(e) => e.key === 'Enter' && onClick?.(product)}>
+        <article className="product-card" onClick={() => onClick?.(product)} role="button" tabIndex={0} onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && onClick?.(product)}>
 
             {/* IMAGEN */}
             <div className="product-card__image-container">
@@ -45,6 +51,7 @@ function ProductCard({ product, onClick }) {
                         type="button"
                         className="product-card__cart"
                         aria-label="Agregar al carrito"
+                        onClick={handleCartClick}
                     >
                         <svg viewBox="0 0 24 24" aria-hidden="true">
                             <path d="M3 4h2l2.4 10.2a2 2 0 0 0 2 1.5h7.8a2 2 0 0 0 1.9-1.4L21 7H7" />

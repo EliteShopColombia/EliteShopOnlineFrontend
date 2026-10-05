@@ -44,7 +44,14 @@ function ShippingLabel() {
     const [order, setOrder] = useState(null);
     const [shipping] = useState(() => {
         const savedShipping = localStorage.getItem(`demo-shipping-${orderId}`);
-        return savedShipping ? JSON.parse(savedShipping) : null;
+        if (!savedShipping) return null;
+        // Un valor corrupto en localStorage no debe tumbar toda la pantalla
+        // (antes lo capturaba el ErrorBoundary y rompía el render).
+        try {
+            return JSON.parse(savedShipping);
+        } catch {
+            return null;
+        }
     });
 
     useEffect(() => {

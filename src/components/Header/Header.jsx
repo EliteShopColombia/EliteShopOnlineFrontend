@@ -1,9 +1,11 @@
 import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Header.css";
 import logo from "../../assets/logo.png";
 import { PRODUCT_CATEGORIES } from "../../constants/categories";
 
 function Header({ onCartClick, onAuthClick, onLogoutClick, isAuthenticated, onProfileClick, user, cartCount = 0, onOrdersClick, onSellerClick, onSellerDashboard, onAdminClick, onHelpClick, searchQuery, activeCategory, onSearch, onCategoryChange }) {
+    const navigate = useNavigate();
     const isSeller = user?.role === 'seller' || user?.role === 'ROLE_SELLER' || user?.role === 'SELLER';
     const isAdmin = user?.role === 'admin' || user?.role === 'ROLE_ADMIN';
     const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -87,7 +89,9 @@ function Header({ onCartClick, onAuthClick, onLogoutClick, isAuthenticated, onPr
                         setLocalSearch('');
                         onSearch?.('');
                         onCategoryChange?.('');
-                        window.location.href = '/';
+                        // navigate mantiene el SPA; window.location.href recargaba
+                        // toda la aplicación y perdía el estado.
+                        navigate('/');
                     }}
                 >
                     <img

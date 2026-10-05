@@ -1,5 +1,12 @@
 const EPAYCO_SDK_URL = 'https://checkout.epayco.co/checkout-v2.js';
 
+/**
+ * Modo sandbox de ePayco. Por defecto `true` (seguro para desarrollo); en
+ * producción debe definirse VITE_EPAYCO_TEST=false en el entorno de build.
+ */
+const EPAYCO_TEST_MODE =
+  String(import.meta.env.VITE_EPAYCO_TEST ?? 'true').toLowerCase() !== 'false';
+
 let sdkLoaded = false;
 
 function loadSdk() {
@@ -30,7 +37,7 @@ export async function openEpaycoCheckout(sessionId, { onResponse, onErrors, onCl
   return new Promise((resolve, reject) => {
     const checkout = window.ePayco.checkout.configure({
       sessionId,
-      test: true,
+      test: EPAYCO_TEST_MODE,
     });
 
     checkout.setHooks({

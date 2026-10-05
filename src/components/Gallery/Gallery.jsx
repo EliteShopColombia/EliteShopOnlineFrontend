@@ -107,11 +107,13 @@ function normalizeText(text) {
 
 const PAGE_SIZE = 20;
 
-function Gallery({ onProductClick, searchQuery, activeCategory }) {
+function Gallery({ onProductClick, onAddToCart, searchQuery, activeCategory }) {
     const [allProducts, setAllProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [ratingsMap, setRatingsMap] = useState({});
     const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+    // Los productos de ejemplo no deben confundirse con el catálogo real.
+    const [isDemoCatalog, setIsDemoCatalog] = useState(false);
 
     // 1) Cargar todos los productos del backend una sola vez
     useEffect(() => {
@@ -127,38 +129,17 @@ function Gallery({ onProductClick, searchQuery, activeCategory }) {
                 if (result.content?.length) {
                     const adapted = result.content.map(adaptProduct);
                     setAllProducts(adapted);
-
-                    // Fetch ratings
-                    const ratingsResults = await Promise.allSettled(
-                        adapted.map(async (product) => {
-                            const data = await reviewService.getByProduct(product.id);
-                            const list = Array.isArray(data) ? data : data?.content || [];
-                            if (list.length > 0) {
-                                const sum = list.reduce(
-                                    (acc, r) => acc + (r.qualify || r.productQualify || 0),
-                                    0
-                                );
-                                return { id: product.id, rating: parseFloat((sum / list.length).toFixed(1)) };
-                            }
-                            return { id: product.id, rating: 0 };
-                        })
-                    );
-
-                    if (cancelled) return;
-
-                    const map = {};
-                    ratingsResults.forEach((r) => {
-                        if (r.status === "fulfilled") {
-                            map[r.value.id] = r.value.rating;
-                        }
-                    });
-                    setRatingsMap(map);
+                    // Las calificaciones se cargan bajo demanda para los productos
+                    // visibles (ver efecto de ratings); antes se lanzaba una petición
+                    // por cada producto del catálogo a la vez.
                 } else {
                     setAllProducts(fallbackProducts);
+                    setIsDemoCatalog(true);
                 }
             } catch {
                 if (!cancelled) {
                     setAllProducts(fallbackProducts);
+                    setIsDemoCatalog(true);
                 }
             } finally {
                 if (!cancelled) setLoading(false);
@@ -199,6 +180,43 @@ function Gallery({ onProductClick, searchQuery, activeCategory }) {
 
     const hasMore = visibleCount < filteredProducts.length;
 
+    // 4) Calificaciones: solo de los productos visibles y de forma secuencial.
+    // Evita el pico de peticiones que se producía al cargar todo el catálogo.
+    useEffect(() => {
+        let cancelled = false;
+        const pending = visibleProducts.filter((p) => ratingsMap[p.id] === undefined);
+        if (pending.length === 0) return;
+
+        (async () => {
+            for (const product of pending) {
+                if (cancelled) return;
+                try {
+                    const data = await reviewService.getByProduct(product.id);
+                    const list = Array.isArray(data) ? data : data?.content || [];
+                    const rating =
+                        list.length > 0
+                            ? parseFloat(
+                                  (
+                                      list.reduce((acc, r) => acc + (r.qualify || r.productQualify || 0), 0) /
+                                      list.length
+                                  ).toFixed(1)
+                              )
+                            : 0;
+                    if (!cancelled) {
+                        setRatingsMap((prev) => ({ ...prev, [product.id]: rating }));
+                    }
+                } catch {
+                    if (!cancelled) {
+                        setRatingsMap((prev) => ({ ...prev, [product.id]: 0 }));
+                    }
+                }
+            }
+        })();
+
+        return () => { cancelled = true; };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [visibleProducts]);
+
     // Aplicar ratings a los productos visibles
     const ratedProducts = useMemo(
         () => visibleProducts.map((p) => ({
@@ -237,7 +255,7 @@ function Gallery({ onProductClick, searchQuery, activeCategory }) {
     if (loading) {
         return (
             <section className="gallery">
-                <div className="gallery__grid">
+            <div className="gallery__grid">
                     {Array.from({ length: 8 }).map((_, i) => (
                         <div key={i} className="product-card product-card--skeleton" />
                     ))}
@@ -257,12 +275,19 @@ function Gallery({ onProductClick, searchQuery, activeCategory }) {
                     </span>
                 </div>
             )}
+            {isDemoCatalog && (
+                <div className="gallery__demo-notice" role="status">
+                    No se pudo conectar con la tienda. Estás viendo un catálogo de ejemplo,
+                    los productos mostrados no son reales.
+                </div>
+            )}
             <div className="gallery__grid">
                 {ratedProducts.map((product) => (
                     <ProductCard
                         key={product.id}
                         product={product}
                         onClick={onProductClick}
+                        onAddToCart={onAddToCart}
                     />
                 ))}
             </div>

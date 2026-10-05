@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { orderService } from '../../services/order.service';
 import { paymentService } from '../../services/payment.service';
+import { paymentMethodService } from '../../services/payment-method.service';
 import { STATUS_LABELS } from './order-status';
 import { parseApiError } from '../../helpers/api.helpers';
 import './Orders.css';
@@ -26,6 +27,52 @@ function BuyerOrders() {
     const [cancelReason, setCancelReason] = useState('');
     const [disputeOrder, setDisputeOrder] = useState(null);
     const [disputeReason, setDisputeReason] = useState('');
+    // Reintento de pago: el backend exige una tarjeta guardada y su CVV.
+    const [retryOrder, setRetryOrder] = useState(null);
+    const [cards, setCards] = useState([]);
+    const [cardsLoading, setCardsLoading] = useState(false);
+    const [selectedCard, setSelectedCard] = useState('');
+    const [cvv, setCvv] = useState('');
+
+    const openRetry = async (order) => {
+        setRetryOrder(order);
+        setSelectedCard('');
+        setCvv('');
+        setError('');
+        setCardsLoading(true);
+        try {
+            const data = await paymentMethodService.getAll();
+            const list = Array.isArray(data) ? data : data?.content || [];
+            setCards(list);
+            const preferred = list.find((card) => card.default) || list[0];
+            if (preferred) setSelectedCard(preferred.id);
+        } catch {
+            setCards([]);
+        } finally {
+            setCardsLoading(false);
+        }
+    };
+
+    const confirmRetry = async () => {
+        if (!retryOrder || !selectedCard || cvv.length < 3) return;
+        setBusyId(retryOrder.id);
+        setError('');
+        try {
+            await paymentService.retryOrderPayment(retryOrder.id, selectedCard, cvv);
+            setRetryOrder(null);
+            setCvv('');
+            await loadOrders();
+        } catch (err) {
+            const { error: apiError, code, fieldErrors } = parseApiError(err);
+            if (code === 'VALIDATION_FAILED' && fieldErrors) {
+                setError(Object.values(fieldErrors).join(', '));
+            } else {
+                setError(apiError || 'No se pudo procesar el pago.');
+            }
+        } finally {
+            setBusyId('');
+        }
+    };
 
     const loadOrders = async () => {
         if (!user?.userId) return;
@@ -63,8 +110,7 @@ function BuyerOrders() {
         try {
             if (action === 'cancel') await orderService.cancelOrder(order.id, cancelReason.trim());
             else if (action === 'confirm') await orderService.confirmDelivery(order.id);
-            else if (action === 'dispute') await orderService.disputeOrder(order.id, disputeReason);
-            else await paymentService.retryOrderPayment(order.id);
+            else await orderService.disputeOrder(order.id, disputeReason);
             setCancelOrder(null);
             setCancelReason('');
             setDisputeOrder(null);
@@ -95,7 +141,7 @@ function BuyerOrders() {
                     <button onClick={() => navigate(`/profile/orders/${order.id}/tracking`)}>Ver seguimiento</button>
                     {canCancel(order.status) && <button disabled={busyId === order.id} onClick={() => { setCancelOrder(order); setCancelReason(''); }}>Cancelar</button>}
                     {canConfirm(order.status) && <button disabled={busyId === order.id} onClick={() => runAction(order, 'confirm')}>Confirmar entrega</button>}
-                    {canRetry(order.status) && <button disabled={busyId === order.id} onClick={() => runAction(order, 'retry')}>Pagar de nuevo</button>}
+                    {canRetry(order.status) && <button disabled={busyId === order.id} onClick={() => openRetry(order)}>Pagar de nuevo</button>}
                     {canDispute(order.status) && <button disabled={busyId === order.id} onClick={() => { setDisputeOrder(order); setDisputeReason(''); }}>Abrir disputa</button>}
                 </div>
             </article>)}
@@ -128,6 +174,36 @@ function BuyerOrders() {
                 <div className="cancel-modal__actions">
                     <button type="button" className="cancel-modal__keep" onClick={() => setDisputeOrder(null)}>Cancelar</button>
                     <button type="button" className="cancel-modal__confirm" disabled={!disputeReason || busyId === disputeOrder.id} onClick={() => runAction(disputeOrder, 'dispute')}>Confirmar disputa</button>
+                </div>
+            </section>
+        </div>}
+        {retryOrder && <div className="cancel-modal" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) setRetryOrder(null); }}>
+            <section className="cancel-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="retry-modal-title">
+                <button type="button" className="cancel-modal__close" aria-label="Cerrar" onClick={() => setRetryOrder(null)}>×</button>
+                <div className="cancel-modal__icon">$</div>
+                <h2 id="retry-modal-title">Pagar de nuevo</h2>
+                {cardsLoading ? <p>Cargando tus tarjetas...</p> : cards.length === 0 ? (
+                    <p>No tienes tarjetas guardadas. Añade una en tu perfil para reintentar el pago.</p>
+                ) : (
+                    <>
+                        <p>Selecciona la tarjeta con la que quieres pagar el pedido #{String(retryOrder.id).slice(0, 8)}.</p>
+                        <label htmlFor="retry-card">Tarjeta</label>
+                        <select id="retry-card" value={selectedCard} onChange={(event) => setSelectedCard(event.target.value)} autoFocus>
+                            {cards.map((card) => (
+                                <option key={card.id} value={card.id}>
+                                    {card.brand || 'Tarjeta'} •••• {card.last4}{card.default ? ' (predeterminada)' : ''}
+                                </option>
+                            ))}
+                        </select>
+                        <label htmlFor="retry-cvv">CVV</label>
+                        <input id="retry-cvv" type="password" inputMode="numeric" maxLength="4" value={cvv} onChange={(event) => setCvv(event.target.value.replace(/\D/g, ''))} placeholder="123" />
+                    </>
+                )}
+                <div className="cancel-modal__actions">
+                    <button type="button" className="cancel-modal__keep" onClick={() => setRetryOrder(null)}>Cancelar</button>
+                    <button type="button" className="cancel-modal__confirm" disabled={!selectedCard || cvv.length < 3 || busyId === retryOrder.id} onClick={confirmRetry}>
+                        {busyId === retryOrder.id ? 'Procesando...' : 'Pagar ahora'}
+                    </button>
                 </div>
             </section>
         </div>}

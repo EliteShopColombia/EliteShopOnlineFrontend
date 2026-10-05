@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
 import { orderService } from '../../services/order.service';
 import { productService } from '../../services/product.service';
 import { checkoutService } from '../../services/checkout.service';
@@ -67,7 +66,7 @@ const formatPrice = (value) =>
 
 function OrderTracking({ initialOrderId, onBack }) {
     const { orderId: urlOrderId } = useParams();
-    const { user } = useAuth();
+
     const effectiveId = initialOrderId || urlOrderId || '';
     const [orderId, setOrderId] = useState(effectiveId);
     const [order, setOrder] = useState(null);
@@ -95,14 +94,15 @@ function OrderTracking({ initialOrderId, onBack }) {
             const data = await orderService.getMyOrders().catch(() => []);
             if (cancelled) return;
             const allOrders = Array.isArray(data) ? data : (data?.content || []);
-            const myOrders = allOrders.filter((o) => o.customerId === user?.id);
-            setOrders(myOrders);
+            // El endpoint /orders/customer/{id} ya devuelve solo los pedidos del usuario
+            // autenticado, así que no se filtra de nuevo en cliente.
+            setOrders(allOrders);
             setOrdersLoading(false);
         }
 
         loadOrders();
         return () => { cancelled = true; };
-    }, [effectiveId, user?.id]);
+    }, [effectiveId]);
 
     const loadOrder = useCallback(async (id) => {
         if (!id) return;
@@ -221,7 +221,7 @@ function OrderTracking({ initialOrderId, onBack }) {
         setOrdersLoading(true);
         orderService.getMyOrders().then((data) => {
             const allOrders = Array.isArray(data) ? data : (data?.content || []);
-            setOrders(allOrders.filter((o) => o.customerId === user?.id));
+            setOrders(allOrders);
             setOrdersLoading(false);
         }).catch(() => {
             setOrders([]);

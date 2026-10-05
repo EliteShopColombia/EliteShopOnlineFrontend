@@ -85,6 +85,8 @@ function ReviewsSection({ productId }) {
         const newFiles = Array.from(e.target.files || []);
         const combined = [...images, ...newFiles].slice(0, MAX_REVIEW_IMAGES);
         setImages(combined);
+        // Revocar las previsualizaciones anteriores antes de crear las nuevas.
+        previews.forEach((url) => URL.revokeObjectURL(url));
         setPreviews(combined.map((f) => URL.createObjectURL(f)));
         e.target.value = '';
     };

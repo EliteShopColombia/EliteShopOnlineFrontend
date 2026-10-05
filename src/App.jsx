@@ -12,6 +12,7 @@ import CartModal from "./components/CartModal/CartModal.jsx";
 import Profile from "./components/Profile/Profile.jsx";
 import Checkout from "./components/Checkout/Checkout.jsx";
 import SellerRegistration from "./components/Seller/SellerRegistration.jsx";
+import SellerVerification from "./components/Seller/SellerVerification.jsx";
 import SellerDashboard from "./components/Seller/SellerDashboard.jsx";
 import SellerProductCreate from "./components/Seller/SellerProductCreate.jsx";
 import OrderTracking from "./components/OrderTracking/OrderTracking.jsx";
@@ -20,6 +21,7 @@ import BuyerOrderTracking from "./components/Orders/BuyerOrderTracking.jsx";
 import SellerOrders from "./components/Seller/SellerOrders.jsx";
 import ShippingLabel from "./components/Seller/ShippingLabel.jsx";
 import AdminLayout from "./components/Admin/AdminLayout.jsx";
+import ProtectedRoute from "./components/shared/ProtectedRoute.jsx";
 import AdminDashboard from "./components/Admin/AdminDashboard.jsx";
 import AdminCustomers from "./components/Admin/AdminCustomers.jsx";
 import AdminSellers from "./components/Admin/AdminSellers.jsx";
@@ -158,7 +160,7 @@ function AppContent() {
   };
 
   const handleSellerRegistered = () => {
-    navigate("/seller/dashboard");
+    navigate("/seller/verification");
   };
 
   const goToSellerDashboard = () => {
@@ -200,24 +202,26 @@ function AppContent() {
           <Route path="/" element={
             <Gallery
               onProductClick={(p) => navigate(`/product/${p.id}`)}
+              onAddToCart={handleAddToCart}
               searchQuery={searchQuery}
               activeCategory={activeCategory}
             />
           } />
           <Route path="/product/:id" element={<ProductDetail onBack={() => navigate("/")} onAddToCart={handleAddToCart} />} />
-          <Route path="/profile" element={<Profile onBack={() => navigate("/")} />} />
-          <Route path="/profile/orders" element={<BuyerOrders />} />
-          <Route path="/profile/orders/:orderId/tracking" element={<BuyerOrderTracking />} />
-          <Route path="/checkout" element={<Checkout onBack={() => navigate("/")} onSuccess={() => refreshCart()} />} />
-          <Route path="/order" element={<OrderTracking onBack={() => navigate("/")} />} />
-          <Route path="/order/:orderId" element={<OrderTracking onBack={() => navigate("/")} />} />
-          <Route path="/seller" element={<SellerRegistration onBack={() => navigate("/profile")} onSellerRegistered={handleSellerRegistered} />} />
-          <Route path="/seller/dashboard" element={<SellerDashboard sellerId={sellerId} onBack={() => navigate("/profile")} onNavigate={(path) => navigate(path)} />} />
-          <Route path="/seller/orders" element={<SellerOrders sellerId={sellerId} onBack={() => navigate('/seller/dashboard')} />} />
-          <Route path="/seller/orders/:orderId/shipping-label" element={<ShippingLabel />} />
-          <Route path="/seller/products/new" element={<SellerProductCreate sellerId={sellerId} onBack={() => navigate("/seller/dashboard")} />} />
-          <Route path="/seller/products/:productId/edit" element={<SellerProductCreate sellerId={sellerId} onBack={() => navigate("/seller/dashboard")} />} />
-          <Route path="/admin" element={<AdminLayout />}>
+          <Route path="/profile" element={<ProtectedRoute><Profile onBack={() => navigate("/")} /></ProtectedRoute>} />
+          <Route path="/profile/orders" element={<ProtectedRoute><BuyerOrders /></ProtectedRoute>} />
+          <Route path="/profile/orders/:orderId/tracking" element={<ProtectedRoute><BuyerOrderTracking /></ProtectedRoute>} />
+          <Route path="/checkout" element={<ProtectedRoute><Checkout onBack={() => navigate("/")} onSuccess={() => refreshCart()} /></ProtectedRoute>} />
+          <Route path="/order" element={<ProtectedRoute><OrderTracking onBack={() => navigate("/")} /></ProtectedRoute>} />
+          <Route path="/order/:orderId" element={<ProtectedRoute><OrderTracking onBack={() => navigate("/")} /></ProtectedRoute>} />
+          <Route path="/seller" element={<ProtectedRoute><SellerRegistration onBack={() => navigate("/profile")} onSellerRegistered={handleSellerRegistered} /></ProtectedRoute>} />
+          <Route path="/seller/verification" element={<ProtectedRoute roles={["seller"]}><SellerVerification onBack={() => navigate("/seller/dashboard")} onComplete={() => navigate("/seller/dashboard")} /></ProtectedRoute>} />
+          <Route path="/seller/dashboard" element={<ProtectedRoute roles={["seller"]}><SellerDashboard sellerId={sellerId} onBack={() => navigate("/profile")} onNavigate={(path) => navigate(path)} /></ProtectedRoute>} />
+          <Route path="/seller/orders" element={<ProtectedRoute roles={["seller"]}><SellerOrders sellerId={sellerId} onBack={() => navigate('/seller/dashboard')} /></ProtectedRoute>} />
+          <Route path="/seller/orders/:orderId/shipping-label" element={<ProtectedRoute roles={["seller"]}><ShippingLabel /></ProtectedRoute>} />
+          <Route path="/seller/products/new" element={<ProtectedRoute roles={["seller"]}><SellerProductCreate sellerId={sellerId} onBack={() => navigate("/seller/dashboard")} /></ProtectedRoute>} />
+          <Route path="/seller/products/:productId/edit" element={<ProtectedRoute roles={["seller"]}><SellerProductCreate sellerId={sellerId} onBack={() => navigate("/seller/dashboard")} /></ProtectedRoute>} />
+          <Route path="/admin" element={<ProtectedRoute roles={["admin"]}><AdminLayout /></ProtectedRoute>}>
             <Route index element={<AdminDashboard />} />
             <Route path="customers" element={<AdminCustomers />} />
             <Route path="sellers" element={<AdminSellers />} />
@@ -246,6 +250,7 @@ function AppContent() {
           <Route path="*" element={
             <Gallery
               onProductClick={(p) => navigate(`/product/${p.id}`)}
+              onAddToCart={handleAddToCart}
               searchQuery={searchQuery}
               activeCategory={activeCategory}
             />

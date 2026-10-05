@@ -145,3 +145,17 @@
         padding: 14px 24px;
     }
 }
+
+/* Aviso de catálogo de ejemplo (cuando la API no responde) */
+.gallery__demo-notice {
+    width: 100%;
+    margin-bottom: 24px;
+    padding: 14px 18px;
+    border: 1px solid #f0c36d;
+    border-left: 4px solid #d9a441;
+    border-radius: 8px;
+    background-color: #fdf6e3;
+    color: #7a5b16;
+    font-size: 14px;
+    line-height: 1.5;
+}

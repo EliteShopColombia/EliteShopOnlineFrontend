@@ -1,5 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, useCallback } from 'react';
 import { authService } from '../services/auth.service';
 
 const AuthContext = createContext(null);
@@ -94,13 +94,15 @@ export function AuthProvider({ children }) {
     return result;
   };
 
-  const updateUser = (newData) => {
+  // Memoizado: varios componentes (p. ej. Profile) lo usan como dependencia de
+  // useEffect; sin useCallback cambiaba de identidad en cada render del provider
+  // y provocaba un bucle de peticiones.
+  const updateUser = useCallback((newData) => {
     setAuth((prev) => {
       if (!prev) return null;
-      const updated = { ...prev, ...newData };
-      return updated;
+      return { ...prev, ...newData };
     });
-  };
+  }, []);
 
   const updateToken = (authResponse) => {
     let updatedAuth = null;

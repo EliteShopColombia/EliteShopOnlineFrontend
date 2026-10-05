@@ -30,6 +30,11 @@ function SellerProductCreate({ sellerId, onBack }) {
         }).catch(() => setError('No se pudo cargar el producto.'));
     }, [productId]);
 
+    // Libera las URLs de objeto al desmontar para no filtrar memoria.
+    useEffect(() => () => {
+        previews.forEach((url) => URL.revokeObjectURL(url));
+    }, [previews]);
+
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
     };
@@ -38,6 +43,8 @@ function SellerProductCreate({ sellerId, onBack }) {
         const newFiles = Array.from(e.target.files || []);
         const combined = [...images, ...newFiles].slice(0, MAX_IMAGES);
         setImages(combined);
+        // Revocar las anteriores antes de crear las nuevas evita acumular blobs.
+        previews.forEach((url) => URL.revokeObjectURL(url));
         setPreviews(combined.map((f) => URL.createObjectURL(f)));
         e.target.value = '';
     };
