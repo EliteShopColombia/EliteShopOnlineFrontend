@@ -463,7 +463,7 @@ function OrderTracking({ initialOrderId, onBack }) {
 
                                     <div className="order-tracking__grid">
                                         <div className="order-tracking__info-card">
-                                            <h3 className="order-tracking__info-title">Dirección de envio</h3>
+                                            <h3 className="order-tracking__info-title">Dirección de envío</h3>
                                             <p className="order-tracking__info-text">{order.shippingAddress}</p>
                                             <p className="order-tracking__info-text">{order.shippingCity}, {order.shippingDepartment}</p>
                                         </div>

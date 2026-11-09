@@ -110,7 +110,7 @@ function Checkout({ onBack, onSuccess }) {
             const data = await checkoutService.checkout(payload);
 
             if (data.status === 'DECLINED') {
-                setError('El pago fue rechazado. Verifica los datos de tu tarjeta o intenta con otro metodo de pago.');
+                setError('El pago fue rechazado. Verifica los datos de tu tarjeta o intenta con otro método de pago.');
                 return;
             }
 
@@ -143,11 +143,11 @@ function Checkout({ onBack, onSuccess }) {
                     shippingCity: 'Selecciona una ciudad válida para el departamento',
                 });
             } else if (code === 'PAYMENT_DECLINED' || (error && error.includes('pago no fue aprobado'))) {
-                setError('El pago fue rechazado. Verifica los datos de tu tarjeta o intenta con otro metodo de pago.');
+                setError('El pago fue rechazado. Verifica los datos de tu tarjeta o intenta con otro método de pago.');
             } else if (code === 'EMPTY_CART') {
                 setError('El carrito esta vacío');
             } else if (code === 'INSUFFICIENT_STOCK') {
-                setError('Stock insuficiente para uno o mas productos');
+                setError('Stock insuficiente para uno o más productos');
             } else {
                 setError(error || 'No se pudo procesar el checkout');
             }
@@ -214,7 +214,7 @@ function Checkout({ onBack, onSuccess }) {
                         </div>
 
                         <section className="checkout__section">
-                            <h2 className="checkout__section-title">Dirección de envio</h2>
+                            <h2 className="checkout__section-title">Dirección de envío</h2>
                             <div className="checkout__field">
                                 <label htmlFor="checkout-address">Dirección *</label>
                                 <input

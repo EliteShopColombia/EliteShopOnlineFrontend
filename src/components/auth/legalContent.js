@@ -15,13 +15,13 @@ export const TERMS_AND_CONDITIONS = `
 <p>Todos los precios mostrados en la plataforma están en Pesos Colombianos (COP) e incluyen los impuestos aplicables, salvo indicación contraria. Los precios y la disponibilidad de los productos pueden cambiar sin previo aviso.</p>
 
 <h3>4. Proceso de Compra</h3>
-<p>El proceso de compra implica la selección de productos, verificación del carrito, datos de envio y metodo de pago. El pedido se confirma unicamente cuando se recibe la confirmación de pago por parte de la pasarela de pagos.</p>
+<p>El proceso de compra implica la selección de productos, verificación del carrito, datos de envío y método de pago. El pedido se confirma unicamente cuando se recibe la confirmación de pago por parte de la pasarela de pagos.</p>
 
 <h3>5. Pagos y Seguridad</h3>
-<p>Los pagos se procesan de forma segura a través de ePayco, cumpliendo con los estandares de seguridad PCI DSS. EliteShop no almacena datos de tarjetas de credito o debito.</p>
+<p>Los pagos se procesan de forma segura a través de ePayco, cumpliendo con los estandares de seguridad PCI DSS. EliteShop no almacena datos de tarjetas de crédito o débito.</p>
 
 <h3>6. Envios y Entregas</h3>
-<p>Los tiempos de envio varian según la ubicación del destinatario y la disponibilidad del producto. Los tiempos estimados se muestran durante el proceso de compra y pueden fluctuar entre 2 y 10 días habiles.</p>
+<p>Los tiempos de envío varían según la ubicación del destinatario y la disponibilidad del producto. Los tiempos estimados se muestran durante el proceso de compra y pueden fluctuar entre 2 y 10 días habiles.</p>
 
 <h3>7. Devoluciones y Reembolsos</h3>
 <p>El usuario cuenta con un plazo de 30 días calendario para solicitar la devolución de un producto, siempre que esté en perfectas condiciones y con su empaque original. Los reembolsos se procesaran en un plazo de 5 a 10 días habiles.</p>
@@ -58,7 +58,7 @@ export const PRIVACY_POLICY = `
 <li><strong>Datos de identificación:</strong> Nombre completo, número de cédula, tipo de documento.</li>
 <li><strong>Datos de contacto:</strong> Correo electrónico, número de teléfono, dirección de envío.</li>
 <li><strong>Datos de cuenta:</strong> Correo electrónico y contrasena (almacenada de forma encriptada).</li>
-<li><strong>Datos de transacciones:</strong> Historial de compras, metodos de pago (sin almacenar datos de tarjetas).</li>
+<li><strong>Datos de transacciones:</strong> Historial de compras, métodos de pago (sin almacenar datos de tarjetas).</li>
 <li><strong>Datos de navegación:</strong> IP, tipo de navegador, páginas visitadas (mediante cookies).</li>
 </ul>
 

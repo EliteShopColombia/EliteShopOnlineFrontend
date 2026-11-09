@@ -27,19 +27,19 @@ const TERMS_DATA = [
     id: "tc-4",
     question: "4. Proceso de Compra",
     answer:
-      "El proceso de compra implica la selección de productos, verificación del carrito, datos de envio y metodo de pago. El pedido se confirma unicamente cuando se recibe la confirmación de pago por parte de la pasarela de pagos. EliteShop reserva el derecho de rechazar pedidos en caso de detectar irregularidades.",
+      "El proceso de compra implica la selección de productos, verificación del carrito, datos de envío y método de pago. El pedido se confirma unicamente cuando se recibe la confirmación de pago por parte de la pasarela de pagos. EliteShop reserva el derecho de rechazar pedidos en caso de detectar irregularidades.",
   },
   {
     id: "tc-5",
     question: "5. Pagos y Seguridad",
     answer:
-      "Los pagos se procesan de forma segura a través de ePayco, cumpliendo con los estandares de seguridad PCI DSS. EliteShop no almacena datos de tarjetas de credito o debito. Los metodos de pago aceptados incluyen tarjetas de credito, debito y PSE.",
+      "Los pagos se procesan de forma segura a través de ePayco, cumpliendo con los estandares de seguridad PCI DSS. EliteShop no almacena datos de tarjetas de crédito o débito. Los métodos de pago aceptados incluyen tarjetas de crédito, débito y PSE.",
   },
   {
     id: "tc-6",
     question: "6. Envios y Entregas",
     answer:
-      "Los tiempos de envio varian según la ubicación del destinatario y la disponibilidad del producto. Los tiempos estimados se muestran durante el proceso de compra y pueden fluctuar entre 2 y 10 días habiles. EliteShop no se hace responsable por retrasos ocasionados por terceros (transportadoras, fuerza mayor, etc.).",
+      "Los tiempos de envío varían según la ubicación del destinatario y la disponibilidad del producto. Los tiempos estimados se muestran durante el proceso de compra y pueden fluctuar entre 2 y 10 días habiles. EliteShop no se hace responsable por retrasos ocasionados por terceros (transportadoras, fuerza mayor, etc.).",
   },
   {
     id: "tc-7",

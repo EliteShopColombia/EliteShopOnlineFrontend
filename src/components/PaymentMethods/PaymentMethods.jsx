@@ -98,7 +98,7 @@ function PaymentMethods() {
     };
 
     if (loading) {
-        return <div className="payment-methods__loading">Cargando metodos de pago...</div>;
+        return <div className="payment-methods__loading">Cargando métodos de pago...</div>;
     }
 
     return (
