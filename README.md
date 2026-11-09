@@ -59,11 +59,11 @@ npm ci
 Crear un archivo `.env` en la raíz del proyecto:
 
 ```env
-VITE_API_BASE_URL=http://localhost:8080
+VITE_API_BASE_URL=http://localhost:3000
 VITE_API_VERSION=v1
 ```
 
-**Nota:** El frontend espera el gateway en el puerto `8080`. El backend está documentado como servicio interno en `8081`.
+**Nota:** el gateway escucha en el puerto `3000`; el backend es interno (`8080`, no publicado). En el compose de demo el frontend se sirve por nginx con `/api` y `/webhooks` proxied al gateway, por lo que `VITE_API_BASE_URL` puede quedar vacío (peticiones relativas).
 
 ## Scripts Disponibles
 

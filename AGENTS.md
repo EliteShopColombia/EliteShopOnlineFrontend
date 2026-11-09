@@ -9,8 +9,8 @@
 
 ## Runtime Setup
 
-- Each clone must create its own local ignored env file with `VITE_API_BASE_URL` and `VITE_API_VERSION`; the Axios client constructs its URL as `${VITE_API_BASE_URL}/api/${VITE_API_VERSION}`. The integration reference uses `http://localhost:8080` and `v1` for the gateway. Do not assume another user's `.env` exists.
-- The frontend expects the gateway at port `8080` for API-backed flows. The backend is documented as an internal service at `8081`; do not point the browser directly at it unless the integration setup explicitly changes.
+- Each clone must create its own local ignored env file with `VITE_API_BASE_URL` and `VITE_API_VERSION`; the Axios client constructs its URL as `${VITE_API_BASE_URL}/api/${VITE_API_VERSION}`. The gateway listens on `http://localhost:3000` and the API version is `v1`. Do not assume another user's `.env` exists.
+- The frontend expects the gateway at port `3000` for API-backed flows. The backend is an internal service at `8080` (not published); do not point the browser directly at it.
 - `index.html` loads the external ePayco checkout script. Payment UI changes may require the gateway/backend sandbox to be available, not just Vite.
 
 ## Structure
