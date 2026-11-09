@@ -6,10 +6,10 @@ export const TERMS_AND_CONDITIONS = `
 <p><strong>Última actualización:</strong> Agosto 2026</p>
 
 <h3>1. Aceptación de los Términos</h3>
-<p>Al acceder y utilizar EliteShop Colombia, usted acepta los presentes Términos y Condiciones. Si no está de acuerdo con alguno de los terminos, le recomendamos no utilizar la plataforma. El uso continuado de nuestros servicios implica la aceptación tacita de estas condiciones.</p>
+<p>Al acceder y utilizar EliteShop Colombia, usted acepta los presentes Términos y Condiciones. Si no está de acuerdo con alguno de los términos, le recomendamos no utilizar la plataforma. El uso continuado de nuestros servicios implica la aceptación tacita de estas condiciones.</p>
 
 <h3>2. Registro y Cuenta</h3>
-<p>Para acceder a funcionalidades como compras, seguimiento de pedidos y gestiones de perfil, el usuario debe crear una cuenta con información veraz y actualizada. EliteShop se reserva el derecho de suspender cuentas que contengan datos fraudulentos o que violen los terminos de uso.</p>
+<p>Para acceder a funcionalidades como compras, seguimiento de pedidos y gestiones de perfil, el usuario debe crear una cuenta con información veraz y actualizada. EliteShop se reserva el derecho de suspender cuentas que contengan datos fraudulentos o que violen los términos de uso.</p>
 
 <h3>3. Productos y Precios</h3>
 <p>Todos los precios mostrados en la plataforma están en Pesos Colombianos (COP) e incluyen los impuestos aplicables, salvo indicación contraria. Los precios y la disponibilidad de los productos pueden cambiar sin previo aviso.</p>

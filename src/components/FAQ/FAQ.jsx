@@ -9,13 +9,13 @@ const TERMS_DATA = [
     id: "tc-1",
     question: "1. Aceptación de los Términos",
     answer:
-      "Al acceder y utilizar EliteShop Colombia, usted acepta los presentes Términos y Condiciones. Si no está de acuerdo con alguno de los terminos, le recomendamos no utilizar la plataforma. El uso continuado de nuestros servicios implica la aceptación tacita de estas condiciones.",
+      "Al acceder y utilizar EliteShop Colombia, usted acepta los presentes Términos y Condiciones. Si no está de acuerdo con alguno de los términos, le recomendamos no utilizar la plataforma. El uso continuado de nuestros servicios implica la aceptación tacita de estas condiciones.",
   },
   {
     id: "tc-2",
     question: "2. Registro y Cuenta",
     answer:
-      "Para acceder a funcionalidades como compras, seguimiento de pedidos y gestiones de perfil, el usuario debe crear una cuenta con información veraz y actualizada. EliteShop se reserva el derecho de suspender cuentas que contengan datos fraudulentos o que violen los terminos de uso.",
+      "Para acceder a funcionalidades como compras, seguimiento de pedidos y gestiones de perfil, el usuario debe crear una cuenta con información veraz y actualizada. EliteShop se reserva el derecho de suspender cuentas que contengan datos fraudulentos o que violen los términos de uso.",
   },
   {
     id: "tc-3",
@@ -75,7 +75,7 @@ const TERMS_DATA = [
     id: "tc-12",
     question: "12. Modificaciones",
     answer:
-      "EliteShop se reserva el derecho de modificar los presentes Términos y Condiciones en cualquier momento. Las modificaciones serán publicadas en la plataforma y entraran en vigencia desde su publicación. El uso continuado de la plataforma después de las modificaciones implica la aceptación de los nuevos terminos.",
+      "EliteShop se reserva el derecho de modificar los presentes Términos y Condiciones en cualquier momento. Las modificaciones serán publicadas en la plataforma y entraran en vigencia desde su publicación. El uso continuado de la plataforma después de las modificaciones implica la aceptación de los nuevos términos.",
   },
 ];
 
@@ -99,7 +99,7 @@ const PQRS_DATA = [
     id: "pqrs-3",
     question: "3. Reclamo",
     answer:
-      "Un reclamo es la expresión de insatisfacción del usuario cuando ha sufrido un perjuicio económico o moral, y busca la reparación del dano o la solución a un problema concreto. Ejemplos: producto defectuoso que no fue reemplazado, cobro indebido, incumplimiento de un termino contractual. Los reclamos deben ser atendidos en un plazo maximo de 15 días habiles.",
+      "Un reclamo es la expresión de insatisfacción del usuario cuando ha sufrido un perjuicio económico o moral, y busca la reparación del dano o la solución a un problema concreto. Ejemplos: producto defectuoso que no fue reemplazado, cobro indebido, incumplimiento de un término contractual. Los reclamos deben ser atendidos en un plazo maximo de 15 días habiles.",
   },
   {
     id: "pqrs-4",
@@ -241,7 +241,7 @@ function FAQ({ onBack }) {
           </div>
           <h1 className="faq__title">Preguntas Frecuentes</h1>
           <p className="faq__subtitle">
-            Encuentra respuestas sobre nuestros terminos, politicas y proceso
+            Encuentra respuestas sobre nuestros términos, políticas y proceso
             de atención al cliente.
           </p>
         </div>

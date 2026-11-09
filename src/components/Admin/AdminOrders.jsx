@@ -48,7 +48,7 @@ function AdminOrders() {
       } catch (err) {
         if (!cancelled) {
           const { error: msg } = parseApiError(err);
-          setError(msg || "Error al cargar ordenes");
+          setError(msg || "Error al cargar órdenes");
         }
       } finally {
         if (!cancelled) setLoading(false);
@@ -92,7 +92,7 @@ function AdminOrders() {
     <div>
       <div className="admin-page-header">
         <h1 className="admin-page-header__title">Órdenes</h1>
-        <p className="admin-page-header__subtitle">Listado de todas las ordenes de la plataforma</p>
+        <p className="admin-page-header__subtitle">Listado de todas las órdenes de la plataforma</p>
       </div>
 
       {error && (
@@ -125,11 +125,11 @@ function AdminOrders() {
         {loading ? (
           <div className="admin-loading">
             <div className="admin-loading__spinner" />
-            Cargando ordenes...
+            Cargando órdenes...
           </div>
         ) : filtered.length === 0 ? (
           <div className="admin-empty">
-            <p className="admin-empty__text">No se encontraron ordenes</p>
+            <p className="admin-empty__text">No se encontraron órdenes</p>
           </div>
         ) : (
           <div className="admin-table--scrollable">
