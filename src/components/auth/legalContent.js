@@ -57,7 +57,7 @@ export const PRIVACY_POLICY = `
 <ul>
 <li><strong>Datos de identificación:</strong> Nombre completo, número de cédula, tipo de documento.</li>
 <li><strong>Datos de contacto:</strong> Correo electrónico, número de teléfono, dirección de envío.</li>
-<li><strong>Datos de cuenta:</strong> Correo electrónico y contrasena (almacenada de forma encriptada).</li>
+<li><strong>Datos de cuenta:</strong> Correo electrónico y contraseña (almacenada de forma encriptada).</li>
 <li><strong>Datos de transacciones:</strong> Historial de compras, métodos de pago (sin almacenar datos de tarjetas).</li>
 <li><strong>Datos de navegación:</strong> IP, tipo de navegador, páginas visitadas (mediante cookies).</li>
 </ul>
