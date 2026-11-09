@@ -9,6 +9,10 @@ const ALLOWED_TYPES = ['image/jpeg', 'image/png'];
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
 const POLL_INTERVAL_MS = 3000;
 const MAX_POLL_ATTEMPTS = 20; // 20 intentos x 3s = 60s máximo
+// Ráfaga de la selfie: 6 capturas cada 250 ms ≈ 1,25 s de gesto.
+// El microservicio exige al menos 5 frames para el análisis temporal.
+const BURST_FRAMES = 6;
+const BURST_INTERVAL_MS = 250;
 
 const STATUS_META = {
   DOCUMENT_UPLOADED: { icon: '📄', label: 'Esperando selfie...', tone: 'info' },
@@ -74,6 +78,7 @@ function SellerVerification({ sellerId: propSellerId, onBack, onComplete }) {
   const [documentFile, setDocumentFile] = useState(null);
   const [documentPreview, setDocumentPreview] = useState('');
   const [selfieFile, setSelfieFile] = useState(null);
+  const [burstFrames, setBurstFrames] = useState([]);
   const [selfiePreview, setSelfiePreview] = useState('');
 
   const [capturing, setCapturing] = useState(false);
@@ -107,6 +112,7 @@ function SellerVerification({ sellerId: propSellerId, onBack, onComplete }) {
     } else {
       setSelfieFile(null);
       setSelfiePreview('');
+      setBurstFrames([]);
     }
   }, [revokePreview]);
 
@@ -166,19 +172,50 @@ function SellerVerification({ sellerId: propSellerId, onBack, onComplete }) {
     }
   }, [capturing]);
 
-  const capturePhoto = () => {
+  const capturePhoto = async () => {
     const video = videoRef.current;
     if (!video || !video.videoWidth) return;
-    const canvas = document.createElement('canvas');
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
-    canvas.toBlob((blob) => {
-      if (!blob) return;
-      const file = new File([blob], `selfie-${Date.now()}.jpg`, { type: 'image/jpeg' });
+
+    const grabFrame = () =>
+      new Promise((resolve) => {
+        const canvas = document.createElement('canvas');
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+        canvas.toBlob(
+          (blob) => {
+            if (!blob) return resolve(null);
+            const suffix = Math.random().toString(36).slice(2, 7);
+            resolve(new File([blob], `selfie-${Date.now()}-${suffix}.jpg`, { type: 'image/jpeg' }));
+          },
+          'image/jpeg',
+          0.9,
+        );
+      });
+
+    try {
+      // Ráfaga corta: el microservicio necesita al menos 5 frames para
+      // analizar parpadeo y movimiento. El primero se usa como selfie.
+      const frames = [];
+      for (let i = 0; i < BURST_FRAMES; i++) {
+        if (i > 0) await new Promise((resolve) => setTimeout(resolve, BURST_INTERVAL_MS));
+        const frame = await grabFrame();
+        if (frame) frames.push(frame);
+      }
+
       stopCamera();
-      setStepFile('selfie', file);
-    }, 'image/jpeg', 0.92);
+      if (!frames.length) return;
+      setStepFile('selfie', frames[0]);
+      setBurstFrames(frames.slice(1));
+    } catch {
+      // Si la ráfaga falla, se conserva el comportamiento de una sola imagen.
+      const single = await grabFrame();
+      stopCamera();
+      if (single) {
+        setStepFile('selfie', single);
+        setBurstFrames([]);
+      }
+    }
   };
 
   /* ---------- polling ---------- */
@@ -370,7 +407,7 @@ function SellerVerification({ sellerId: propSellerId, onBack, onComplete }) {
     try {
       const data = field === 'document'
         ? await sellerVerificationService.uploadDocument(sellerId, file)
-        : await sellerVerificationService.uploadSelfie(sellerId, file);
+        : await sellerVerificationService.uploadSelfie(sellerId, file, burstFrames);
       clearStepFile(field);
       setVerification(data);
       setNotice(field === 'document'

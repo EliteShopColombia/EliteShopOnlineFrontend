@@ -36,9 +36,12 @@ export const sellerVerificationService = {
     return response.data;
   },
 
-  uploadSelfie: async (sellerId, file) => {
+  uploadSelfie: async (sellerId, file, frames = []) => {
     const formData = new FormData();
     formData.append('file', file);
+    // Frames de la ráfaga: habilitan el análisis temporal de liveness
+    // (parpadeo y movimiento). Si no hay, el backend analiza solo la textura.
+    frames.forEach((frame) => formData.append('frames', frame));
     const response = await api.post(`/sellers/${sellerId}/verification/selfie`, formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
