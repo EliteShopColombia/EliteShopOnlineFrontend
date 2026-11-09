@@ -119,7 +119,7 @@ function PaymentMethods() {
             {showForm && (
                 <form className="payment-methods__form" onSubmit={handleSave}>
                     <div className="payment-methods__field">
-                        <label htmlFor="pm-card">Numero de tarjeta *</label>
+                        <label htmlFor="pm-card">Número de tarjeta *</label>
                         <input
                             id="pm-card"
                             name="cardNumber"
@@ -161,7 +161,7 @@ function PaymentMethods() {
                             />
                         </div>
                         <div className="payment-methods__field">
-                            <label htmlFor="pm-year">Ano *</label>
+                            <label htmlFor="pm-year">Año *</label>
                             <input
                                 id="pm-year"
                                 name="expiryYear"
@@ -190,7 +190,7 @@ function PaymentMethods() {
                             </select>
                         </div>
                         <div className="payment-methods__field">
-                            <label htmlFor="pm-doc-number">Numero doc. *</label>
+                            <label htmlFor="pm-doc-number">Número doc. *</label>
                             <input
                                 id="pm-doc-number"
                                 name="docNumber"

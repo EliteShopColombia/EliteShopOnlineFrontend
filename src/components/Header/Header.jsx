@@ -257,7 +257,7 @@ function Header({ onCartClick, onAuthClick, onLogoutClick, isAuthenticated, onPr
                                             <polyline points="16 17 21 12 16 7" />
                                             <line x1="21" y1="12" x2="9" y2="12" />
                                         </svg>
-                                        Cerrar Sesion
+                                        Cerrar Sesión
                                     </button>
                                 </div>
                             )}
@@ -466,7 +466,7 @@ function Header({ onCartClick, onAuthClick, onLogoutClick, isAuthenticated, onPr
                                     <polyline points="10 17 15 12 10 7" />
                                     <line x1="15" y1="12" x2="3" y2="12" />
                                 </svg>
-                                Iniciar Sesion
+                                Iniciar Sesión
                             </button>
                         )}
                         <button type="button" className="header__menu-item" onClick={() => { setMenuOpen(false); onCartClick?.(); }}>
@@ -495,7 +495,7 @@ function Header({ onCartClick, onAuthClick, onLogoutClick, isAuthenticated, onPr
                                         <polyline points="16 17 21 12 16 7" />
                                         <line x1="21" y1="12" x2="9" y2="12" />
                                     </svg>
-                                    Cerrar Sesion
+                                    Cerrar Sesión
                                 </button>
                             </>
                         )}

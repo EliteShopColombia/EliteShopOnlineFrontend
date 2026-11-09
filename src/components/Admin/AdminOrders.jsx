@@ -91,7 +91,7 @@ function AdminOrders() {
   return (
     <div>
       <div className="admin-page-header">
-        <h1 className="admin-page-header__title">Ordenes</h1>
+        <h1 className="admin-page-header__title">Órdenes</h1>
         <p className="admin-page-header__subtitle">Listado de todas las ordenes de la plataforma</p>
       </div>
 
@@ -115,7 +115,7 @@ function AdminOrders() {
             <input
               className="admin-table-search__input"
               type="text"
-              placeholder="Buscar por ID o direccion..."
+              placeholder="Buscar por ID o dirección..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
@@ -140,7 +140,7 @@ function AdminOrders() {
                   <th>Cliente</th>
                   <th>Total</th>
                   <th>Estado</th>
-                  <th>Direccion</th>
+                  <th>Dirección</th>
                   <th>Fecha</th>
                 </tr>
               </thead>
@@ -161,7 +161,7 @@ function AdminOrders() {
                         {STATUS_LABELS[order.status] || order.status}
                       </span>
                     </td>
-                    <td data-label="Direccion" style={{ maxWidth: 200, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                    <td data-label="Dirección" style={{ maxWidth: 200, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                       {order.shippingAddress || "-"}
                     </td>
                     <td data-label="Fecha">{formatDate(order.createdAt)}</td>
@@ -175,7 +175,7 @@ function AdminOrders() {
         {data.totalPages > 1 && (
           <div className="admin-pagination">
             <span className="admin-pagination__info">
-              Pagina {data.page + 1} de {data.totalPages}
+              página {data.page + 1} de {data.totalPages}
             </span>
             <div className="admin-pagination__controls">
               <button

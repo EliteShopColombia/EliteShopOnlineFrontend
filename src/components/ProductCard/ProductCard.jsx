@@ -25,7 +25,7 @@ function ProductCard({ product, onClick, onAddToCart }) {
                 />
             </div>
 
-            {/* INFORMACION */}
+            {/* INFORMAción */}
             <div className="product-card__info">
 
                 {/* NOMBRE */}

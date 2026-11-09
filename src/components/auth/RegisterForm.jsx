@@ -55,7 +55,7 @@ export function RegisterForm({ onSwitchToLogin, onSuccess }) {
     setFieldErrors({});
 
     if (!acceptedTerms) {
-      setError('Debes aceptar los Terminos y Condiciones y la Politica de Privacidad para continuar');
+      setError('Debes aceptar los Términos y Condiciones y la Política de Privacidad para continuar');
       setLoading(false);
       return;
     }
@@ -68,8 +68,8 @@ export function RegisterForm({ onSwitchToLogin, onSuccess }) {
 
       if (code === LOCATION_ERROR_CODES.INVALID_LOCATION) {
         setFieldErrors({
-          department: 'Selecciona un departamento valido',
-          city: 'Selecciona una ciudad valida para el departamento',
+          department: 'Selecciona un departamento válido',
+          city: 'Selecciona una ciudad válida para el departamento',
         });
       } else if (code === 'VALIDATION_FAILED' && fe) {
         setFieldErrors(fe);
@@ -130,7 +130,7 @@ export function RegisterForm({ onSwitchToLogin, onSuccess }) {
           </div>
 
           <div className="auth-modal__field">
-            <label htmlFor="reg-phone">Telefono *</label>
+            <label htmlFor="reg-phone">Teléfono *</label>
             <input
               id="reg-phone"
               name="phoneNumber"
@@ -143,7 +143,7 @@ export function RegisterForm({ onSwitchToLogin, onSuccess }) {
           </div>
 
           <div className="auth-modal__field">
-            <label htmlFor="reg-password">Contrasena *</label>
+            <label htmlFor="reg-password">Contraseña *</label>
             <input
               id="reg-password"
               name="password"
@@ -167,14 +167,14 @@ export function RegisterForm({ onSwitchToLogin, onSuccess }) {
                 required
               >
                 <option value="">Seleccionar</option>
-                <option value="CC">Cedula de Ciudadania</option>
-                <option value="CE">Cedula de Extranjeria</option>
+                <option value="CC">Cédula de Ciudadanía</option>
+                <option value="CE">Cédula de Extranjería</option>
                 <option value="PS">Pasaporte</option>
                 <option value="NIT">NIT</option>
               </select>
             </div>
             <div className="auth-modal__field">
-              <label htmlFor="reg-dniNumber">Numero de documento *</label>
+              <label htmlFor="reg-dniNumber">Número de documento *</label>
               <input
                 id="reg-dniNumber"
                 name="dniNumber"
@@ -188,7 +188,7 @@ export function RegisterForm({ onSwitchToLogin, onSuccess }) {
           </div>
 
           <div className="auth-modal__field">
-            <label htmlFor="reg-address">Direccion *</label>
+            <label htmlFor="reg-address">Dirección *</label>
             <input
               id="reg-address"
               name="address"
@@ -233,7 +233,7 @@ export function RegisterForm({ onSwitchToLogin, onSuccess }) {
                     setLegalModal('terms');
                   }}
                 >
-                  Terminos y Condiciones
+                  Términos y Condiciones
                 </button>
                 {' '}y la{' '}
                 <button
@@ -244,7 +244,7 @@ export function RegisterForm({ onSwitchToLogin, onSuccess }) {
                     setLegalModal('privacy');
                   }}
                 >
-                  Politica de Privacidad
+                  Política de Privacidad
                 </button>
               </span>
             </label>
@@ -260,21 +260,21 @@ export function RegisterForm({ onSwitchToLogin, onSuccess }) {
         <p className="auth-modal__switch">
           Ya tienes cuenta?{' '}
           <button type="button" onClick={onSwitchToLogin}>
-            Iniciar sesion
+            Iniciar sesión
           </button>
         </p>
       </div>
 
       {legalModal === 'terms' && (
         <LegalModal
-          title="Terminos y Condiciones"
+          title="Términos y Condiciones"
           content={TERMS_AND_CONDITIONS}
           onClose={() => setLegalModal(null)}
         />
       )}
       {legalModal === 'privacy' && (
         <LegalModal
-          title="Politica de Privacidad"
+          title="Política de Privacidad"
           content={PRIVACY_POLICY}
           onClose={() => setLegalModal(null)}
         />

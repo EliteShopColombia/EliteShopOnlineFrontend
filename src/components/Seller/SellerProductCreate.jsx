@@ -56,7 +56,7 @@ function SellerProductCreate({ sellerId, onBack }) {
         setSuccess('');
         try {
             if (!effectiveSellerId) {
-                setError('No se pudo identificar el vendedor. Intenta iniciar sesion de nuevo.');
+                setError('No se pudo identificar el vendedor. Intenta iniciar sesión de nuevo.');
                 setSubmitting(false);
                 return;
             }
@@ -166,7 +166,7 @@ function SellerProductCreate({ sellerId, onBack }) {
 
                     <div className="seller-dash__field">
                         <label htmlFor="pd-images">
-                            Imagenes nuevas ({images.length}/{MAX_IMAGES})
+                            Imágenes nuevas ({images.length}/{MAX_IMAGES})
                         </label>
                         <input
                             id="pd-images"

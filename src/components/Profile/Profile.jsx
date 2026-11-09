@@ -129,8 +129,8 @@ function Profile({ onBack }) {
 
             if (code === LOCATION_ERROR_CODES.INVALID_LOCATION) {
                 setFieldErrors({
-                    department: 'Selecciona un departamento valido',
-                    city: 'Selecciona una ciudad valida para el departamento',
+                    department: 'Selecciona un departamento válido',
+                    city: 'Selecciona una ciudad válida para el departamento',
                 });
             } else if (code === 'VALIDATION_FAILED' && fe) {
                 setFieldErrors(fe);
@@ -282,7 +282,7 @@ function Profile({ onBack }) {
                                                         <span className="profile__field-value">{sellerData.typeDni || '-'}</span>
                                                     </div>
                                                     <div className="profile__field">
-                                                        <span className="profile__field-label">Numero de Documento</span>
+                                                        <span className="profile__field-label">Número de Documento</span>
                                                         <span className="profile__field-value">{sellerData.dniNumber || '-'}</span>
                                                     </div>
                                                     <div className="profile__field">
@@ -306,14 +306,14 @@ function Profile({ onBack }) {
 
                                             {sellerData.contact && (
                                                 <div className="profile__section">
-                                                    <h2 className="profile__section-title">Informacion de Contacto</h2>
+                                                    <h2 className="profile__section-title">Información de Contacto</h2>
                                                     <div className="profile__fields">
                                                         <div className="profile__field">
-                                                            <span className="profile__field-label">Telefono</span>
+                                                            <span className="profile__field-label">Teléfono</span>
                                                             <span className="profile__field-value">{sellerData.contact.phoneNumber || '-'}</span>
                                                         </div>
                                                         <div className="profile__field">
-                                                            <span className="profile__field-label">Direccion</span>
+                                                            <span className="profile__field-label">Dirección</span>
                                                             <span className="profile__field-value">{sellerData.contact.tradeAddress || '-'}</span>
                                                         </div>
                                                         <div className="profile__field">
@@ -341,7 +341,7 @@ function Profile({ onBack }) {
                                                             <span className="profile__field-value">{sellerData.bank.typeBankAccount || '-'}</span>
                                                         </div>
                                                         <div className="profile__field">
-                                                            <span className="profile__field-label">Numero de Cuenta</span>
+                                                            <span className="profile__field-label">Número de Cuenta</span>
                                                             <span className="profile__field-value">{sellerData.bank.numberAccount || '-'}</span>
                                                         </div>
                                                     </div>
@@ -407,7 +407,7 @@ function Profile({ onBack }) {
                                     {error && <p className="profile__error">{error}</p>}
 
                                     <div className="profile__section">
-                                        <h2 className="profile__section-title">Informacion Personal</h2>
+                                        <h2 className="profile__section-title">Información Personal</h2>
 
                                         {editing ? (
                                             <form className="profile__form" onSubmit={handleSave}>
@@ -436,7 +436,7 @@ function Profile({ onBack }) {
                                                     </div>
                                                 </div>
                                                 <div className="profile__field">
-                                                    <label htmlFor="pf-phone">Telefono *</label>
+                                                    <label htmlFor="pf-phone">Teléfono *</label>
                                                     <input
                                                         id="pf-phone"
                                                         name="phoneNumber"
@@ -462,7 +462,7 @@ function Profile({ onBack }) {
                                                         </select>
                                                     </div>
                                                     <div className="profile__field">
-                                                        <label htmlFor="pf-dniNumber">Numero de documento *</label>
+                                                        <label htmlFor="pf-dniNumber">Número de documento *</label>
                                                         <input
                                                             id="pf-dniNumber"
                                                             name="dniNumber"
@@ -474,7 +474,7 @@ function Profile({ onBack }) {
                                                     </div>
                                                 </div>
                                                 <div className="profile__field">
-                                                    <label htmlFor="pf-address">Direccion *</label>
+                                                    <label htmlFor="pf-address">Dirección *</label>
                                                     <input
                                                         id="pf-address"
                                                         name="address"
@@ -524,11 +524,11 @@ function Profile({ onBack }) {
                                                         <span className="profile__field-value">{auth?.email || '-'}</span>
                                                     </div>
                                                     <div className="profile__field">
-                                                        <span className="profile__field-label">Telefono</span>
+                                                        <span className="profile__field-label">Teléfono</span>
                                                         <span className="profile__field-value">{auth?.phoneNumber || '-'}</span>
                                                     </div>
                                                     <div className="profile__field">
-                                                        <span className="profile__field-label">Direccion</span>
+                                                        <span className="profile__field-label">Dirección</span>
                                                         <span className="profile__field-value">{auth?.address || '-'}</span>
                                                     </div>
                                                     <div className="profile__field">
@@ -544,7 +544,7 @@ function Profile({ onBack }) {
                                                         <span className="profile__field-value">{auth?.dniType || '-'}</span>
                                                     </div>
                                                     <div className="profile__field">
-                                                        <span className="profile__field-label">Numero de Documento</span>
+                                                        <span className="profile__field-label">Número de Documento</span>
                                                         <span className="profile__field-value">{auth?.dniNumber || '-'}</span>
                                                     </div>
                                                 </div>
@@ -558,7 +558,7 @@ function Profile({ onBack }) {
                                                         Editar Perfil
                                                     </button>
                                                     <button type="button" className="profile__btn profile__btn--danger" onClick={handleLogout}>
-                                                        Cerrar Sesion
+                                                        Cerrar Sesión
                                                     </button>
                                                 </div>
                                             </>

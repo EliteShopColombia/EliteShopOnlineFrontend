@@ -102,7 +102,7 @@ function AdminCustomers() {
                 <tr>
                   <th>Nombre</th>
                   <th>Email</th>
-                  <th>Telefono</th>
+                  <th>Teléfono</th>
                   <th>DNI</th>
                   <th>Ciudad</th>
                   <th>Registro</th>
@@ -115,7 +115,7 @@ function AdminCustomers() {
                       {customer.firstName} {customer.lastName}
                     </td>
                     <td data-label="Email">{customer.email}</td>
-                    <td data-label="Telefono">{customer.phoneNumber || "-"}</td>
+                    <td data-label="Teléfono">{customer.phoneNumber || "-"}</td>
                     <td data-label="DNI">{customer.info?.dniNumber ? `${customer.info.dniType || ""} ${customer.info.dniNumber}` : "-"}</td>
                     <td data-label="Ciudad">{customer.info?.city || "-"}</td>
                     <td data-label="Registro">{formatDate(customer.createdAt)}</td>
@@ -129,7 +129,7 @@ function AdminCustomers() {
         {data.totalPages > 1 && (
           <div className="admin-pagination">
             <span className="admin-pagination__info">
-              Pagina {data.page + 1} de {data.totalPages}
+              página {data.page + 1} de {data.totalPages}
             </span>
             <div className="admin-pagination__controls">
               <button

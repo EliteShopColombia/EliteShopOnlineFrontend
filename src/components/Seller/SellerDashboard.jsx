@@ -14,7 +14,7 @@ const getOrderTotal = (order) => order.totalAmount ?? order.totalPrice ?? order.
 const STATUS_LABELS = {
     PENDING_PAYMENT: 'Pago pendiente',
     PAID: 'Pagado',
-    IN_PREPARATION: 'En preparacion',
+    IN_PREPARATION: 'En preparación',
     SHIPPED: 'Enviado',
     OUT_FOR_DELIVERY: 'En reparto',
     DELIVERED: 'Entregado',
@@ -253,7 +253,7 @@ function SellerDashboard({ sellerId: propSellerId, onBack, onNavigate }) {
                             </div>
                             {productError && <p className="seller-dash__error">{productError}</p>}
                             {products.length === 0 ? (
-                                <p className="seller-dash__muted">Aun no tienes productos.</p>
+                                <p className="seller-dash__muted">Aún no tienes productos.</p>
                             ) : (
                                 <div className="seller-dash__list">
                                     {products.map((product) => (
@@ -298,7 +298,7 @@ function SellerDashboard({ sellerId: propSellerId, onBack, onNavigate }) {
                         <section className="seller-dash__section">
                             <h2 className="seller-dash__section-title">Pedidos Recientes</h2>
                             {orders.length === 0 ? (
-                                <p className="seller-dash__muted">Aun no tienes pedidos.</p>
+                                <p className="seller-dash__muted">Aún no tienes pedidos.</p>
                             ) : (
                                 <div className="seller-dash__list">
                                     {orders.slice(0, 10).map((order) => (

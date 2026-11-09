@@ -1,11 +1,11 @@
-// Codigos de error del backend para validacion de ubicaciones
+// códigos de error del backend para validación de ubicaciones
 export const LOCATION_ERROR_CODES = {
   INVALID_LOCATION: 'INVALID_LOCATION',
   SELLER_INVALID_TRADE_DEPARTMENT: 'SELLER_INVALID_TRADE_DEPARTMENT',
   SELLER_INVALID_TRADE_CITY: 'SELLER_INVALID_TRADE_CITY',
 };
 
-// Codigos de error generales del backend
+// códigos de error generales del backend
 export const API_ERROR_CODES = {
   VALIDATION_FAILED: 'VALIDATION_FAILED',
   CUSTOMER_ALREADY_EXISTS: 'CUSTOMER_ALREADY_EXISTS',

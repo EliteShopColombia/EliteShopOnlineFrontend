@@ -20,8 +20,8 @@ export const ACCOUNT_TYPES = [
 ];
 
 export const DNI_TYPES = [
-  { value: 'CC', label: 'Cedula de Ciudadania' },
-  { value: 'CE', label: 'Cedula de Extranjeria' },
+  { value: 'CC', label: 'Cédula de Ciudadanía' },
+  { value: 'CE', label: 'Cédula de Extranjería' },
   { value: 'PS', label: 'Pasaporte' },
   { value: 'NIT', label: 'NIT' },
 ];

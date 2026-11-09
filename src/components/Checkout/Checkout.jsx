@@ -139,13 +139,13 @@ function Checkout({ onBack, onSuccess }) {
 
             if (code === LOCATION_ERROR_CODES.INVALID_LOCATION) {
                 setFieldErrors({
-                    shippingDepartment: 'Selecciona un departamento valido',
-                    shippingCity: 'Selecciona una ciudad valida para el departamento',
+                    shippingDepartment: 'Selecciona un departamento válido',
+                    shippingCity: 'Selecciona una ciudad válida para el departamento',
                 });
             } else if (code === 'PAYMENT_DECLINED' || (error && error.includes('pago no fue aprobado'))) {
                 setError('El pago fue rechazado. Verifica los datos de tu tarjeta o intenta con otro metodo de pago.');
             } else if (code === 'EMPTY_CART') {
-                setError('El carrito esta vacio');
+                setError('El carrito esta vacío');
             } else if (code === 'INSUFFICIENT_STOCK') {
                 setError('Stock insuficiente para uno o mas productos');
             } else {
@@ -167,7 +167,7 @@ function Checkout({ onBack, onSuccess }) {
 
                         <div className="checkout__success-details">
                             <div className="checkout__success-row">
-                                <span>Numero de orden</span>
+                                <span>Número de orden</span>
                                 <strong>{result.orderId}</strong>
                             </div>
                             <div className="checkout__success-row">
@@ -214,9 +214,9 @@ function Checkout({ onBack, onSuccess }) {
                         </div>
 
                         <section className="checkout__section">
-                            <h2 className="checkout__section-title">Direccion de envio</h2>
+                            <h2 className="checkout__section-title">Dirección de envio</h2>
                             <div className="checkout__field">
-                                <label htmlFor="checkout-address">Direccion *</label>
+                                <label htmlFor="checkout-address">Dirección *</label>
                                 <input
                                     id="checkout-address"
                                     name="shippingAddress"
@@ -242,7 +242,7 @@ function Checkout({ onBack, onSuccess }) {
                         </section>
 
                         <section className="checkout__section">
-                            <h2 className="checkout__section-title">Metodo de pago</h2>
+                            <h2 className="checkout__section-title">Método de pago</h2>
 
                             {paymentMethods.length > 0 && (
                                 <div className="checkout__saved-methods">
@@ -296,7 +296,7 @@ function Checkout({ onBack, onSuccess }) {
                             {!form.paymentMethodId && (
                                 <div className="checkout__new-card">
                                     <div className="checkout__field">
-                                        <label htmlFor="checkout-card">Numero de tarjeta *</label>
+                                        <label htmlFor="checkout-card">Número de tarjeta *</label>
                                         <input
                                             id="checkout-card"
                                             name="cardNumber"
@@ -338,7 +338,7 @@ function Checkout({ onBack, onSuccess }) {
                                             />
                                         </div>
                                         <div className="checkout__field">
-                                            <label htmlFor="checkout-exp-year">Ano *</label>
+                                            <label htmlFor="checkout-exp-year">Año *</label>
                                             <input
                                                 id="checkout-exp-year"
                                                 name="expiryYear"
@@ -367,7 +367,7 @@ function Checkout({ onBack, onSuccess }) {
                                             </select>
                                         </div>
                                         <div className="checkout__field">
-                                            <label htmlFor="checkout-doc-number">Numero doc. *</label>
+                                            <label htmlFor="checkout-doc-number">Número doc. *</label>
                                             <input
                                                 id="checkout-doc-number"
                                                 name="docNumber"

@@ -79,7 +79,7 @@ function ProductDetail({ onBack, onAddToCart }) {
 
                 <div className="product-detail__layout">
 
-                    {/* IMAGENES */}
+                    {/* imágenes */}
                     <div className="product-detail__gallery">
                         {images.length > 0 && (
                             <>

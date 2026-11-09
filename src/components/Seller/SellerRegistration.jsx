@@ -132,7 +132,7 @@ function SellerRegistration({ onBack, onSellerRegistered }) {
                     </div>
 
                     <div className="seller-reg__field">
-                        <label htmlFor="sr-dni">Numero de documento *</label>
+                        <label htmlFor="sr-dni">Número de documento *</label>
                         <input
                             id="sr-dni"
                             name="dniNumber"
@@ -184,7 +184,7 @@ function SellerRegistration({ onBack, onSellerRegistered }) {
                             />
                         </div>
                         <div className="seller-reg__field">
-                            <label htmlFor="sr-phone">Telefono *</label>
+                            <label htmlFor="sr-phone">Teléfono *</label>
                             <input
                                 id="sr-phone"
                                 name="phoneNumber"
@@ -199,7 +199,7 @@ function SellerRegistration({ onBack, onSellerRegistered }) {
                     </div>
 
                     <div className="seller-reg__field">
-                        <label htmlFor="sr-address">Direccion del comercio *</label>
+                        <label htmlFor="sr-address">Dirección del comercio *</label>
                         <input
                             id="sr-address"
                             name="tradeAddress"
@@ -245,7 +245,7 @@ function SellerRegistration({ onBack, onSellerRegistered }) {
                     </div>
 
                     <div className="seller-reg__field">
-                        <label htmlFor="sr-account">Numero de cuenta *</label>
+                        <label htmlFor="sr-account">Número de cuenta *</label>
                         <input
                             id="sr-account"
                             name="numberAccount"

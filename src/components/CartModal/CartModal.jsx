@@ -136,7 +136,7 @@ function CartModal({ isOpen, onClose, onCheckout, cart, onCartChange }) {
                     {cart === null && !error && <div className="cart-modal__loading">Cargando carrito...</div>}
 
                     {cart !== null && items.length === 0 && !error && (
-                        <div className="cart-modal__empty">Tu carrito esta vacio</div>
+                        <div className="cart-modal__empty">Tu carrito está vacío</div>
                     )}
 
                     {cart !== null && items.map((item) => {

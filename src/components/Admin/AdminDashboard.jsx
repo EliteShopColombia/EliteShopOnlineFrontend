@@ -98,7 +98,7 @@ function AdminDashboard() {
       ),
     },
     {
-      label: "Total Ordenes",
+      label: "Total Órdenes",
       value: stats?.totalOrders ?? 0,
       iconClass: "yellow",
       icon: (

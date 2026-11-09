@@ -58,7 +58,7 @@ function AdminSellers() {
     <div>
       <div className="admin-page-header">
         <h1 className="admin-page-header__title">Vendedores</h1>
-        <p className="admin-page-header__subtitle">Gestion de vendedores de la plataforma</p>
+        <p className="admin-page-header__subtitle">Gestión de vendedores de la plataforma</p>
       </div>
 
       {error && (
@@ -104,7 +104,7 @@ function AdminSellers() {
                 <tr>
                   <th>Nombre</th>
                   <th>Comercio</th>
-                  <th>Telefono</th>
+                  <th>Teléfono</th>
                   <th>Verificado</th>
                   <th>Activo</th>
                   <th>Registro</th>
@@ -118,7 +118,7 @@ function AdminSellers() {
                       {seller.fullname}
                     </td>
                     <td data-label="Comercio">{seller.tradeName}</td>
-                    <td data-label="Telefono">{seller.contact?.phoneNumber || "-"}</td>
+                    <td data-label="Teléfono">{seller.contact?.phoneNumber || "-"}</td>
                     <td data-label="Verificado">
                       <span className={`admin-badge ${seller.isVerified ? "admin-badge--success" : "admin-badge--warning"}`}>
                         {seller.isVerified ? "Verificado" : "Pendiente"}
@@ -150,7 +150,7 @@ function AdminSellers() {
         {data.totalPages > 1 && (
           <div className="admin-pagination">
             <span className="admin-pagination__info">
-              Pagina {data.page + 1} de {data.totalPages}
+              página {data.page + 1} de {data.totalPages}
             </span>
             <div className="admin-pagination__controls">
               <button

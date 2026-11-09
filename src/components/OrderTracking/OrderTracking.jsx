@@ -22,8 +22,8 @@ const STATUS_STEPS = [
 
 const STATUS_INFO = {
     PENDING_PAYMENT: { label: 'Pago pendiente', description: 'Tu pedido fue recibido y esta esperando el pago.', icon: '⏳' },
-    PAID: { label: 'Pagado', description: 'El pago fue aprobado y tu pedido sera preparado.', icon: '✅' },
-    IN_PREPARATION: { label: 'En preparacion', description: 'Tu pedido esta siendo preparado.', icon: '📋' },
+    PAID: { label: 'Pagado', description: 'El pago fue aprobado y tu pedido será preparado.', icon: '✅' },
+    IN_PREPARATION: { label: 'En preparación', description: 'Tu pedido esta siendo preparado.', icon: '📋' },
     SHIPPED: { label: 'Enviado', description: 'Tu pedido ya fue despachado y va en camino.', icon: '🚚' },
     OUT_FOR_DELIVERY: { label: 'En reparto', description: 'Tu pedido esta en reparto.', icon: '🛵' },
     DELIVERED: { label: 'Entregado', description: 'Tu pedido fue entregado.', icon: '📦' },
@@ -36,7 +36,7 @@ const STATUS_INFO = {
 const STATUS_LABELS = {
     PENDING_PAYMENT: 'Pago pendiente',
     PAID: 'Pagado',
-    IN_PREPARATION: 'En preparacion',
+    IN_PREPARATION: 'En preparación',
     SHIPPED: 'Enviada',
     OUT_FOR_DELIVERY: 'En reparto',
     DELIVERED: 'Entregada',
@@ -463,7 +463,7 @@ function OrderTracking({ initialOrderId, onBack }) {
 
                                     <div className="order-tracking__grid">
                                         <div className="order-tracking__info-card">
-                                            <h3 className="order-tracking__info-title">Direccion de envio</h3>
+                                            <h3 className="order-tracking__info-title">Dirección de envio</h3>
                                             <p className="order-tracking__info-text">{order.shippingAddress}</p>
                                             <p className="order-tracking__info-text">{order.shippingCity}, {order.shippingDepartment}</p>
                                         </div>

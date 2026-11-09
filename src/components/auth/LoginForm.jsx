@@ -19,7 +19,7 @@ export function LoginForm({ onSwitchToRegister, onSuccess }) {
       onSuccess?.();
     } catch (err) {
       const { error } = parseApiError(err);
-      setError(error || 'Error al iniciar sesion');
+      setError(error || 'Error al iniciar sesión');
     } finally {
       setLoading(false);
     }
@@ -28,7 +28,7 @@ export function LoginForm({ onSwitchToRegister, onSuccess }) {
   return (
     <div className="auth-overlay" onClick={onSwitchToRegister ? (e) => e.target === e.currentTarget && onSuccess?.() : undefined}>
       <div className="auth-modal">
-        <h2 className="auth-modal__title">Iniciar Sesion</h2>
+        <h2 className="auth-modal__title">Iniciar Sesión</h2>
 
         <form className="auth-modal__form" onSubmit={handleSubmit}>
           <div className="auth-modal__field">
@@ -44,7 +44,7 @@ export function LoginForm({ onSwitchToRegister, onSuccess }) {
           </div>
 
           <div className="auth-modal__field">
-            <label htmlFor="login-password">Contrasena</label>
+            <label htmlFor="login-password">Contraseña</label>
             <input
               id="login-password"
               type="password"
@@ -59,7 +59,7 @@ export function LoginForm({ onSwitchToRegister, onSuccess }) {
           {error && <p className="auth-modal__error">{error}</p>}
 
           <button type="submit" className="auth-modal__submit" disabled={loading}>
-            {loading ? 'Ingresando...' : 'Iniciar Sesion'}
+            {loading ? 'Ingresando...' : 'Iniciar Sesión'}
           </button>
         </form>
 

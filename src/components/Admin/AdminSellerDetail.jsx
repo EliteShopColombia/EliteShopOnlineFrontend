@@ -129,7 +129,7 @@ function AdminSellerDetail() {
 
         {/* Info Personal */}
         <div className="admin-detail-card">
-          <h3 className="admin-detail-card__title">Informacion Personal</h3>
+          <h3 className="admin-detail-card__title">Información Personal</h3>
           <div className="admin-detail-grid">
             <div className="admin-detail-field">
               <span className="admin-detail-field__label">Nombre completo</span>
@@ -140,7 +140,7 @@ function AdminSellerDetail() {
               <span className="admin-detail-field__value">{seller.typeDni || "-"}</span>
             </div>
             <div className="admin-detail-field">
-              <span className="admin-detail-field__label">Numero de documento</span>
+              <span className="admin-detail-field__label">Número de documento</span>
               <span className="admin-detail-field__value">{seller.dniNumber || "-"}</span>
             </div>
             <div className="admin-detail-field">
@@ -148,7 +148,7 @@ function AdminSellerDetail() {
               <span className="admin-detail-field__value">{formatDate(seller.createdAt)}</span>
             </div>
             <div className="admin-detail-field">
-              <span className="admin-detail-field__label">Ultima actualizacion</span>
+              <span className="admin-detail-field__label">Última actualización</span>
               <span className="admin-detail-field__value">{formatDate(seller.updatedAt)}</span>
             </div>
           </div>
@@ -167,11 +167,11 @@ function AdminSellerDetail() {
               <span className="admin-detail-field__value">{seller.contact?.email || "-"}</span>
             </div>
             <div className="admin-detail-field">
-              <span className="admin-detail-field__label">Telefono</span>
+              <span className="admin-detail-field__label">Teléfono</span>
               <span className="admin-detail-field__value">{seller.contact?.phoneNumber || "-"}</span>
             </div>
             <div className="admin-detail-field">
-              <span className="admin-detail-field__label">Direccion</span>
+              <span className="admin-detail-field__label">Dirección</span>
               <span className="admin-detail-field__value">{seller.contact?.tradeAddress || "-"}</span>
             </div>
             <div className="admin-detail-field">
@@ -187,7 +187,7 @@ function AdminSellerDetail() {
 
         {/* Info Bancaria */}
         <div className="admin-detail-card">
-          <h3 className="admin-detail-card__title">Informacion Bancaria</h3>
+          <h3 className="admin-detail-card__title">Información Bancaria</h3>
           <div className="admin-detail-grid">
             <div className="admin-detail-field">
               <span className="admin-detail-field__label">Banco</span>
@@ -198,14 +198,14 @@ function AdminSellerDetail() {
               <span className="admin-detail-field__value">{seller.bankInfo?.typeAccount || "-"}</span>
             </div>
             <div className="admin-detail-field">
-              <span className="admin-detail-field__label">Numero de cuenta</span>
+              <span className="admin-detail-field__label">Número de cuenta</span>
               <span className="admin-detail-field__value">{seller.bankInfo?.numberAccount || "-"}</span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Modal de confirmacion */}
+      {/* Modal de confirmación */}
       {confirmModal && (
         <div className="admin-modal-overlay" onClick={() => setConfirmModal(false)}>
           <div className="admin-modal" onClick={(e) => e.stopPropagation()}>

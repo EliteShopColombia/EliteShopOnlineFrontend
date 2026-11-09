@@ -18,7 +18,7 @@ function ShippingInfo() {
             </div>
 
             <p className="shipping-info__details">
-                Estandar: <strong>$12.400</strong> o <strong>GRATIS</strong> (si pides mas de $60.000 de este vendedor), entrega rapida: 3-9 sep (30-36 dias). Normalmente, se envia en 15 dias.
+                Estándar: <strong>$12.400</strong> o <strong>GRATIS</strong> (si pides más de $60.000 a este vendedor). Entrega estimada: 3 a 6 días hábiles.
             </p>
 
             <div className="shipping-info__platform">
