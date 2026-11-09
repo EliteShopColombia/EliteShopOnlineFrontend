@@ -210,7 +210,7 @@ function Checkout({ onBack, onSuccess }) {
                         <div className="checkout__summary">
                             <span>Total a pagar</span>
                             <strong>{formatPrice(cart?.total)}</strong>
-                            <small>{cart?.itemCount} articulos</small>
+                            <small>{cart?.itemCount} artículos</small>
                         </div>
 
                         <section className="checkout__section">

@@ -9,7 +9,7 @@ const TERMS_DATA = [
     id: "tc-1",
     question: "1. Aceptación de los Términos",
     answer:
-      "Al acceder y utilizar EliteShop Colombia, usted acepta los presentes Términos y Condiciones. Si no está de acuerdo con alguno de los términos, le recomendamos no utilizar la plataforma. El uso continuado de nuestros servicios implica la aceptación tacita de estas condiciones.",
+      "Al acceder y utilizar EliteShop Colombia, usted acepta los presentes Términos y Condiciones. Si no está de acuerdo con alguno de los términos, le recomendamos no utilizar la plataforma. El uso continuado de nuestros servicios implica la aceptación tácita de estas condiciones.",
   },
   {
     id: "tc-2",
@@ -27,25 +27,25 @@ const TERMS_DATA = [
     id: "tc-4",
     question: "4. Proceso de Compra",
     answer:
-      "El proceso de compra implica la selección de productos, verificación del carrito, datos de envío y método de pago. El pedido se confirma unicamente cuando se recibe la confirmación de pago por parte de la pasarela de pagos. EliteShop reserva el derecho de rechazar pedidos en caso de detectar irregularidades.",
+      "El proceso de compra implica la selección de productos, verificación del carrito, datos de envío y método de pago. El pedido se confirma únicamente cuando se recibe la confirmación de pago por parte de la pasarela de pagos. EliteShop reserva el derecho de rechazar pedidos en caso de detectar irregularidades.",
   },
   {
     id: "tc-5",
     question: "5. Pagos y Seguridad",
     answer:
-      "Los pagos se procesan de forma segura a través de ePayco, cumpliendo con los estandares de seguridad PCI DSS. EliteShop no almacena datos de tarjetas de crédito o débito. Los métodos de pago aceptados incluyen tarjetas de crédito, débito y PSE.",
+      "Los pagos se procesan de forma segura a través de ePayco, cumpliendo con los estándares de seguridad PCI DSS. EliteShop no almacena datos de tarjetas de crédito o débito. Los métodos de pago aceptados incluyen tarjetas de crédito, débito y PSE.",
   },
   {
     id: "tc-6",
-    question: "6. Envios y Entregas",
+    question: "6. Envíos y Entregas",
     answer:
-      "Los tiempos de envío varían según la ubicación del destinatario y la disponibilidad del producto. Los tiempos estimados se muestran durante el proceso de compra y pueden fluctuar entre 2 y 10 días habiles. EliteShop no se hace responsable por retrasos ocasionados por terceros (transportadoras, fuerza mayor, etc.).",
+      "Los tiempos de envío varían según la ubicación del destinatario y la disponibilidad del producto. Los tiempos estimados se muestran durante el proceso de compra y pueden fluctuar entre 2 y 10 días hábiles. EliteShop no se hace responsable por retrasos ocasionados por terceros (transportadoras, fuerza mayor, etc.).",
   },
   {
     id: "tc-7",
     question: "7. Devoluciones y Reembolsos",
     answer:
-      "El usuario cuenta con un plazo de 30 días calendario para solicitar la devolución de un producto, siempre que esté en perfectas condiciones y con su empaque original. Los reembolsos se procesaran en un plazo de 5 a 10 días habiles después de la aprobación de la devolución.",
+      "El usuario cuenta con un plazo de 30 días calendario para solicitar la devolución de un producto, siempre que esté en perfectas condiciones y con su empaque original. Los reembolsos se procesarán en un plazo de 5 a 10 días hábiles después de la aprobación de la devolución.",
   },
   {
     id: "tc-8",
@@ -69,13 +69,13 @@ const TERMS_DATA = [
     id: "tc-11",
     question: "11. Limitación de Responsabilidad",
     answer:
-      "EliteShop no será responsable por danos indirectos, incidentales o consecuentes que puedan derivarse del uso de la plataforma. Nuestra responsabilidad maxima se limitara al valor total de la compra efectuada por el usuario.",
+      "EliteShop no será responsable por daños indirectos, incidentales o consecuentes que puedan derivarse del uso de la plataforma. Nuestra responsabilidad máxima se limitará al valor total de la compra efectuada por el usuario.",
   },
   {
     id: "tc-12",
     question: "12. Modificaciones",
     answer:
-      "EliteShop se reserva el derecho de modificar los presentes Términos y Condiciones en cualquier momento. Las modificaciones serán publicadas en la plataforma y entraran en vigencia desde su publicación. El uso continuado de la plataforma después de las modificaciones implica la aceptación de los nuevos términos.",
+      "EliteShop se reserva el derecho de modificar los presentes Términos y Condiciones en cualquier momento. Las modificaciones serán publicadas en la plataforma y entrarán en vigencia desde su publicación. El uso continuado de la plataforma después de las modificaciones implica la aceptación de los nuevos términos.",
   },
 ];
 
@@ -87,19 +87,19 @@ const PQRS_DATA = [
     id: "pqrs-1",
     question: "1. Petición",
     answer:
-      "Una petición es cualquier solicitud que usted como usuario realiz a EliteShop Colombia para obtener información, aclarar dudas o recibir un servicio al que tiene derecho. Ejemplos: consulta sobre el estado de un pedido, solicitud de información sobre un producto, solicitud de cotización, entre otros. Las peticiones deben ser atendidas en un plazo maximo de 15 días habiles.",
+      "Una petición es cualquier solicitud que usted como usuario realiza a EliteShop Colombia para obtener información, aclarar dudas o recibir un servicio al que tiene derecho. Ejemplos: consulta sobre el estado de un pedido, solicitud de información sobre un producto, solicitud de cotización, entre otros. Las peticiones deben ser atendidas en un plazo máximo de 15 días hábiles.",
   },
   {
     id: "pqrs-2",
     question: "2. Queja",
     answer:
-      "Una queja expresa la inconformidad del usuario con respecto a un servicio recibido, la calidad de un producto o la atención recibida por parte del equipo de EliteShop. Ejemplos: demora en la entrega, producto no conforme con la descripción, atención inadecuada del servicio al cliente. Las quejas deben ser atendidas en un plazo maximo de 15 días habiles.",
+      "Una queja expresa la inconformidad del usuario con respecto a un servicio recibido, la calidad de un producto o la atención recibida por parte del equipo de EliteShop. Ejemplos: demora en la entrega, producto no conforme con la descripción, atención inadecuada del servicio al cliente. Las quejas deben ser atendidas en un plazo máximo de 15 días hábiles.",
   },
   {
     id: "pqrs-3",
     question: "3. Reclamo",
     answer:
-      "Un reclamo es la expresión de insatisfacción del usuario cuando ha sufrido un perjuicio económico o moral, y busca la reparación del dano o la solución a un problema concreto. Ejemplos: producto defectuoso que no fue reemplazado, cobro indebido, incumplimiento de un término contractual. Los reclamos deben ser atendidos en un plazo maximo de 15 días habiles.",
+      "Un reclamo es la expresión de insatisfacción del usuario cuando ha sufrido un perjuicio económico o moral, y busca la reparación del daño o la solución a un problema concreto. Ejemplos: producto defectuoso que no fue reemplazado, cobro indebido, incumplimiento de un término contractual. Los reclamos deben ser atendidos en un plazo máximo de 15 días hábiles.",
   },
   {
     id: "pqrs-4",
@@ -117,13 +117,13 @@ const PQRS_DATA = [
     id: "pqrs-6",
     question: "6. Tiempos de Respuesta",
     answer:
-      "EliteShop Colombia se compromete a responder todas las PQRS en los siguientes plazos: Peticiones: maximo 15 días habiles. Quejas: maximo 15 días habiles. Reclamos: maximo 15 días habiles. Sugerencias: maximo 30 días habiles. Estos plazos cuentan a partir de la fecha de radicación de la PQRS.",
+      "EliteShop Colombia se compromete a responder todas las PQRS en los siguientes plazos: Peticiones: máximo 15 días hábiles. Quejas: máximo 15 días hábiles. Reclamos: máximo 15 días hábiles. Sugerencias: máximo 30 días hábiles. Estos plazos cuentan a partir de la fecha de radicación de la PQRS.",
   },
   {
     id: "pqrs-7",
     question: "7. Derechos del Consumidor",
     answer:
-      "Como consumidor en Colombia, usted cuenta con los derechos establecidos en el Código de Consumo (Ley 1480 de 2011), entre los cuales se destacan: derecho a la información veraz y oportuna, derecho a la protección contra la publicidad engañosa, derecho a la calidad de los productos y servicios, y derecho a la repertución de danos. EliteShop se compromete a respetar y hacer efectivos todos estos derechos.",
+      "Como consumidor en Colombia, usted cuenta con los derechos establecidos en el Código de Consumo (Ley 1480 de 2011), entre los cuales se destacan: derecho a la información veraz y oportuna, derecho a la protección contra la publicidad engañosa, derecho a la calidad de los productos y servicios, y derecho a la reparación de daños. EliteShop se compromete a respetar y hacer efectivos todos estos derechos.",
   },
 ];
 

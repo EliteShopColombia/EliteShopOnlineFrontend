@@ -87,7 +87,7 @@ function SellerRegistration({ onBack, onSellerRegistered }) {
             const { error, code, fieldErrors: fe } = parseApiError(err);
 
             if (code === LOCATION_ERROR_CODES.SELLER_INVALID_TRADE_DEPARTMENT) {
-                setFieldErrors({ tradeDepartment: error || 'Departamento invalido' });
+                setFieldErrors({ tradeDepartment: error || 'Departamento inválido' });
             } else if (code === LOCATION_ERROR_CODES.SELLER_INVALID_TRADE_CITY) {
                 setFieldErrors({ tradeCity: error || 'Ciudad invalida' });
             } else if (code === 'VALIDATION_FAILED' && fe) {
