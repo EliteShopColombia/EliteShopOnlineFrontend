@@ -30,6 +30,8 @@ import AdminOrders from "./components/Admin/AdminOrders.jsx";
 import { LoginForm } from "./components/auth/LoginForm.jsx";
 import { RegisterForm } from "./components/auth/RegisterForm.jsx";
 import FAQ from "./components/FAQ/FAQ.jsx";
+import Categories from "./components/Categories/Categories.jsx";
+import Footer from "./components/Footer/Footer.jsx";
 
 function AppContent() {
   const { auth, user, isAuthenticated, logout } = useAuth();
@@ -174,8 +176,16 @@ function AppContent() {
   const isAuthPage = location.pathname === "/login" || location.pathname === "/register";
   const isAdminPage = location.pathname.startsWith("/admin");
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+  }, [location.pathname]);
+
   return (
     <div className="app">
+      <a className="app__skip" href="#contenido">
+        Saltar al contenido
+      </a>
+
       {!isAuthPage && !isAdminPage && (
         <Header
           onCartClick={handleCartClick}
@@ -197,7 +207,7 @@ function AppContent() {
         />
       )}
 
-      <main>
+      <main id="contenido">
         <Routes>
           <Route path="/" element={
             <Gallery
@@ -205,6 +215,7 @@ function AppContent() {
               onAddToCart={handleAddToCart}
               searchQuery={searchQuery}
               activeCategory={activeCategory}
+              onCategorySelect={handleCategoryChange}
             />
           } />
           <Route path="/product/:id" element={<ProductDetail onBack={() => navigate("/")} onAddToCart={handleAddToCart} />} />
@@ -246,6 +257,9 @@ function AppContent() {
               />
             )}
           />
+          <Route path="/categorias" element={
+            <Categories onCategorySelect={(value) => { handleCategoryChange(value); navigate("/"); }} />
+          } />
           <Route path="/faq" element={<FAQ onBack={() => navigate("/")} />} />
           <Route path="*" element={
             <Gallery
@@ -253,10 +267,13 @@ function AppContent() {
               onAddToCart={handleAddToCart}
               searchQuery={searchQuery}
               activeCategory={activeCategory}
+              onCategorySelect={handleCategoryChange}
             />
           } />
         </Routes>
       </main>
+
+      {!isAuthPage && !isAdminPage && <Footer />}
 
       {cartNotice && <div className="app__toast">{cartNotice}</div>}
 

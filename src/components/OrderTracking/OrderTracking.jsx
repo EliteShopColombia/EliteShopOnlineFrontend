@@ -21,16 +21,16 @@ const STATUS_STEPS = [
 ];
 
 const STATUS_INFO = {
-    PENDING_PAYMENT: { label: 'Pago pendiente', description: 'Tu pedido fue recibido y esta esperando el pago.', icon: '⏳' },
-    PAID: { label: 'Pagado', description: 'El pago fue aprobado y tu pedido será preparado.', icon: '✅' },
-    IN_PREPARATION: { label: 'En preparación', description: 'Tu pedido esta siendo preparado.', icon: '📋' },
-    SHIPPED: { label: 'Enviado', description: 'Tu pedido ya fue despachado y va en camino.', icon: '🚚' },
-    OUT_FOR_DELIVERY: { label: 'En reparto', description: 'Tu pedido esta en reparto.', icon: '🛵' },
-    DELIVERED: { label: 'Entregado', description: 'Tu pedido fue entregado.', icon: '📦' },
-    COMPLETED: { label: 'Completado', description: 'Tu pedido fue completado. Gracias por comprar.', icon: '🎉' },
-    CANCELLED: { label: 'Cancelado', description: 'Tu pedido fue cancelado.', icon: '❌' },
-    DISPUTE: { label: 'En disputa', description: 'Tu pedido se encuentra en proceso de disputa.', icon: '⚠️' },
-    REFUNDED: { label: 'Reembolsado', description: 'El pago de tu pedido fue reembolsado.', icon: '↩️' },
+    PENDING_PAYMENT: { label: 'Pago pendiente', description: 'Tu pedido fue recibido y está esperando el pago.' },
+    PAID: { label: 'Pagado', description: 'El pago fue aprobado y tu pedido será preparado.' },
+    IN_PREPARATION: { label: 'En preparación', description: 'Tu pedido está siendo preparado.' },
+    SHIPPED: { label: 'Enviado', description: 'Tu pedido ya fue despachado y va en camino.' },
+    OUT_FOR_DELIVERY: { label: 'En reparto', description: 'Tu pedido está en reparto.' },
+    DELIVERED: { label: 'Entregado', description: 'Tu pedido fue entregado.' },
+    COMPLETED: { label: 'Completado', description: 'Tu pedido fue completado. Gracias por comprar.' },
+    CANCELLED: { label: 'Cancelado', description: 'Tu pedido fue cancelado.' },
+    DISPUTE: { label: 'En disputa', description: 'Tu pedido se encuentra en proceso de disputa.' },
+    REFUNDED: { label: 'Reembolsado', description: 'El pago de tu pedido fue reembolsado.' },
 };
 
 const STATUS_LABELS = {
@@ -278,11 +278,11 @@ function OrderTracking({ initialOrderId, onBack }) {
             <div className="order-tracking__container">
                 {showOrderList && (
                     <button type="button" className="order-tracking__back" onClick={onBack}>
-                        ← Volver
+                        Volver
                     </button>
                 )}
 
-                <h1 className="order-tracking__title">Mis Pedidos</h1>
+                <h1 className="order-tracking__title">Mis pedidos</h1>
 
                 {showOrderList ? (
                     <>
@@ -291,7 +291,7 @@ function OrderTracking({ initialOrderId, onBack }) {
                                 type="text"
                                 value={orderId}
                                 onChange={(e) => setOrderId(e.target.value)}
-                                placeholder="Buscar pedido por ID..."
+                                placeholder="Buscar pedido por ID…"
                                 aria-label="ID del pedido"
                             />
                             <button type="submit" className="order-tracking__search-btn" disabled={!orderId.trim()}>
@@ -303,18 +303,29 @@ function OrderTracking({ initialOrderId, onBack }) {
 
                         {notFound && (
                             <div className="order-tracking__not-found">
-                                <span className="order-tracking__not-found-icon">🔍</span>
-                                <p>No se encontro un pedido con ese ID.</p>
+                                <span className="order-tracking__not-found-icon">
+                                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                                        <circle cx="11" cy="11" r="8" />
+                                        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                                    </svg>
+                                </span>
+                                <p>No se encontró un pedido con ese ID.</p>
                                 <small>Verifica que el ID sea correcto.</small>
                             </div>
                         )}
 
                         {ordersLoading ? (
-                            <p className="order-tracking__muted">Cargando pedidos...</p>
+                            <p className="order-tracking__muted">Cargando pedidos…</p>
                         ) : orders.length === 0 ? (
                             <div className="order-tracking__empty">
-                                <span className="order-tracking__empty-icon">📦</span>
-                                <p>No tienes pedidos aun.</p>
+                                <span className="order-tracking__empty-icon">
+                                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+                                        <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+                                        <line x1="12" y1="22.08" x2="12" y2="12" />
+                                    </svg>
+                                </span>
+                                <p>Aún no tienes pedidos.</p>
                             </div>
                         ) : (
                             <div className="order-tracking__list">
@@ -344,12 +355,12 @@ function OrderTracking({ initialOrderId, onBack }) {
                     </>
                 ) : (
                     <>
-                        {loading && <p className="order-tracking__muted">Consultando pedido...</p>}
+                        {loading && <p className="order-tracking__muted">Consultando pedido…</p>}
 
                         {!loading && order && (
                             <>
                                 <button type="button" className="order-tracking__back" onClick={handleBackToList}>
-                                    ← Ver todos mis pedidos
+                                    Ver todos mis pedidos
                                 </button>
 
                                 <div className="order-tracking__result">
@@ -363,7 +374,7 @@ function OrderTracking({ initialOrderId, onBack }) {
                                         </div>
                                         <div className="order-tracking__hero-right">
                                             <span className={`order-tracking__badge ${isTerminal ? 'order-tracking__badge--cancelled' : ''}`}>
-                                                {STATUS_INFO[order.status]?.icon} {STATUS_INFO[order.status]?.label || order.status}
+                                                {STATUS_INFO[order.status]?.label || order.status}
                                             </span>
                                             <span className="order-tracking__hero-total">{formatPrice(order.totalAmount)}</span>
                                         </div>
@@ -438,7 +449,7 @@ function OrderTracking({ initialOrderId, onBack }) {
                                                             onClick={handlePayWithSavedCard}
                                                             disabled={retrying || !selectedMethodId || !cvv}
                                                         >
-                                                            {retrying ? 'Procesando...' : 'Pagar con tarjeta guardada'}
+                                                            {retrying ? 'Procesando…' : 'Pagar con tarjeta guardada'}
                                                         </button>
                                                     </div>
                                                     <div className="order-tracking__divider">
@@ -453,7 +464,7 @@ function OrderTracking({ initialOrderId, onBack }) {
                                                 onClick={handleRetryPayment}
                                                 disabled={retrying}
                                             >
-                                                {retrying ? 'Procesando...' : 'Pagar con tarjeta nueva'}
+                                                {retrying ? 'Procesando…' : 'Pagar con tarjeta nueva'}
                                             </button>
                                         </div>
                                     )}
@@ -497,7 +508,7 @@ function OrderTracking({ initialOrderId, onBack }) {
                                                                 {image ? (
                                                                     <img src={image} alt={product.name || 'Producto'} />
                                                                 ) : (
-                                                                    <span className="order-tracking__product-placeholder">📦</span>
+                                                                    <span className="order-tracking__product-placeholder">?</span>
                                                                 )}
                                                             </div>
                                                             <div className="order-tracking__product-info">

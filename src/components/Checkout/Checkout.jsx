@@ -145,9 +145,9 @@ function Checkout({ onBack, onSuccess }) {
             } else if (code === 'PAYMENT_DECLINED' || (error && error.includes('pago no fue aprobado'))) {
                 setError('El pago fue rechazado. Verifica los datos de tu tarjeta o intenta con otro método de pago.');
             } else if (code === 'EMPTY_CART') {
-                setError('El carrito esta vacío');
+                setError('El carrito está vacío');
             } else if (code === 'INSUFFICIENT_STOCK') {
-                setError('Stock insuficiente para uno o más productos');
+                setError('No hay stock suficiente para uno o más productos');
             } else {
                 setError(error || 'No se pudo procesar el checkout');
             }
@@ -163,7 +163,7 @@ function Checkout({ onBack, onSuccess }) {
                     <div className="checkout__success">
                         <div className="checkout__success-icon">✓</div>
                         <h2 className="checkout__success-title">Compra realizada</h2>
-                        <p className="checkout__success-text">Tu orden fue creada correctamente.</p>
+                        <p className="checkout__success-text">Tu pedido quedó registrado y ya estamos preparándolo.</p>
 
                         <div className="checkout__success-details">
                             <div className="checkout__success-row">
@@ -197,20 +197,28 @@ function Checkout({ onBack, onSuccess }) {
         <div className="checkout">
             <div className="checkout__container">
                 <button type="button" className="checkout__back" onClick={onBack}>
-                    ← Volver al carrito
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                        <line x1="19" y1="12" x2="5" y2="12" />
+                        <polyline points="12 19 5 12 12 5" />
+                    </svg>
+                    Volver al carrito
                 </button>
 
-                <h1 className="checkout__title">Finalizar Compra</h1>
+                <h1 className="checkout__title">Finalizar compra</h1>
 
                 {loading ? (
-                    <div className="checkout__loading">Cargando checkout...</div>
+                    <div className="checkout__loading">Cargando checkout…</div>
                 ) : (
                     <form className="checkout__form" onSubmit={handleSubmit}>
 
                         <div className="checkout__summary">
                             <span>Total a pagar</span>
                             <strong>{formatPrice(cart?.total)}</strong>
-                            <small>{cart?.itemCount} artículos</small>
+                            <small>
+                                {cart?.itemCount === 1
+                                    ? '1 artículo'
+                                    : `${cart?.itemCount || 0} artículos`}
+                            </small>
                         </div>
 
                         <section className="checkout__section">
@@ -353,7 +361,7 @@ function Checkout({ onBack, onSuccess }) {
                                     </div>
                                     <div className="checkout__row">
                                         <div className="checkout__field">
-                                            <label htmlFor="checkout-doc-type">Tipo doc. *</label>
+                                            <label htmlFor="checkout-doc-type">Tipo de documento *</label>
                                             <select
                                                 id="checkout-doc-type"
                                                 name="docType"
@@ -367,7 +375,7 @@ function Checkout({ onBack, onSuccess }) {
                                             </select>
                                         </div>
                                         <div className="checkout__field">
-                                            <label htmlFor="checkout-doc-number">Número doc. *</label>
+                                            <label htmlFor="checkout-doc-number">Número de documento *</label>
                                             <input
                                                 id="checkout-doc-number"
                                                 name="docNumber"
@@ -399,8 +407,12 @@ function Checkout({ onBack, onSuccess }) {
                             className="checkout__submit"
                             disabled={submitting || !cart?.items?.length}
                         >
-                            {submitting ? 'Procesando pago...' : 'Pagar ahora'}
+                            {submitting ? 'Procesando pago…' : 'Pagar ahora'}
                         </button>
+
+                        <p className="checkout__trust">
+                            Pago seguro con ePayco. EliteShop no almacena los datos de tu tarjeta.
+                        </p>
                     </form>
                 )}
             </div>

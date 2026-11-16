@@ -239,7 +239,7 @@ function FAQ({ onBack }) {
               <line x1="12" y1="17" x2="12.01" y2="17" />
             </svg>
           </div>
-          <h1 className="faq__title">Preguntas Frecuentes</h1>
+          <h1 className="faq__title">Preguntas frecuentes</h1>
           <p className="faq__subtitle">
             Encuentra respuestas sobre nuestros términos, políticas y proceso
             de atención al cliente.
@@ -257,7 +257,7 @@ function FAQ({ onBack }) {
             id="faq-tab-terms"
             onClick={() => setActiveTab("terms")}
           >
-            Términos y Condiciones
+            Términos y condiciones
           </button>
           <button
             type="button"
@@ -294,10 +294,10 @@ function FAQ({ onBack }) {
         {/* Contact footer */}
         <div className="faq__contact">
           <p className="faq__contact-text">
-            No encontraste lo que buscabas?
+            ¿No encontraste lo que buscabas?
           </p>
           <div className="faq__contact-channels">
-            <div className="faq__channel">
+            <a className="faq__channel" href="mailto:eliteshopcolombiastore@gmail.com">
               <svg
                 width="16"
                 height="16"
@@ -313,8 +313,8 @@ function FAQ({ onBack }) {
                 <polyline points="22,6 12,13 2,6" />
               </svg>
               <span>eliteshopcolombiastore@gmail.com</span>
-            </div>
-            <div className="faq__channel">
+            </a>
+            <a className="faq__channel" href="mailto:eliteshopcolombiastore@gmail.com">
               <svg
                 width="16"
                 height="16"
@@ -329,7 +329,7 @@ function FAQ({ onBack }) {
                 <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
               </svg>
               <span>Cel/WhatsApp: 322 928 6047</span>
-            </div>
+            </a>
           </div>
         </div>
       </div>

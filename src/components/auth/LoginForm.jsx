@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { parseApiError } from '../../helpers/api.helpers';
+import logo from '../../assets/logo.png';
 import './auth.css';
 
 export function LoginForm({ onSwitchToRegister, onSuccess }) {
@@ -28,11 +29,19 @@ export function LoginForm({ onSwitchToRegister, onSuccess }) {
   return (
     <div className="auth-overlay" onClick={onSwitchToRegister ? (e) => e.target === e.currentTarget && onSuccess?.() : undefined}>
       <div className="auth-modal">
-        <h2 className="auth-modal__title">Iniciar Sesión</h2>
+        <div className="auth-modal__brand">
+          <img src={logo} alt="" className="auth-modal__brand-logo" />
+          <span className="auth-modal__brand-name">EliteShop</span>
+        </div>
+
+        <h2 className="auth-modal__title">Iniciar sesión</h2>
+        <p className="auth-modal__subtitle">
+          Ingresa para comprar y seguir tus pedidos.
+        </p>
 
         <form className="auth-modal__form" onSubmit={handleSubmit}>
           <div className="auth-modal__field">
-            <label htmlFor="login-email">Email</label>
+            <label htmlFor="login-email">Correo electrónico</label>
             <input
               id="login-email"
               type="email"
@@ -52,21 +61,21 @@ export function LoginForm({ onSwitchToRegister, onSuccess }) {
               onChange={(e) => setPassword(e.target.value)}
               required
               minLength={8}
-              placeholder="Minimo 8 caracteres"
+              placeholder="Mínimo 8 caracteres"
             />
           </div>
 
           {error && <p className="auth-modal__error">{error}</p>}
 
           <button type="submit" className="auth-modal__submit" disabled={loading}>
-            {loading ? 'Ingresando...' : 'Iniciar Sesión'}
+            {loading ? 'Ingresando…' : 'Iniciar sesión'}
           </button>
         </form>
 
         <p className="auth-modal__switch">
-          No tienes cuenta?{' '}
+          ¿No tienes cuenta?{' '}
           <button type="button" onClick={onSwitchToRegister}>
-            Registrarme
+            Crear una cuenta
           </button>
         </p>
       </div>

@@ -89,7 +89,7 @@ function SellerRegistration({ onBack, onSellerRegistered }) {
             if (code === LOCATION_ERROR_CODES.SELLER_INVALID_TRADE_DEPARTMENT) {
                 setFieldErrors({ tradeDepartment: error || 'Departamento inválido' });
             } else if (code === LOCATION_ERROR_CODES.SELLER_INVALID_TRADE_CITY) {
-                setFieldErrors({ tradeCity: error || 'Ciudad invalida' });
+                setFieldErrors({ tradeCity: error || 'Ciudad inválida' });
             } else if (code === 'VALIDATION_FAILED' && fe) {
                 setFieldErrors(fe);
                 setError(Object.values(fe).join(', '));
@@ -105,14 +105,18 @@ function SellerRegistration({ onBack, onSellerRegistered }) {
         <div className="seller-reg">
             <div className="seller-reg__container">
                 <button type="button" className="seller-reg__back" onClick={onBack}>
-                    ← Volver
+                    Volver
                 </button>
 
-                <h1 className="seller-reg__title">Registrarme como Vendedor</h1>
+                <h1 className="seller-reg__title">Quiero vender en EliteShop</h1>
+                <p className="seller-reg__subtitle">
+                    Completa los datos de tu negocio. Podrás publicar productos cuando verifiquemos tu identidad.
+                </p>
 
                 {error && <p className="seller-reg__error">{error}</p>}
 
                 <form className="seller-reg__form" onSubmit={handleSubmit}>
+                    <h2 className="seller-reg__section-title">Datos del negocio</h2>
                     <div className="seller-reg__row">
                         <div className="seller-reg__field">
                             <label htmlFor="sr-type-trade">Tipo de comercio *</label>
@@ -171,9 +175,10 @@ function SellerRegistration({ onBack, onSellerRegistered }) {
                         </div>
                     </div>
 
+                    <h2 className="seller-reg__section-title">Contacto</h2>
                     <div className="seller-reg__row">
                         <div className="seller-reg__field">
-                            <label htmlFor="sr-email">Email *</label>
+                            <label htmlFor="sr-email">Correo electrónico *</label>
                             <input
                                 id="sr-email"
                                 name="email"
@@ -224,6 +229,7 @@ function SellerRegistration({ onBack, onSellerRegistered }) {
                         cityError={fieldErrors.tradeCity || ''}
                     />
 
+                    <h2 className="seller-reg__section-title">Datos de pago</h2>
                     <div className="seller-reg__row">
                         <div className="seller-reg__field">
                             <label htmlFor="sr-bank">Banco *</label>
@@ -258,7 +264,7 @@ function SellerRegistration({ onBack, onSellerRegistered }) {
                     </div>
 
                     <button type="submit" className="seller-reg__submit" disabled={submitting}>
-                        {submitting ? 'Registrando...' : 'Registrar vendedor'}
+                        {submitting ? 'Registrando…' : 'Registrar vendedor'}
                     </button>
                 </form>
             </div>

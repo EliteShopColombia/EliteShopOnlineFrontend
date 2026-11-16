@@ -99,7 +99,7 @@ function SellerOrders({ sellerId, onBack }) {
         <div className="orders-page__header"><h1>Gestión de órdenes</h1><span className="orders-page__count">Página {page + 1} de {totalPages}</span></div>
         <div className="orders-filters"><label>Estado<select value={status} onChange={(e) => { setStatus(e.target.value); setPage(0); }}>{statuses.map((item) => <option key={item} value={item}>{item ? STATUS_LABELS[item] : 'Todos los estados'}</option>)}</select></label></div>
         {error && <p className="orders-page__message orders-page__message--error">{error}</p>}
-        {loading ? <p className="orders-page__muted">Cargando órdenes...</p> : <div className="seller-orders-list">{orders.map((order) => <article className="order-card" key={order.id}>
+        {loading ? <p className="orders-page__muted">Cargando pedidos…</p> : <div className="seller-orders-list">{orders.map((order) => <article className="order-card" key={order.id}>
             <div className="order-card__top"><strong>#{String(order.id).slice(0, 8)}</strong><span className="status-badge">{STATUS_LABELS[order.status] || order.status}</span></div>
             <div className="order-card__meta"><span>{order.createdAt ? new Date(order.createdAt).toLocaleDateString('es-CO') : '-'}</span><strong>{formatPrice(getOrderTotal(order))}</strong></div>
             {order.status === 'DISPUTE' && order.disputeReason && <div className="order-card__dispute-reason"><small>Reclamación del comprador</small><span>{order.disputeReason}</span></div>}

@@ -1,161 +1,185 @@
-/* GALERIA */
+/* ================================================================
+   GALERÍA — mobile first
+   ================================================================ */
+
 .gallery {
     width: 100%;
-    padding: 40px 70px 60px;
-    box-sizing: border-box;
+    max-width: var(--container);
+    margin: 0 auto;
+    padding: 0 var(--gutter) 56px;
+    scroll-margin-top: 132px;
 }
 
-/* GRID DE PRODUCTOS */
+/* ---------- Cabecera del catálogo ---------- */
+
+.gallery__head {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 20px;
+    padding: 28px 0 16px;
+    border-bottom: 1px solid var(--line);
+}
+
+.gallery__title {
+    color: var(--text-strong);
+    font-family: var(--font-display);
+    font-size: clamp(1.65rem, 5vw, 2.15rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.035em;
+}
+
+.gallery__subtitle {
+    color: var(--text-muted);
+    font-size: 13px;
+    font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Grid de productos ---------- */
+
 .gallery__grid {
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 399px));
-    gap: 41px 60px;
-    justify-content: center;
-    box-sizing: border-box;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px 12px;
 }
 
-/* BARRA DE FILTROS ACTIVOS */
-.gallery__filters-bar {
-    width: 100%;
-    margin-bottom: 24px;
-    padding-bottom: 16px;
-    border-bottom: 1px solid #e5e7eb;
-}
+/* ---------- Estado vacío ---------- */
 
-.gallery__results-count {
-    font-size: 14px;
-    color: #6b7280;
-    font-weight: 400;
-}
-
-.gallery__results-count strong {
-    color: #1f2937;
-    font-weight: 600;
-}
-
-/* ESTADO VACÍO */
 .gallery__empty {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 400px;
+    min-height: 340px;
+    padding: 56px 16px;
     text-align: center;
-    padding: 60px 20px;
 }
 
 .gallery__empty svg {
-    color: #d1d5db;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
+    color: var(--text-faint);
 }
 
 .gallery__empty-title {
-    font-size: 20px;
+    color: var(--text-strong);
+    font-family: var(--font-display);
+    font-size: 19px;
     font-weight: 600;
-    color: #374151;
-    margin: 0 0 8px 0;
+    letter-spacing: -0.02em;
 }
 
 .gallery__empty-text {
-    font-size: 15px;
-    color: #6b7280;
-    margin: 0;
-    max-width: 320px;
-    line-height: 1.5;
+    max-width: 34ch;
+    margin-top: 8px;
+    color: var(--text-muted);
+    font-size: 14px;
+    line-height: 1.6;
 }
 
-/* CARGAR MÁS */
+/* ---------- Ver más ---------- */
+
 .gallery__load-more {
     display: flex;
     justify-content: center;
-    padding-top: 40px;
+    padding-top: 36px;
 }
 
 .gallery__load-more-btn {
-    padding: 12px 32px;
-    border: 2px solid #3b82f6;
-    border-radius: 50px;
-    background: transparent;
-    color: #3b82f6;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s ease, color 0.2s ease, transform 0.15s ease;
-}
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
 
-.gallery__load-more-btn:hover:not(:disabled) {
-    background: #3b82f6;
-    color: #ffffff;
-    transform: translateY(-1px);
-}
-
-.gallery__load-more-btn:active:not(:disabled) {
-    transform: translateY(0);
-}
-
-.gallery__load-more-btn:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
-
-/* TABLET */
-@media (max-width: 1100px) {
-    .gallery {
-        padding: 30px 40px 50px;
-    }
-    .gallery__grid {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 30px 30px;
-    }
-}
-
-/* TABLET PEQUENA */
-@media (max-width: 850px) {
-    .gallery {
-        padding: 24px 24px 40px;
-    }
-    .gallery__grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 20px 20px;
-    }
-}
-
-/* MOVIL */
-@media (max-width: 600px) {
-    .gallery {
-        padding: 16px 14px 30px;
-    }
-    .gallery__grid {
-        grid-template-columns: 1fr;
-        gap: 16px;
-    }
-    .gallery__empty {
-        min-height: 300px;
-        padding: 40px 16px;
-    }
-    .gallery__empty-title {
-        font-size: 17px;
-    }
-    .gallery__empty-text {
-        font-size: 14px;
-    }
-    .gallery__load-more-btn {
-        width: 100%;
-        padding: 14px 24px;
-    }
-}
-
-/* Aviso de catálogo de ejemplo (cuando la API no responde) */
-.gallery__demo-notice {
     width: 100%;
-    margin-bottom: 24px;
-    padding: 14px 18px;
-    border: 1px solid #f0c36d;
-    border-left: 4px solid #d9a441;
-    border-radius: 8px;
-    background-color: #fdf6e3;
-    color: #7a5b16;
+    max-width: 340px;
+    min-height: 52px;
+    padding: 11px 28px;
+
+    border: 1px solid rgba(96, 165, 250, 0.4);
+    border-radius: var(--radius-pill);
+
+    background: rgba(59, 130, 246, 0.08);
+    color: var(--blue-300);
+
     font-size: 14px;
-    line-height: 1.5;
+    font-weight: 600;
+
+    transition:
+        background-color 0.2s var(--ease-out),
+        border-color 0.2s var(--ease-out),
+        color 0.2s var(--ease-out);
+}
+
+.gallery__load-more-btn:hover {
+    border-color: var(--blue-500);
+    background: var(--blue-600);
+    color: #ffffff;
+}
+
+.gallery__load-more-count {
+    font-size: 11px;
+    font-weight: 400;
+    opacity: 0.75;
+}
+
+
+/* ================================================================
+   Responsive del catálogo
+   ================================================================ */
+
+@media (min-width: 600px) {
+    .gallery__grid {
+        gap: 20px 16px;
+    }
+
+    .gallery__head {
+        flex-direction: row;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 16px;
+        padding-top: 36px;
+    }
+
+    .gallery__load-more-btn {
+        width: auto;
+        min-width: 260px;
+    }
+}
+
+@media (min-width: 850px) {
+    .gallery {
+        padding-bottom: 64px;
+        scroll-margin-top: 150px;
+    }
+
+    .gallery__grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 24px 20px;
+    }
+}
+
+@media (min-width: 1100px) {
+    .gallery__grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 40px clamp(24px, 3vw, 60px);
+    }
+
+    .gallery__head {
+        padding: 40px 0 18px;
+        margin-bottom: 26px;
+    }
+
+    .gallery__empty {
+        min-height: 400px;
+    }
+
+    .gallery__empty-title {
+        font-size: 22px;
+    }
+
+    .gallery__empty-text {
+        font-size: 15px;
+    }
 }

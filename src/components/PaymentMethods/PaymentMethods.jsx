@@ -98,7 +98,7 @@ function PaymentMethods() {
     };
 
     if (loading) {
-        return <div className="payment-methods__loading">Cargando métodos de pago...</div>;
+        return <div className="payment-methods__loading">Cargando métodos de pago…</div>;
     }
 
     return (
@@ -106,13 +106,13 @@ function PaymentMethods() {
             {error && <p className="payment-methods__error">{error}</p>}
 
             <div className="payment-methods__header">
-                <h3 className="payment-methods__title">Mis Metodos de Pago</h3>
+                <h3 className="payment-methods__title">Mis métodos de pago</h3>
                 <button
                     type="button"
                     className="payment-methods__add"
                     onClick={() => setShowForm((prev) => !prev)}
                 >
-                    {showForm ? 'Cancelar' : '+ Agregar tarjeta'}
+                    {showForm ? 'Cancelar' : 'Agregar tarjeta'}
                 </button>
             </div>
 
@@ -176,7 +176,7 @@ function PaymentMethods() {
                     </div>
                     <div className="payment-methods__row">
                         <div className="payment-methods__field">
-                            <label htmlFor="pm-doc-type">Tipo doc. *</label>
+                            <label htmlFor="pm-doc-type">Tipo de documento *</label>
                             <select
                                 id="pm-doc-type"
                                 name="docType"
@@ -190,7 +190,7 @@ function PaymentMethods() {
                             </select>
                         </div>
                         <div className="payment-methods__field">
-                            <label htmlFor="pm-doc-number">Número doc. *</label>
+                            <label htmlFor="pm-doc-number">Número de documento *</label>
                             <input
                                 id="pm-doc-number"
                                 name="docNumber"
@@ -213,13 +213,13 @@ function PaymentMethods() {
                     </label>
 
                     <button type="submit" className="payment-methods__save" disabled={saving}>
-                        {saving ? 'Guardando...' : 'Guardar tarjeta'}
+                        {saving ? 'Guardando…' : 'Guardar tarjeta'}
                     </button>
                 </form>
             )}
 
             {methods.length === 0 && !showForm && (
-                <p className="payment-methods__empty">No tienes tarjetas guardadas.</p>
+                <p className="payment-methods__empty">Aún no tienes tarjetas guardadas. Agrega una para pagar más rápido.</p>
             )}
 
             <div className="payment-methods__list">
@@ -227,7 +227,7 @@ function PaymentMethods() {
                     <div className="payment-methods__card" key={method.id}>
                         <div className="payment-methods__card-info">
                             <span className="payment-methods__brand">
-                                {method.brand || 'TARJETA'}
+                                {method.brand || 'Tarjeta'}
                             </span>
                             <span className="payment-methods__last4">•••• {method.last4}</span>
                             <span className="payment-methods__expiry">

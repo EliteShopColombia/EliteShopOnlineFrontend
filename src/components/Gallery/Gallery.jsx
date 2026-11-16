@@ -1,75 +1,13 @@
 import { useState, useEffect, useMemo } from "react";
 import ProductCard from "../ProductCard/ProductCard";
+import Hero from "../Hero/Hero";
 import { productService } from "../../services/product.service";
 import { reviewService } from "../../services/review.service";
+import { CATEGORY_LABELS } from "../../constants/categories";
+import DEMO_PRODUCTS from "../../constants/demoProducts";
 import "./Gallery.css";
 
-const fallbackProducts = [
-    {
-        id: "1",
-        name: "Gafas Inteligente con IA 2026, ...",
-        price: 50000,
-        oldPrice: 70000,
-        rating: 5,
-        image: "https://www.figma.com/api/mcp/asset/955dbb7e-4c9a-45c7-a45a-636cfb28de3d.png",
-    },
-    {
-        id: "2",
-        name: "Mini Freidora de Huevos 4 en 1, ...",
-        price: 20000,
-        oldPrice: 50000,
-        rating: 5,
-        image: "https://www.figma.com/api/mcp/asset/7325b519-f041-4596-b0f0-5959ce2b2c2c.png",
-    },
-    {
-        id: "3",
-        name: "Juego para Parejas en Español - ...",
-        price: 20000,
-        oldPrice: 50000,
-        rating: 5,
-        image: "https://www.figma.com/api/mcp/asset/2b8108a8-3555-4d2d-8b3c-2c773c080e75.png",
-    },
-    {
-        id: "4",
-        name: "1 pza. Frasco recargable para p...",
-        price: 20000,
-        oldPrice: 50000,
-        rating: 5,
-        image: "https://www.figma.com/api/mcp/asset/fdd6e6e1-a06a-44d7-996f-266290390f4c.png",
-    },
-    {
-        id: "5",
-        name: "Gafas Inteligente con IA 2026, ...",
-        price: 50000,
-        oldPrice: 70000,
-        rating: 5,
-        image: "https://www.figma.com/api/mcp/asset/955dbb7e-4c9a-45c7-a45a-636cfb28de3d.png",
-    },
-    {
-        id: "6",
-        name: "Mini Freidora de Huevos 4 en 1, ...",
-        price: 20000,
-        oldPrice: 50000,
-        rating: 5,
-        image: "https://www.figma.com/api/mcp/asset/7325b519-f041-4596-b0f0-5959ce2b2c2c.png",
-    },
-    {
-        id: "7",
-        name: "Juego para Parejas en Español - ...",
-        price: 20000,
-        oldPrice: 50000,
-        rating: 5,
-        image: "https://www.figma.com/api/mcp/asset/2b8108a8-3555-4d2d-8b3c-2c773c080e75.png",
-    },
-    {
-        id: "8",
-        name: "1 pza. Frasco recargable para p...",
-        price: 20000,
-        oldPrice: 50000,
-        rating: 5,
-        image: "https://www.figma.com/api/mcp/asset/fdd6e6e1-a06a-44d7-996f-266290390f4c.png",
-    },
-];
+
 
 function adaptProduct(p) {
     const rawImage = p.image || p.productImage || p.images?.[0] || '';
@@ -107,13 +45,11 @@ function normalizeText(text) {
 
 const PAGE_SIZE = 20;
 
-function Gallery({ onProductClick, onAddToCart, searchQuery, activeCategory }) {
+function Gallery({ onProductClick, onAddToCart, searchQuery, activeCategory, onCategorySelect }) {
     const [allProducts, setAllProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [ratingsMap, setRatingsMap] = useState({});
     const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
-    // Los productos de ejemplo no deben confundirse con el catálogo real.
-    const [isDemoCatalog, setIsDemoCatalog] = useState(false);
 
     // 1) Cargar todos los productos del backend una sola vez
     useEffect(() => {
@@ -133,13 +69,11 @@ function Gallery({ onProductClick, onAddToCart, searchQuery, activeCategory }) {
                     // visibles (ver efecto de ratings); antes se lanzaba una petición
                     // por cada producto del catálogo a la vez.
                 } else {
-                    setAllProducts(fallbackProducts);
-                    setIsDemoCatalog(true);
+                    setAllProducts(DEMO_PRODUCTS);
                 }
             } catch {
                 if (!cancelled) {
-                    setAllProducts(fallbackProducts);
-                    setIsDemoCatalog(true);
+                    setAllProducts(DEMO_PRODUCTS);
                 }
             } finally {
                 if (!cancelled) setLoading(false);
@@ -233,17 +167,17 @@ function Gallery({ onProductClick, onAddToCart, searchQuery, activeCategory }) {
     // Estado vacío (sin resultados)
     if (!loading && allProducts.length > 0 && filteredProducts.length === 0) {
         return (
-            <section className="gallery">
+            <section className="gallery" id="catalogo">
                 <div className="gallery__empty">
-                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                         <circle cx="11" cy="11" r="8" />
                         <line x1="21" y1="21" x2="16.65" y2="16.65" />
                     </svg>
-                    <p className="gallery__empty-title">No se encontraron productos</p>
+                    <p className="gallery__empty-title">No encontramos productos</p>
                     <p className="gallery__empty-text">
                         {searchQuery
-                            ? `No hay resultados para "${searchQuery}"`
-                            : `No hay productos en esta categoría`
+                            ? `No hay resultados para "${searchQuery}". Prueba con otra palabra o cambia de categoría.`
+                            : 'No hay productos en esta categoría. Explora el catálogo completo.'
                         }
                     </p>
                 </div>
@@ -254,8 +188,8 @@ function Gallery({ onProductClick, onAddToCart, searchQuery, activeCategory }) {
     // Skeleton de carga inicial
     if (loading) {
         return (
-            <section className="gallery">
-            <div className="gallery__grid">
+            <section className="gallery" aria-busy="true" aria-label="Cargando catálogo">
+                <div className="gallery__grid">
                     {Array.from({ length: 8 }).map((_, i) => (
                         <div key={i} className="product-card product-card--skeleton" />
                     ))}
@@ -264,45 +198,53 @@ function Gallery({ onProductClick, onAddToCart, searchQuery, activeCategory }) {
         );
     }
 
+    const showHero = !searchQuery && !activeCategory;
+    const categoryLabel = activeCategory
+        ? CATEGORY_LABELS[activeCategory] || activeCategory
+        : '';
+    const title = searchQuery ? 'Resultados' : categoryLabel || 'Catálogo';
+
     return (
-        <section className="gallery">
-            {(searchQuery || activeCategory) && (
-                <div className="gallery__filters-bar">
-                    <span className="gallery__results-count">
-                        {filteredProducts.length} resultado{filteredProducts.length !== 1 ? 's' : ''}
-                        {searchQuery && <> para "<strong>{searchQuery}</strong>"</>}
-                        {activeCategory && <> en <strong>{activeCategory}</strong></>}
-                    </span>
+        <>
+            {showHero && <Hero onCategorySelect={onCategorySelect} />}
+
+            <section className="gallery" id="catalogo" aria-labelledby="catalog-title">
+                <header className="gallery__head">
+                    <h2 id="catalog-title" className="gallery__title">{title}</h2>
+                    <p className="gallery__subtitle" role="status">
+                        {filteredProducts.length} producto{filteredProducts.length !== 1 ? 's' : ''}
+                        {searchQuery && ` para "${searchQuery}"`}
+                        {!searchQuery && categoryLabel && ` en ${categoryLabel}`}
+                    </p>
+                </header>
+
+                <div className="gallery__grid">
+                    {ratedProducts.map((product) => (
+                        <ProductCard
+                            key={product.id}
+                            product={product}
+                            onClick={onProductClick}
+                            onAddToCart={onAddToCart}
+                        />
+                    ))}
                 </div>
-            )}
-            {isDemoCatalog && (
-                <div className="gallery__demo-notice" role="status">
-                    No se pudo conectar con la tienda. Estás viendo un catálogo de ejemplo,
-                    los productos mostrados no son reales.
-                </div>
-            )}
-            <div className="gallery__grid">
-                {ratedProducts.map((product) => (
-                    <ProductCard
-                        key={product.id}
-                        product={product}
-                        onClick={onProductClick}
-                        onAddToCart={onAddToCart}
-                    />
-                ))}
-            </div>
-            {hasMore && (
-                <div className="gallery__load-more">
-                    <button
-                        type="button"
-                        className="gallery__load-more-btn"
-                        onClick={handleLoadMore}
-                    >
-                        Cargar más productos ({filteredProducts.length - visibleCount} restantes)
-                    </button>
-                </div>
-            )}
-        </section>
+
+                {hasMore && (
+                    <div className="gallery__load-more">
+                        <button
+                            type="button"
+                            className="gallery__load-more-btn"
+                            onClick={handleLoadMore}
+                        >
+                            Ver más productos
+                            <span className="gallery__load-more-count">
+                                {filteredProducts.length - visibleCount} restantes
+                            </span>
+                        </button>
+                    </div>
+                )}
+            </section>
+        </>
     );
 }
 

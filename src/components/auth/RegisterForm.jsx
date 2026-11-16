@@ -5,6 +5,7 @@ import { LOCATION_ERROR_CODES } from '../../constants/errorCodes';
 import DepartmentCitySelect from '../shared/DepartmentCitySelect';
 import LegalModal from './LegalModal';
 import { TERMS_AND_CONDITIONS, PRIVACY_POLICY } from './legalContent';
+import logo from '../../assets/logo.png';
 import './auth.css';
 
 export function RegisterForm({ onSwitchToLogin, onSuccess }) {
@@ -86,7 +87,15 @@ export function RegisterForm({ onSwitchToLogin, onSuccess }) {
   return (
     <div className="auth-overlay" onClick={(e) => e.target === e.currentTarget && onSuccess?.()}>
       <div className="auth-modal auth-modal--register">
-        <h2 className="auth-modal__title">Crear Cuenta</h2>
+        <div className="auth-modal__brand">
+          <img src={logo} alt="" className="auth-modal__brand-logo" />
+          <span className="auth-modal__brand-name">EliteShop</span>
+        </div>
+
+        <h2 className="auth-modal__title">Crear cuenta</h2>
+        <p className="auth-modal__subtitle">
+          Compra en minutos y recibe en la puerta de tu casa.
+        </p>
 
         <form className="auth-modal__form" onSubmit={handleSubmit}>
           <div className="auth-modal__row">
@@ -117,7 +126,7 @@ export function RegisterForm({ onSwitchToLogin, onSuccess }) {
           </div>
 
           <div className="auth-modal__field">
-            <label htmlFor="reg-email">Email *</label>
+            <label htmlFor="reg-email">Correo electrónico *</label>
             <input
               id="reg-email"
               name="email"
@@ -152,7 +161,7 @@ export function RegisterForm({ onSwitchToLogin, onSuccess }) {
               onChange={handleChange}
               required
               minLength={8}
-              placeholder="Minimo 8 caracteres"
+              placeholder="Mínimo 8 caracteres"
             />
           </div>
 
@@ -253,12 +262,12 @@ export function RegisterForm({ onSwitchToLogin, onSuccess }) {
           {error && <p className="auth-modal__error">{error}</p>}
 
           <button type="submit" className="auth-modal__submit" disabled={loading}>
-            {loading ? 'Creando cuenta...' : 'Registrarme'}
+            {loading ? 'Creando cuenta…' : 'Crear cuenta'}
           </button>
         </form>
 
         <p className="auth-modal__switch">
-          Ya tienes cuenta?{' '}
+          ¿Ya tienes cuenta?{' '}
           <button type="button" onClick={onSwitchToLogin}>
             Iniciar sesión
           </button>

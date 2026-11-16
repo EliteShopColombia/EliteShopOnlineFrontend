@@ -232,7 +232,7 @@ function Profile({ onBack }) {
                                                         disabled={uploading}
                                                         className="profile__avatar-input"
                                                     />
-                                                    {uploading ? '...' : (
+                                                    {uploading ? '…' : (
                                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                                             <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
                                                             <circle cx="12" cy="13" r="4" />
@@ -267,26 +267,26 @@ function Profile({ onBack }) {
                                     {sellerData && (
                                         <>
                                             <div className="profile__section">
-                                                <h2 className="profile__section-title">Datos del Negocio</h2>
+                                                <h2 className="profile__section-title">Datos del negocio</h2>
                                                 <div className="profile__fields">
                                                     <div className="profile__field">
-                                                        <span className="profile__field-label">Nombre Comercial</span>
+                                                        <span className="profile__field-label">Nombre comercial</span>
                                                         <span className="profile__field-value">{sellerData.tradeName || '-'}</span>
                                                     </div>
                                                     <div className="profile__field">
-                                                        <span className="profile__field-label">Nombre Completo</span>
+                                                        <span className="profile__field-label">Nombre completo</span>
                                                         <span className="profile__field-value">{sellerData.fullname || '-'}</span>
                                                     </div>
                                                     <div className="profile__field">
-                                                        <span className="profile__field-label">Tipo de Documento</span>
+                                                        <span className="profile__field-label">Tipo de documento</span>
                                                         <span className="profile__field-value">{sellerData.typeDni || '-'}</span>
                                                     </div>
                                                     <div className="profile__field">
-                                                        <span className="profile__field-label">Número de Documento</span>
+                                                        <span className="profile__field-label">Número de documento</span>
                                                         <span className="profile__field-value">{sellerData.dniNumber || '-'}</span>
                                                     </div>
                                                     <div className="profile__field">
-                                                        <span className="profile__field-label">Tipo de Comercio</span>
+                                                        <span className="profile__field-label">Tipo de comercio</span>
                                                         <span className="profile__field-value">{sellerData.typeTrade || '-'}</span>
                                                     </div>
                                                     <div className="profile__field">
@@ -298,7 +298,7 @@ function Profile({ onBack }) {
                                                     <div className="profile__field">
                                                         <span className="profile__field-label">Verificado</span>
                                                         <span className="profile__field-value">
-                                                            {sellerData.isVerified ? 'Si' : 'No'}
+                                                            {sellerData.isVerified ? 'Sí' : 'No'}
                                                         </span>
                                                     </div>
                                                 </div>
@@ -306,7 +306,7 @@ function Profile({ onBack }) {
 
                                             {sellerData.contact && (
                                                 <div className="profile__section">
-                                                    <h2 className="profile__section-title">Información de Contacto</h2>
+                                                    <h2 className="profile__section-title">Información de contacto</h2>
                                                     <div className="profile__fields">
                                                         <div className="profile__field">
                                                             <span className="profile__field-label">Teléfono</span>
@@ -330,18 +330,18 @@ function Profile({ onBack }) {
 
                                             {sellerData.bank && (
                                                 <div className="profile__section">
-                                                    <h2 className="profile__section-title">Datos Bancarios</h2>
+                                                    <h2 className="profile__section-title">Datos bancarios</h2>
                                                     <div className="profile__fields">
                                                         <div className="profile__field">
                                                             <span className="profile__field-label">Banco</span>
                                                             <span className="profile__field-value">{sellerData.bank.bankName || '-'}</span>
                                                         </div>
                                                         <div className="profile__field">
-                                                            <span className="profile__field-label">Tipo de Cuenta</span>
+                                                            <span className="profile__field-label">Tipo de cuenta</span>
                                                             <span className="profile__field-value">{sellerData.bank.typeBankAccount || '-'}</span>
                                                         </div>
                                                         <div className="profile__field">
-                                                            <span className="profile__field-label">Número de Cuenta</span>
+                                                            <span className="profile__field-label">Número de cuenta</span>
                                                             <span className="profile__field-value">{sellerData.bank.numberAccount || '-'}</span>
                                                         </div>
                                                     </div>
@@ -375,7 +375,7 @@ function Profile({ onBack }) {
                                                         disabled={uploading}
                                                         className="profile__avatar-input"
                                                     />
-                                                    {uploading ? '...' : (
+                                                    {uploading ? '…' : (
                                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                                             <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
                                                             <circle cx="12" cy="13" r="4" />
@@ -407,7 +407,7 @@ function Profile({ onBack }) {
                                     {error && <p className="profile__error">{error}</p>}
 
                                     <div className="profile__section">
-                                        <h2 className="profile__section-title">Información Personal</h2>
+                                        <h2 className="profile__section-title">Información personal</h2>
 
                                         {editing ? (
                                             <form className="profile__form" onSubmit={handleSave}>
@@ -497,7 +497,7 @@ function Profile({ onBack }) {
 
                                                 <div className="profile__form-actions">
                                                     <button type="submit" className="profile__btn profile__btn--primary" disabled={saving}>
-                                                        {saving ? 'Guardando...' : 'Guardar cambios'}
+                                                        {saving ? 'Guardando…' : 'Guardar cambios'}
                                                     </button>
                                                     <button
                                                         type="button"
@@ -520,7 +520,7 @@ function Profile({ onBack }) {
                                                         <span className="profile__field-value">{auth?.lastName || '-'}</span>
                                                     </div>
                                                     <div className="profile__field">
-                                                        <span className="profile__field-label">Email</span>
+                                                        <span className="profile__field-label">Correo electrónico</span>
                                                         <span className="profile__field-value">{auth?.email || '-'}</span>
                                                     </div>
                                                     <div className="profile__field">
@@ -540,11 +540,11 @@ function Profile({ onBack }) {
                                                         <span className="profile__field-value">{auth?.department || '-'}</span>
                                                     </div>
                                                     <div className="profile__field">
-                                                        <span className="profile__field-label">Tipo de Documento</span>
+                                                        <span className="profile__field-label">Tipo de documento</span>
                                                         <span className="profile__field-value">{auth?.dniType || '-'}</span>
                                                     </div>
                                                     <div className="profile__field">
-                                                        <span className="profile__field-label">Número de Documento</span>
+                                                        <span className="profile__field-label">Número de documento</span>
                                                         <span className="profile__field-value">{auth?.dniNumber || '-'}</span>
                                                     </div>
                                                 </div>
@@ -555,10 +555,10 @@ function Profile({ onBack }) {
                                                         className="profile__btn profile__btn--secondary"
                                                         onClick={() => setEditing(true)}
                                                     >
-                                                        Editar Perfil
+                                                        Editar perfil
                                                     </button>
                                                     <button type="button" className="profile__btn profile__btn--danger" onClick={handleLogout}>
-                                                        Cerrar Sesión
+                                                        Cerrar sesión
                                                     </button>
                                                 </div>
                                             </>

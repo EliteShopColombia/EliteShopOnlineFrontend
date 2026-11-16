@@ -129,11 +129,11 @@ function BuyerOrders() {
 
     return <div className="orders-page">
         <div className="orders-page__header">
-            <div><button className="orders-page__back" onClick={() => navigate('/')}>← Inicio</button><h1>Mis pedidos</h1></div>
+            <div><button className="orders-page__back" onClick={() => navigate('/')}>Volver al inicio</button><h1>Mis pedidos</h1></div>
             <span className="orders-page__count">{orders.length} pedidos</span>
         </div>
         {error && <p className="orders-page__message orders-page__message--error">{error}</p>}
-        {loading ? <p className="orders-page__muted">Cargando pedidos...</p> : orders.length === 0 ? <p className="orders-page__empty">Todavía no tienes pedidos.</p> : <div className="orders-list">
+        {loading ? <p className="orders-page__muted">Cargando pedidos…</p> : orders.length === 0 ? <p className="orders-page__empty">Todavía no tienes pedidos.</p> : <div className="orders-list">
             {orders.map((order) => <article className="order-card" key={order.id}>
                 <div className="order-card__top"><strong>Pedido #{String(order.id).slice(0, 8)}</strong><span className={`status-badge status-badge--${order.status?.toLowerCase()}`}>{STATUS_LABELS[order.status] || order.status}</span></div>
                 <div className="order-card__meta"><span>{order.createdAt ? new Date(order.createdAt).toLocaleDateString('es-CO') : 'Fecha no disponible'}</span><strong>{formatPrice(getOrderTotal(order))}</strong></div>
@@ -182,7 +182,7 @@ function BuyerOrders() {
                 <button type="button" className="cancel-modal__close" aria-label="Cerrar" onClick={() => setRetryOrder(null)}>×</button>
                 <div className="cancel-modal__icon">$</div>
                 <h2 id="retry-modal-title">Pagar de nuevo</h2>
-                {cardsLoading ? <p>Cargando tus tarjetas...</p> : cards.length === 0 ? (
+                {cardsLoading ? <p>Cargando tus tarjetas…</p> : cards.length === 0 ? (
                     <p>No tienes tarjetas guardadas. Añade una en tu perfil para reintentar el pago.</p>
                 ) : (
                     <>
@@ -202,7 +202,7 @@ function BuyerOrders() {
                 <div className="cancel-modal__actions">
                     <button type="button" className="cancel-modal__keep" onClick={() => setRetryOrder(null)}>Cancelar</button>
                     <button type="button" className="cancel-modal__confirm" disabled={!selectedCard || cvv.length < 3 || busyId === retryOrder.id} onClick={confirmRetry}>
-                        {busyId === retryOrder.id ? 'Procesando...' : 'Pagar ahora'}
+                        {busyId === retryOrder.id ? 'Procesando…' : 'Pagar ahora'}
                     </button>
                 </div>
             </section>

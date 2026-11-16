@@ -107,6 +107,21 @@ function CartModal({ isOpen, onClose, onCheckout, cart, onCartChange }) {
         }
     };
 
+    useEffect(() => {
+        if (!isOpen) return undefined;
+
+        const handleKeyDown = (event) => {
+            if (event.key === 'Escape') onClose?.();
+        };
+
+        document.addEventListener('keydown', handleKeyDown);
+        document.body.style.overflow = 'hidden';
+        return () => {
+            document.removeEventListener('keydown', handleKeyDown);
+            document.body.style.overflow = '';
+        };
+    }, [isOpen, onClose]);
+
     if (!isOpen) {
         return null;
     }
@@ -117,26 +132,40 @@ function CartModal({ isOpen, onClose, onCheckout, cart, onCartChange }) {
         <div className="cart-modal__overlay" onClick={onClose}>
             <div
                 className="cart-modal"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="cart-modal-title"
                 onClick={(event) => event.stopPropagation()}
             >
                 <div className="cart-modal__header">
-                    <h2>MI CARRITO</h2>
+                    <h2 id="cart-modal-title">Mi carrito</h2>
                     <button
                         className="cart-modal__close"
                         onClick={onClose}
                         aria-label="Cerrar carrito"
                     >
-                        ×
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+                            <line x1="18" y1="6" x2="6" y2="18" />
+                            <line x1="6" y1="6" x2="18" y2="18" />
+                        </svg>
                     </button>
                 </div>
 
                 {error && <p className="cart-modal__error">{error}</p>}
 
                 <div className="cart-modal__products">
-                    {cart === null && !error && <div className="cart-modal__loading">Cargando carrito...</div>}
+                    {cart === null && !error && <div className="cart-modal__loading">Cargando carrito…</div>}
 
                     {cart !== null && items.length === 0 && !error && (
-                        <div className="cart-modal__empty">Tu carrito está vacío</div>
+                        <div className="cart-modal__empty">
+                            <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                                <circle cx="9" cy="21" r="1" />
+                                <circle cx="20" cy="21" r="1" />
+                                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+                            </svg>
+                            <p>Tu carrito está vacío</p>
+                            <button type="button" onClick={onClose}>Explorar productos</button>
+                        </div>
                     )}
 
                     {cart !== null && items.map((item) => {
@@ -156,19 +185,20 @@ function CartModal({ isOpen, onClose, onCheckout, cart, onCartChange }) {
 
                                 <div className="cart-item__info">
                                     <h3>{product.name || "Producto"}</h3>
-                                    <span>{formatPrice(item.subtotal)}</span>
-                                    <small>CANTIDAD:</small>
+                                    <span className="cart-item__price">{formatPrice(item.subtotal)}</span>
                                     <div className="cart-item__qty">
                                         <button
                                             type="button"
+                                            aria-label="Disminuir cantidad"
                                             onClick={() => changeQuantity(item, item.quantity - 1)}
                                             disabled={updating || item.quantity <= 1}
                                         >
-                                            -
+                                            −
                                         </button>
                                         <span>{item.quantity}</span>
                                         <button
                                             type="button"
+                                            aria-label="Aumentar cantidad"
                                             onClick={() => changeQuantity(item, item.quantity + 1)}
                                             disabled={updating}
                                         >
@@ -183,7 +213,10 @@ function CartModal({ isOpen, onClose, onCheckout, cart, onCartChange }) {
                                     onClick={() => removeItem(item)}
                                     disabled={updating}
                                 >
-                                    🗑
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                                        <polyline points="3 6 5 6 21 6" />
+                                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                                    </svg>
                                 </button>
                             </div>
                         );
@@ -202,7 +235,7 @@ function CartModal({ isOpen, onClose, onCheckout, cart, onCartChange }) {
                             onClick={onCheckout}
                             disabled={!cart?.items?.length}
                         >
-                            REALIZAR COMPRA
+                            Finalizar compra
                         </button>
 
                         <button
@@ -210,7 +243,7 @@ function CartModal({ isOpen, onClose, onCheckout, cart, onCartChange }) {
                             onClick={clearCart}
                             disabled={!cart?.items?.length || updating}
                         >
-                            VACIAR CARRITO
+                            Vaciar carrito
                         </button>
                     </div>
                 </div>

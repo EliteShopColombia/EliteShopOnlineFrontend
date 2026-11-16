@@ -1,66 +1,95 @@
+/* ================================================================
+   REGISTRO DE VENDEDOR — mobile first
+   ================================================================ */
+
 .seller-reg {
     width: 100%;
-    max-width: 720px;
-
+    max-width: 760px;
     margin: 0 auto;
-
-    padding: 24px 16px 60px;
-
-    box-sizing: border-box;
+    padding: 16px var(--gutter) 56px;
 }
 
 .seller-reg__container {
-    background-color: #1f2b3d;
+    padding: 18px;
 
-    border: 1px solid #3b4b66;
-
-    border-radius: 10px;
-
-    padding: 24px;
-
-    box-sizing: border-box;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: linear-gradient(180deg, rgba(30, 41, 59, 0.5) 0%, rgba(15, 23, 42, 0.35) 100%);
+    box-shadow: var(--shadow-card);
 }
 
+/* ---------- Volver ---------- */
+
 .seller-reg__back {
-    border: none;
+    display: inline-flex;
+    align-items: center;
 
-    background: transparent;
+    min-height: 36px;
+    margin-bottom: 14px;
+    padding: 0 13px;
 
-    color: #4da3ff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-pill);
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--text-muted);
 
-    font-size: 14px;
+    font-size: 12.5px;
+    font-weight: 500;
 
-    cursor: pointer;
-
-    padding: 0;
-
-    margin-bottom: 12px;
+    transition: border-color 0.2s var(--ease-out), color 0.2s var(--ease-out);
 }
 
 .seller-reg__back:hover {
-    text-decoration: underline;
+    border-color: var(--line-strong);
+    color: #ffffff;
 }
 
 .seller-reg__title {
-    margin: 0 0 20px;
-
-    color: #ffffff;
-
-    font-size: 24px;
+    margin: 0 0 6px;
+    color: var(--text-strong);
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 5.4vw, 2.05rem);
     font-weight: 700;
+    line-height: 1.12;
+    letter-spacing: -0.035em;
 }
+
+.seller-reg__subtitle {
+    margin: 0 0 20px;
+    max-width: 52ch;
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+/* ---------- Formulario ---------- */
 
 .seller-reg__form {
     display: flex;
     flex-direction: column;
+    gap: 13px;
+}
 
-    gap: 12px;
+.seller-reg__section-title {
+    margin: 10px 0 0;
+    padding-bottom: 9px;
+    border-bottom: 1px solid var(--line);
+
+    color: var(--text-strong);
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+}
+
+.seller-reg__section-title:first-child {
+    margin-top: 0;
 }
 
 .seller-reg__row {
     display: flex;
-
-    gap: 12px;
+    flex-direction: column;
+    gap: 13px;
 }
 
 .seller-reg__row .seller-reg__field {
@@ -70,93 +99,103 @@
 .seller-reg__field {
     display: flex;
     flex-direction: column;
-
-    gap: 4px;
+    gap: 6px;
+    min-width: 0;
 }
 
 .seller-reg__field label {
-    color: #94a3b8;
-
+    color: var(--text-muted);
     font-size: 12px;
+    font-weight: 500;
 }
 
 .seller-reg__field input,
 .seller-reg__field select {
-    height: 40px;
+    width: 100%;
+    height: 46px;
+    padding: 0 13px;
 
-    padding: 0 10px;
-
-    border: 1px solid #3b4b66;
-
-    border-radius: 6px;
-
-    background-color: #1f2b3d;
-
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: rgba(8, 13, 24, 0.5);
     color: #ffffff;
 
-    font-size: 14px;
+    font-size: 14.5px;
 
-    box-sizing: border-box;
+    transition: border-color 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
+}
+
+.seller-reg__field input::placeholder {
+    color: var(--text-faint);
+}
+
+.seller-reg__field select {
+    cursor: pointer;
+    appearance: none;
+    padding-right: 36px;
+    background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23a8b6cc' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 13px center;
 }
 
 .seller-reg__field input:focus,
 .seller-reg__field select:focus {
     outline: none;
+    border-color: var(--blue-400);
+    box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.22);
+}
 
-    border-color: #4da3ff;
+.seller-reg__field input:focus-visible,
+.seller-reg__field select:focus-visible {
+    outline: none;
+}
+
+/* ---------- Avisos ---------- */
+
+.seller-reg__error,
+.seller-reg__success {
+    margin: 0 0 16px;
+    padding: 11px 13px;
+
+    border-radius: var(--radius-sm);
+
+    font-size: 12.5px;
+    line-height: 1.5;
 }
 
 .seller-reg__error {
-    margin: 0 0 16px;
-
-    padding: 10px 12px;
-
-    background-color: rgba(239, 68, 68, 0.15);
-
     border: 1px solid rgba(239, 68, 68, 0.3);
-
-    border-radius: 6px;
-
+    border-left: 3px solid var(--color-danger);
+    background: rgba(239, 68, 68, 0.09);
     color: #fca5a5;
-
-    font-size: 13px;
 }
 
 .seller-reg__success {
-    margin: 0 0 16px;
-
-    padding: 10px 12px;
-
-    background-color: rgba(34, 197, 94, 0.15);
-
-    border: 1px solid rgba(34, 197, 94, 0.3);
-
-    border-radius: 6px;
-
-    color: #4ade80;
-
-    font-size: 13px;
+    border: 1px solid rgba(74, 222, 128, 0.28);
+    border-left: 3px solid var(--color-success);
+    background: rgba(74, 222, 128, 0.08);
+    color: #bbf7d0;
 }
+
+/* ---------- Botones ---------- */
 
 .seller-reg__submit,
 .seller-reg__validate {
     width: 100%;
-    height: 50px;
+    min-height: 52px;
+    padding: 0 24px;
+    margin-top: 6px;
 
     border: none;
-
-    border-radius: 10px;
-
-    background-color: #2778d4;
-
+    border-radius: var(--radius-pill);
+    background: var(--blue-600);
     color: #ffffff;
 
-    font-size: 16px;
-    font-weight: 700;
+    font-size: 15px;
+    font-weight: 600;
 
-    cursor: pointer;
-
-    transition: background-color 0.2s ease;
+    box-shadow: var(--shadow-blue);
+    transition: background-color 0.2s var(--ease-out), transform 0.2s var(--ease-out);
 }
 
 .seller-reg__submit + .seller-reg__validate,
@@ -164,106 +203,135 @@
     margin-top: 10px;
 }
 
-.seller-reg__submit:hover,
-.seller-reg__validate:hover {
-    background-color: #3b8ee8;
+.seller-reg__submit:hover:not(:disabled),
+.seller-reg__validate:hover:not(:disabled) {
+    background: var(--blue-600);
+    transform: translateY(-1px);
 }
 
 .seller-reg__submit:disabled,
 .seller-reg__validate:disabled {
     opacity: 0.5;
-
     cursor: not-allowed;
+    box-shadow: none;
 }
+
+/* ---------- Estado y cargas (flujos heredados) ---------- */
 
 .seller-reg__status {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 12px;
 
-    padding: 14px;
+    margin-bottom: 18px;
+    padding: 13px 14px;
 
-    background-color: #26354d;
-
-    border: 1px solid #3b4b66;
-
-    border-radius: 8px;
-
-    margin-bottom: 20px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.025);
 }
 
 .seller-reg__status span {
-    color: #94a3b8;
-
-    font-size: 14px;
+    color: var(--text-muted);
+    font-size: 13px;
 }
 
 .seller-reg__status strong {
-    color: #ffffff;
-
-    font-size: 14px;
-
-    text-transform: uppercase;
+    color: var(--text-strong);
+    font-size: 12.5px;
+    font-weight: 600;
 }
 
 .seller-reg__uploads {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-
-    gap: 16px;
-
-    margin-bottom: 20px;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-bottom: 18px;
 }
 
 .seller-reg__upload {
     display: flex;
     flex-direction: column;
+    gap: 7px;
 
-    gap: 8px;
+    padding: 14px;
 
-    padding: 16px;
-
-    background-color: #26354d;
-
-    border: 1px solid #3b4b66;
-
-    border-radius: 8px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    background: rgba(8, 13, 24, 0.35);
 }
 
 .seller-reg__upload h3 {
-    margin: 0;
-
-    color: #ffffff;
-
-    font-size: 14px;
+    color: var(--text-strong);
+    font-family: var(--font-display);
+    font-size: 13.5px;
+    font-weight: 600;
 }
 
 .seller-reg__upload p {
-    margin: 0;
-
-    color: #94a3b8;
-
+    color: var(--text-muted);
     font-size: 12px;
+    line-height: 1.5;
 }
 
 .seller-reg__upload input[type="file"] {
-    color: #94a3b8;
-
-    font-size: 12px;
+    color: var(--text-faint);
+    font-size: 11.5px;
 }
 
 .seller-reg__uploading {
-    color: #4da3ff;
-
+    color: var(--blue-300);
     font-size: 12px;
 }
 
-@media (max-width: 600px) {
+/* ================================================================
+   ≥ 600px
+   ================================================================ */
+
+@media (min-width: 600px) {
+    .seller-reg {
+        padding-top: 24px;
+    }
+
+    .seller-reg__container {
+        padding: 26px;
+    }
+
     .seller-reg__row {
-        flex-direction: column;
+        flex-direction: row;
     }
 
     .seller-reg__uploads {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .seller-reg__submit,
+    .seller-reg__validate {
+        max-width: 380px;
+        align-self: flex-start;
+    }
+}
+
+/* ================================================================
+   ≥ 900px
+   ================================================================ */
+
+@media (min-width: 900px) {
+    .seller-reg {
+        padding-top: 32px;
+        padding-bottom: 72px;
+    }
+
+    .seller-reg__container {
+        padding: 32px;
+    }
+
+    .seller-reg__form {
+        gap: 14px;
+    }
+
+    .seller-reg__title {
+        font-size: 34px;
     }
 }

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Outlet, NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext.jsx";
+import logo from "../../assets/logo.png";
 import "./AdminLayout.css";
 
 function AdminLayout() {
@@ -52,7 +53,7 @@ function AdminLayout() {
     },
     {
       to: "/admin/orders",
-      label: "Órdenes",
+      label: "Pedidos",
       icon: (
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
@@ -70,12 +71,18 @@ function AdminLayout() {
       {/* Sidebar */}
       <aside className={`admin-sidebar ${sidebarOpen ? "admin-sidebar--open" : ""}`}>
         <div className="admin-sidebar__header">
-          <span className="admin-sidebar__title">Admin Panel</span>
+          <div className="admin-sidebar__brand">
+            <img src={logo} alt="" className="admin-sidebar__logo" />
+            <div className="admin-sidebar__brand-text">
+              <span className="admin-sidebar__title">EliteShop</span>
+              <span className="admin-sidebar__role">Panel admin</span>
+            </div>
+          </div>
           <button
             type="button"
             className="admin-sidebar__close"
             onClick={() => setSidebarOpen(false)}
-            aria-label="Cerrar menu"
+            aria-label="Cerrar menú"
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <line x1="18" y1="6" x2="6" y2="18" />
@@ -123,7 +130,7 @@ function AdminLayout() {
               <polyline points="16 17 21 12 16 7" />
               <line x1="21" y1="12" x2="9" y2="12" />
             </svg>
-            <span>Cerrar Sesión</span>
+            <span>Cerrar sesión</span>
           </button>
         </div>
       </aside>
@@ -140,7 +147,7 @@ function AdminLayout() {
             type="button"
             className="admin-main__hamburger"
             onClick={() => setSidebarOpen(true)}
-            aria-label="Abrir menu"
+            aria-label="Abrir menú"
           >
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <line x1="3" y1="12" x2="21" y2="12" />

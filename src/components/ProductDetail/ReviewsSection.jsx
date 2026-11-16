@@ -171,7 +171,7 @@ function ReviewsSection({ productId }) {
                                 onChange={(e) => setForm({ ...form, content: e.target.value })}
                                 required
                                 maxLength={1000}
-                                placeholder="Cuéntanos tu experiencia con este producto..."
+                                placeholder="Cuéntanos tu experiencia con este producto…"
                             />
 
                             <label className="reviews-section__file-label">
@@ -211,7 +211,7 @@ function ReviewsSection({ productId }) {
                                     className="reviews-section__submit"
                                     disabled={submitting}
                                 >
-                                    {submitting ? 'Publicando...' : 'Publicar reseña'}
+                                    {submitting ? 'Publicando…' : 'Publicar reseña'}
                                 </button>
                                 <button
                                     type="button"
@@ -227,6 +227,11 @@ function ReviewsSection({ productId }) {
             ) : null}
 
             <div className="reviews-section__list">
+                {reviews.length === 0 && (
+                    <p className="reviews-section__empty">
+                        Este producto todavía no tiene reseñas. Si lo compraste, cuéntanos cómo te fue.
+                    </p>
+                )}
                 {reviews.map((review) => {
                     const rating = review.qualify || review.productQualify || 0;
                     const name = review.customerName || 'Cliente';

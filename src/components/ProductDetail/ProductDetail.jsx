@@ -5,6 +5,7 @@ import { sellerService } from '../../services/seller.service';
 import ReviewsSection from './ReviewsSection.jsx';
 import ShippingInfo from './ShippingInfo.jsx';
 import { getImageUrl } from '../../helpers/images';
+import DEMO_PRODUCTS from '../../constants/demoProducts';
 import './ProductDetail.css';
 
 function ProductDetail({ onBack, onAddToCart }) {
@@ -33,7 +34,14 @@ function ProductDetail({ onBack, onAddToCart }) {
                     }
                 }
             } catch {
-                // handle error
+                const demo = DEMO_PRODUCTS.find((item) => String(item.id) === String(urlId));
+                if (!cancelled && demo) {
+                    setProduct({
+                        ...demo,
+                        stock: 10,
+                        images: [{ imageUrl: demo.image }],
+                    });
+                }
             } finally {
                 if (!cancelled) setLoading(false);
             }
@@ -64,6 +72,11 @@ function ProductDetail({ onBack, onAddToCart }) {
 
     const images = (product.images || []).map((img) => getImageUrl(img.imageUrl || img));
     const formatPrice = (price) => new Intl.NumberFormat('es-CO').format(price);
+    const hasDiscount =
+        Number(product.oldPrice) > 0 && Number(product.oldPrice) > Number(product.price);
+    const discount = hasDiscount
+        ? Math.round((1 - Number(product.price) / Number(product.oldPrice)) * 100)
+        : 0;
 
     return (
         <div className="product-detail">
@@ -89,13 +102,17 @@ function ProductDetail({ onBack, onAddToCart }) {
                                             key={i}
                                             type="button"
                                             className={`product-detail__thumb ${i === selectedImage ? 'product-detail__thumb--active' : ''}`}
+                                            style={product.bg ? { backgroundColor: product.bg } : undefined}
                                             onClick={() => setSelectedImage(i)}
                                         >
                                             <img src={img} alt={`Vista ${i + 1}`} />
                                         </button>
                                     ))}
                                 </div>
-                                <div className="product-detail__main-image">
+                                <div
+                                    className="product-detail__main-image"
+                                    style={product.bg ? { backgroundColor: product.bg } : undefined}
+                                >
                                     <img src={images[selectedImage]} alt={product.name} />
                                 </div>
                             </>
@@ -108,14 +125,14 @@ function ProductDetail({ onBack, onAddToCart }) {
                         <h1 className="product-detail__name">{product.name}</h1>
 
                         <div className="product-detail__meta">
-                            <span className="product-detail__stock">
+                            <span className={`product-detail__stock${product.stock > 0 ? '' : ' product-detail__stock--out'}`}>
                                 {product.stock > 0 ? `${product.stock} disponibles` : 'Agotado'}
                             </span>
                             {seller && (
                                 <span className="product-detail__seller">
                                     Vendido por <strong>{seller.tradeName || seller.fullname}</strong>
                                     {seller.isVerified && (
-                                        <svg className="product-detail__verified" width="14" height="14" viewBox="0 0 24 24" fill="#2778d4" stroke="none">
+                                        <svg className="product-detail__verified" width="14" height="14" viewBox="0 0 24 24" fill="#3b82f6" stroke="none" aria-label="Vendedor verificado">
                                             <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
                                     )}
@@ -124,25 +141,38 @@ function ProductDetail({ onBack, onAddToCart }) {
                         </div>
 
                         <div className="product-detail__price-section">
-                            <span className="product-detail__price">${formatPrice(product.price)} COP</span>
+                            <span className="product-detail__price">
+                                ${formatPrice(product.price)}
+                                <span className="product-detail__currency"> COP</span>
+                            </span>
+                            {hasDiscount && (
+                                <span className="product-detail__old-price">
+                                    ${formatPrice(product.oldPrice)}
+                                </span>
+                            )}
+                            {discount > 0 && (
+                                <span className="product-detail__discount">-{discount}%</span>
+                            )}
                         </div>
 
                         {/* CANTIDAD */}
                         <div className="product-detail__quantity-section">
-                            <label className="product-detail__quantity-label">Cantidad:</label>
+                            <label className="product-detail__quantity-label">Cantidad</label>
                             <div className="product-detail__quantity-controls">
                                 <button
                                     type="button"
                                     className="product-detail__qty-btn"
+                                    aria-label="Disminuir cantidad"
                                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
                                     disabled={quantity <= 1}
                                 >
-                                    -
+                                    −
                                 </button>
                                 <span className="product-detail__qty-value">{quantity}</span>
                                 <button
                                     type="button"
                                     className="product-detail__qty-btn"
+                                    aria-label="Aumentar cantidad"
                                     onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
                                     disabled={quantity >= product.stock}
                                 >
@@ -158,7 +188,12 @@ function ProductDetail({ onBack, onAddToCart }) {
                             onClick={() => onAddToCart?.(product, quantity)}
                             disabled={product.stock === 0}
                         >
-                            {product.stock === 0 ? 'Agotado' : 'Agregar al Carrito'}
+                            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                                <circle cx="9" cy="21" r="1" />
+                                <circle cx="20" cy="21" r="1" />
+                                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+                            </svg>
+                            {product.stock === 0 ? 'Agotado' : 'Agregar al carrito'}
                         </button>
 
                         <ShippingInfo />
