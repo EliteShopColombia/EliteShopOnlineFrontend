@@ -7,6 +7,8 @@ import './PaymentMethods.css';
 function PaymentMethods() {
     const [methods, setMethods] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [loadError, setLoadError] = useState('');
+    const [retryKey, setRetryKey] = useState(0);
     const [error, setError] = useState('');
     const [showForm, setShowForm] = useState(false);
     const [saving, setSaving] = useState(false);
@@ -24,16 +26,24 @@ function PaymentMethods() {
         let cancelled = false;
 
         async function load() {
-            const data = await paymentMethodService.getAll().catch(() => []);
-            if (!cancelled) {
-                setMethods(Array.isArray(data) ? data : []);
-                setLoading(false);
+            setLoading(true);
+            setLoadError('');
+            try {
+                const data = await paymentMethodService.getAll();
+                if (!cancelled) setMethods(Array.isArray(data) ? data : []);
+            } catch (err) {
+                if (!cancelled) {
+                    const { error: apiError } = parseApiError(err);
+                    setLoadError(apiError || 'No se pudieron cargar los métodos de pago');
+                }
+            } finally {
+                if (!cancelled) setLoading(false);
             }
         }
 
         load();
         return () => { cancelled = true; };
-    }, []);
+    }, [retryKey]);
 
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
@@ -103,6 +113,18 @@ function PaymentMethods() {
 
     return (
         <div className="payment-methods">
+            {loadError && (
+                <div className="payment-methods__load-error" role="alert">
+                    <p className="payment-methods__error">{loadError}</p>
+                    <button
+                        type="button"
+                        className="payment-methods__action"
+                        onClick={() => setRetryKey((key) => key + 1)}
+                    >
+                        Reintentar
+                    </button>
+                </div>
+            )}
             {error && <p className="payment-methods__error">{error}</p>}
 
             <div className="payment-methods__header">
@@ -218,7 +240,7 @@ function PaymentMethods() {
                 </form>
             )}
 
-            {methods.length === 0 && !showForm && (
+            {methods.length === 0 && !showForm && !loadError && (
                 <p className="payment-methods__empty">Aún no tienes tarjetas guardadas. Agrega una para pagar más rápido.</p>
             )}
 

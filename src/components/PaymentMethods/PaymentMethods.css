@@ -27,6 +27,16 @@
     line-height: 1.5;
 }
 
+.payment-methods__load-error {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.payment-methods__load-error .payment-methods__error {
+    flex: 1;
+}
+
 /* ---------- Cabecera ---------- */
 
 .payment-methods__header {
