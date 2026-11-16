@@ -76,6 +76,8 @@ function OrderTracking({ initialOrderId, onBack }) {
     const [notFound, setNotFound] = useState(false);
     const [orders, setOrders] = useState([]);
     const [ordersLoading, setOrdersLoading] = useState(!effectiveId);
+    const [ordersError, setOrdersError] = useState('');
+    const [ordersRetryKey, setOrdersRetryKey] = useState(0);
     const [retrying, setRetrying] = useState(false);
     const [paymentMethods, setPaymentMethods] = useState([]);
     const [selectedMethodId, setSelectedMethodId] = useState('');
@@ -91,18 +93,28 @@ function OrderTracking({ initialOrderId, onBack }) {
         let cancelled = false;
 
         async function loadOrders() {
-            const data = await orderService.getMyOrders().catch(() => []);
-            if (cancelled) return;
-            const allOrders = Array.isArray(data) ? data : (data?.content || []);
-            // El endpoint /orders/customer/{id} ya devuelve solo los pedidos del usuario
-            // autenticado, así que no se filtra de nuevo en cliente.
-            setOrders(allOrders);
-            setOrdersLoading(false);
+            setOrdersLoading(true);
+            setOrdersError('');
+            try {
+                const data = await orderService.getMyOrders();
+                if (cancelled) return;
+                const allOrders = Array.isArray(data) ? data : (data?.content || []);
+                // El endpoint /orders/customer/{id} ya devuelve solo los pedidos del usuario
+                // autenticado, así que no se filtra de nuevo en cliente.
+                setOrders(allOrders);
+            } catch (err) {
+                if (!cancelled) {
+                    const { error: apiError } = parseApiError(err);
+                    setOrdersError(apiError || 'No se pudieron cargar tus pedidos.');
+                }
+            } finally {
+                if (!cancelled) setOrdersLoading(false);
+            }
         }
 
         loadOrders();
         return () => { cancelled = true; };
-    }, [effectiveId]);
+    }, [effectiveId, ordersRetryKey]);
 
     const loadOrder = useCallback(async (id) => {
         if (!id) return;
@@ -316,6 +328,17 @@ function OrderTracking({ initialOrderId, onBack }) {
 
                         {ordersLoading ? (
                             <p className="order-tracking__muted">Cargando pedidos…</p>
+                        ) : ordersError ? (
+                            <div className="order-tracking__list-error" role="alert">
+                                <p className="order-tracking__error">{ordersError}</p>
+                                <button
+                                    type="button"
+                                    className="order-tracking__search-btn"
+                                    onClick={() => setOrdersRetryKey((key) => key + 1)}
+                                >
+                                    Reintentar
+                                </button>
+                            </div>
                         ) : orders.length === 0 ? (
                             <div className="order-tracking__empty">
                                 <span className="order-tracking__empty-icon">

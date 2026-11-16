@@ -148,6 +148,17 @@
     font-size: 13.5px;
 }
 
+.order-tracking__list-error {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.order-tracking__list-error .order-tracking__error {
+    flex: 1;
+    margin-bottom: 0;
+}
+
 .order-tracking__not-found,
 .order-tracking__empty {
     display: flex;
