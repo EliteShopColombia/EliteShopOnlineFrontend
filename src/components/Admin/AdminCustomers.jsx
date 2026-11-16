@@ -6,6 +6,7 @@ import "./admin.css";
 function AdminCustomers() {
   const [data, setData] = useState({ content: [], page: 0, size: 10, totalElements: 0, totalPages: 0 });
   const [page, setPage] = useState(0);
+  const [retryKey, setRetryKey] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [search, setSearch] = useState("");
@@ -31,7 +32,7 @@ function AdminCustomers() {
 
     loadCustomers();
     return () => { cancelled = true; };
-  }, [page]);
+  }, [page, retryKey]);
 
   const filtered = data.content.filter((c) => {
     if (!search) return true;
@@ -62,7 +63,7 @@ function AdminCustomers() {
       {error && (
         <div className="admin-error" style={{ marginBottom: 16 }}>
           <p className="admin-error__text">{error}</p>
-          <button type="button" className="admin-error__retry" onClick={() => setPage((p) => p)}>Reintentar</button>
+          <button type="button" className="admin-error__retry" onClick={() => setRetryKey((key) => key + 1)}>Reintentar</button>
         </div>
       )}
 
